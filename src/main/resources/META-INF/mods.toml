@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/OreCruncher/MobEffects/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/dynamic-surroundings-mobeffects"
+logoFile="logo.png"
+
+[[mods]]
+	modId="mobeffects"
+	version="${version}"
+	displayName="§3Dynamic Surroundings\n§eMobEffects"
+	updateJSONURL="https://raw.githubusercontent.com/OreCruncher/MobEffects/master/version.json"
+	credits="\n\n§6All the Players§r that installed and enjoyed §2Dynamic Surroundings§r\n"
+	authors="§6OreCruncher§r\n"
+	description="\nGiving §6mobs§r special §6effects§r."
+	
+[[dependencies.sndctrl]]
+    modId="forge"
+    mandatory=true
+    versionRange="[28.1.96,)"
+    ordering="NONE"
+    side="CLIENT"
