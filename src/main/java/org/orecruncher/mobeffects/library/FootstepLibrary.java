@@ -24,6 +24,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
@@ -32,8 +33,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.orecruncher.lib.JsonUtils;
+import org.orecruncher.lib.TagUtils;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.blockstate.BlockStateParser;
+import org.orecruncher.lib.logging.IModLog;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.*;
@@ -49,6 +52,8 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MobEffects.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class FootstepLibrary {
+
+    private static IModLog LOGGER = MobEffects.LOGGER.createChild(FootstepLibrary.class);
 
     private static final String TEXT_FOOTSTEPS = TextFormatting.DARK_PURPLE + "<Footsteps>";
     private static final BlockAcousticMap metaMap = new BlockAcousticMap();
@@ -181,34 +186,37 @@ public final class FootstepLibrary {
 		playerQuadrupedVariator = getVariator(Config.CLIENT.footsteps.firstPersonFootstepCadence.get() ? "quadruped_slow" : "quadruped");
 
         if (Config.CLIENT.logging.enableLogging.get()) {
-            MobEffects.LOGGER.info("Registered Variators");
-            MobEffects.LOGGER.info("====================");
+            LOGGER.info("Registered Variators");
+            LOGGER.info("====================");
 
             for (final String v : variators.keySet()) {
-                MobEffects.LOGGER.info(v);
+                LOGGER.info(v);
             }
         }
 
         // Load up footstep info
         try {
+
             final ModConfig mod = JsonUtils.load(new ResourceLocation(MobEffects.MOD_ID, "data/mcp.json"), ModConfig.class);
 
             // Handle our primitives first
-            for (final Map.Entry<String, String> kvp: mod.primitives.entrySet()) {
+            for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
                 final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
                 AcousticLibrary.resolve(loc, kvp.getValue());
             }
 
-            // Seed the map with some known things
-            seedMap();
+            // Apply acoustics based on configured tagging
+            for (final Map.Entry<String, String> kvp : mod.tagged.entrySet()) {
+                registerTag(kvp.getKey(), kvp.getValue());
+            }
 
             // Now do the regular block stuff
-            for (final Map.Entry<String, String> kvp: mod.footsteps.entrySet()) {
+            for (final Map.Entry<String, String> kvp : mod.footsteps.entrySet()) {
                 register(kvp.getKey(), kvp.getValue());
             }
 
         } catch(@Nonnull final Throwable t) {
-            MobEffects.LOGGER.error(t, "Unable to load MCP config data!");
+            LOGGER.error(t, "Unable to load MCP config data!");
         }
 	}
 
@@ -332,18 +340,41 @@ public final class FootstepLibrary {
     }
 
     private static void register0(@Nonnull final String key, @Nonnull final String acousticList) {
+
         final Optional<BlockStateParser.ParseResult> parseResult = BlockStateParser.parseBlockState(key);
         if (parseResult.isPresent()) {
             final BlockStateParser.ParseResult name = parseResult.get();
             final BlockStateMatcher matcher = BlockStateMatcher.create(name);
             if (matcher.isEmpty()) {
-                MobEffects.LOGGER.warn("Unable to identify block state '%s'", key);
+                LOGGER.warn("Unable to identify block state '%s'", key);
             } else {
                 final String substrate = name.getExtras();
                 put(matcher, substrate, acousticList);
             }
         } else {
-            MobEffects.LOGGER.warn("Malformed key in blockMap '%s'", key);
+            LOGGER.warn("Malformed key in blockMap '%s'", key);
+        }
+    }
+
+    private static void registerTag(@Nonnull String tagName, @Nonnull final String acousticList) {
+        String substrate = null;
+        final int idx = tagName.indexOf('+');
+
+        if (idx >= 0) {
+            substrate = tagName.substring(idx + 1);
+            tagName = tagName.substring(0, idx);
+        }
+
+        final Tag<Block> blockTag = TagUtils.getBlockTag(tagName);
+        if (blockTag != null) {
+            for (final Block b : blockTag.getAllElements()) {
+                String blockName = Objects.requireNonNull(b.getRegistryName()).toString();
+                if (substrate != null)
+                    blockName = blockName + "+" + substrate;
+                register(blockName, acousticList);
+            }
+        } else {
+            LOGGER.warn("Unable to identify block tag '%s'", tagName);
         }
     }
 
@@ -355,7 +386,7 @@ public final class FootstepLibrary {
                         .map(m -> m.expand(key))
                         .forEach(t -> register0(t.getA(), t.getB()));
             } else {
-                MobEffects.LOGGER.debug("Unknown macro '%s'", acousticList);
+                LOGGER.debug("Unknown macro '%s'", acousticList);
             }
         } else {
             register0(key, acousticList);

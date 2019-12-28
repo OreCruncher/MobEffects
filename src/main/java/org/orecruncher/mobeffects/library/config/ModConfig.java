@@ -29,6 +29,8 @@ import java.util.Map;
 public class ModConfig {
     @SerializedName("primitives")
     public Map<String, String> primitives = ImmutableMap.of();
+    @SerializedName("tagged")
+    public Map<String, String> tagged = ImmutableMap.of();
     @SerializedName("footsteps")
     public Map<String, String> footsteps = ImmutableMap.of();
 }
