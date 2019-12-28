@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +45,6 @@ public class AcousticResolver {
 
 	private static final ResourceLocation ADHOC = new ResourceLocation(MobEffects.MOD_ID, "adhoc");
 
-	protected final BlockState airState = Blocks.AIR.getDefaultState();
 	protected final IWorldReader world;
 	protected final FootStrikeLocation loc;
 	protected final double distanceToCenter;
@@ -151,7 +151,7 @@ public class AcousticResolver {
 		Vec3d tPos = vec.add(0, 1, 0);
 		final BlockState above = getBlockState(tPos);
 
-		if (above != this.airState)
+		if (above.getMaterial() != Material.AIR)
 			acoustics = FootstepLibrary.getBlockAcoustics(above, Substrate.CARPET);
 
 		if (acoustics == Constants.NOT_EMITTER || acoustics == Constants.EMPTY) {
@@ -160,7 +160,7 @@ public class AcousticResolver {
 			// on NOT_EMITTER carpets will not cause solving to skip
 
 			in = getBlockStateFacade(vec);
-			if (in == this.airState) {
+			if (in.getMaterial() == Material.AIR) {
 				tPos = vec.add(0, -1, 0);
 				final BlockState below = getBlockState(tPos);
 				acoustics = FootstepLibrary.getBlockAcoustics(below, Substrate.FENCE);
@@ -180,7 +180,7 @@ public class AcousticResolver {
 				// is a carpet => this block of code is here, not outside this
 				// if else group.
 
-				if (above != this.airState) {
+				if (above.getMaterial() != Material.AIR) {
 					final IAcoustic foliage = FootstepLibrary.getBlockAcoustics(above, Substrate.FOLIAGE);
 					if (foliage != Constants.NOT_EMITTER) {
 						final SimultaneousAcoustic a = new SimultaneousAcoustic(ADHOC);

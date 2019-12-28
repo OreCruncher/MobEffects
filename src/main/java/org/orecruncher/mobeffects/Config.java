@@ -18,7 +18,6 @@
 
 package org.orecruncher.mobeffects;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;

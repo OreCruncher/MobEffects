@@ -366,7 +366,7 @@ public class Generator {
 	 */
 	protected void playAssociation(@Nullable final Association assoc, @Nonnull final AcousticEvent eventType) {
 		if (assoc != null) {
-			assoc.getData().play(eventType);
+			assoc.play(eventType);
 		}
 	}
 
