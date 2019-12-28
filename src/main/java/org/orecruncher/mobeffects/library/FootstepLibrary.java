@@ -85,9 +85,10 @@ public final class FootstepLibrary {
         FOOTPRINT_MATERIAL.add(Material.CAKE);
 
         final MacroEntry MESSY = new MacroEntry("messy", "messy_ground");
+        final MacroEntry NOT_EMITTER = new MacroEntry(null, "not_emitter");
 
         List<MacroEntry> entries = new ArrayList<>();
-        entries.add(new MacroEntry(null, "not_emitter"));
+        entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "straw"));
         macros.put("#sapling", entries);
@@ -106,9 +107,14 @@ public final class FootstepLibrary {
         macros.put("#bush", entries);
 
         entries = new ArrayList<>();
-        entries.add(new MacroEntry(null, "not_emitter"));
+        entries.add(NOT_EMITTER);
         entries.add(new MacroEntry("bigger", "bluntwood"));
         macros.put("#fence", entries);
+
+        entries = new ArrayList<>();
+        entries.add(NOT_EMITTER);
+        entries.add(new MacroEntry("foliage", "rails"));
+        macros.put("#rail", entries);
 
         entries = new ArrayList<>();
         entries.add(new MacroEntry(null, "straw"));
@@ -117,12 +123,12 @@ public final class FootstepLibrary {
         macros.put("#vine", entries);
 
         entries = new ArrayList<>();
-        entries.add(new MacroEntry(null, "not_emitter"));
+        entries.add(NOT_EMITTER);
         entries.add(new MacroEntry("carpet", "rug"));
         macros.put("#moss", entries);
 
         entries = new ArrayList<>();
-        entries.add(new MacroEntry(null, "not_emitter"));
+        entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("age", "0", "foliage", "not_emitter"));
         entries.add(new MacroEntry("age", "1", "foliage", "not_emitter"));
@@ -135,7 +141,7 @@ public final class FootstepLibrary {
         macros.put("#wheat", entries);
 
         entries = new ArrayList<>();
-        entries.add(new MacroEntry(null, "NOT_EMITTER"));
+        entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("age", "0", "foliage", "not_emitter"));
         entries.add(new MacroEntry("age", "1", "foliage", "not_emitter"));
@@ -148,7 +154,7 @@ public final class FootstepLibrary {
         macros.put("#crop", entries);
 
         entries = new ArrayList<>();
-        entries.add(new MacroEntry(null, "NOT_EMITTER"));
+        entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("age", "0", "foliage", "not_emitter"));
         entries.add(new MacroEntry("age", "1", "foliage", "not_emitter"));
@@ -248,6 +254,10 @@ public final class FootstepLibrary {
                 registerBlocks("squeakywood", blockName);
             } else if (block instanceof GlassBlock) {
                 registerBlocks("glass", blockName);
+            } else if (block instanceof BedBlock) {
+                registerBlocks("rug", blockName);
+            } else if (block instanceof AbstractRailBlock) {
+                registerBlocks("#rail", blockName);
             } else {
                 // Register generics based on sound type
                 final BlockState state = block.getDefaultState();
