@@ -19,27 +19,41 @@
 package org.orecruncher.mobeffects.library;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
+import org.orecruncher.sndctrl.audio.SoundUtils;
+import org.orecruncher.sndctrl.audio.handlers.MusicFader;
 import org.orecruncher.sndctrl.library.AcousticLibrary;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
+import java.util.Set;
 
-@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(
+        modid = MobEffects.MOD_ID,
+        value = {Dist.CLIENT},
+        bus = Mod.EventBusSubscriber.Bus.FORGE
+)
 public final class EffectLibrary {
 
     private static final EntityEffectInfo DEFAULT = new EntityEffectInfo();
     private static EntityEffectInfo playerEffects = DEFAULT;
     private static final Map<ResourceLocation, EntityEffectInfo> myEffects = new Object2ObjectOpenHashMap<>();
     private static final Reference2ObjectOpenHashMap<Class<? extends Entity>, EntityEffectInfo> effects = new Reference2ObjectOpenHashMap<>();
+    private static final Set<ResourceLocation> blockedSounds = new ObjectOpenHashSet<>();
 
     private EffectLibrary() {
 
@@ -51,6 +65,15 @@ public final class EffectLibrary {
         for (final Map.Entry<String, EntityConfig> kvp : configMap.entrySet()) {
             final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
             myEffects.put(loc, new EntityEffectInfo(kvp.getValue()));
+
+            // Process blocked sounds
+            for (final String r : kvp.getValue().blockedSounds) {
+                try {
+                    blockedSounds.add(new ResourceLocation(r));
+                } catch (@Nonnull final Throwable t) {
+                    MobEffects.LOGGER.error(t, "Not a valid sound resource location: %s", r);
+                }
+            }
         }
 
         playerEffects = myEffects.get(new ResourceLocation("minecraft:player"));
@@ -85,4 +108,14 @@ public final class EffectLibrary {
         return info;
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void soundPlay(@Nonnull PlaySoundEvent e) {
+        final ISound theSound = e.getSound();
+        if (theSound != null) {
+            final ResourceLocation soundResource = theSound.getSoundLocation();
+            if (blockedSounds.contains(soundResource)) {
+                e.setResultSound(null);
+            }
+        }
+    }
 }

@@ -18,10 +18,13 @@
 
 package org.orecruncher.mobeffects.library.config;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.annotations.SerializedName;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class EntityConfig {
@@ -30,5 +33,7 @@ public class EntityConfig {
 	public String effects = StringUtils.EMPTY;
 	@SerializedName("variator")
 	public String variator = "default";
+	@SerializedName("blockedSounds")
+	public List<String> blockedSounds = ImmutableList.of();
 
 }
