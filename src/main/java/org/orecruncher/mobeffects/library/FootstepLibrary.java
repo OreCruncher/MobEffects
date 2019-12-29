@@ -56,14 +56,14 @@ public final class FootstepLibrary {
     private static IModLog LOGGER = MobEffects.LOGGER.createChild(FootstepLibrary.class);
 
     private static final String TEXT_FOOTSTEPS = TextFormatting.DARK_PURPLE + "<Footsteps>";
-    private static final BlockAcousticMap metaMap = new BlockAcousticMap();
+    private static final BlockAcousticMap metaMap = new BlockAcousticMap(FootstepLibrary::primitiveResolver);
     private static final Map<Substrate, BlockAcousticMap> substrateMap = new EnumMap<>(Substrate.class);
 
-    private static final List<String> FOOTPRINT_SOUND_PROFILE =
+    private static final List<ResourceLocation> FOOTPRINT_SOUND_PROFILE =
             Arrays.asList(
-                    "minecraft:block.sand.step",
-                    "minecraft:block.gravel.step",
-                    "minecraft:block.snow.step"
+                    new ResourceLocation("minecraft:block.sand.step"),
+                    new ResourceLocation("minecraft:block.gravel.step"),
+                    new ResourceLocation("minecraft:block.snow.step")
             );
 
     private static final Set<Material> FOOTPRINT_MATERIAL = new ReferenceOpenHashSet<>();
@@ -88,6 +88,7 @@ public final class FootstepLibrary {
         FOOTPRINT_MATERIAL.add(Material.SNOW_BLOCK);
         FOOTPRINT_MATERIAL.add(Material.SNOW);
         FOOTPRINT_MATERIAL.add(Material.CAKE);
+        FOOTPRINT_MATERIAL.add(Material.ORGANIC);
 
         final MacroEntry MESSY = new MacroEntry("messy", "messy_ground");
         final MacroEntry NOT_EMITTER = new MacroEntry(null, "not_emitter");
@@ -425,8 +426,12 @@ public final class FootstepLibrary {
         }
     }
 
+    private static IAcoustic primitiveResolver(@Nonnull final BlockState state) {
+        return AcousticLibrary.resolve(Objects.requireNonNull(state.getSoundType().getStepSound().getRegistryName()));
+    }
+
     public static boolean hasFootprint(@Nonnull final BlockState state) {
-        return FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_STATES.contains(state);
+        return FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_STATES.contains(state) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType().getStepSound().getName());
     }
 
     private static class MacroEntry {

@@ -19,6 +19,7 @@
 package org.orecruncher.mobeffects.library;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +28,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.orecruncher.lib.Utilities;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.collections.ObjectArray;
 
@@ -43,8 +45,14 @@ public final class BlockAcousticMap {
 
 	protected final Map<BlockState, IAcoustic> cache = new Reference2ObjectOpenHashMap<>();
 	protected final Map<Block, ObjectArray<BlockMapEntry>> data = new Reference2ObjectOpenHashMap<>();
+	protected final Function<BlockState, IAcoustic> resolver;
 
 	public BlockAcousticMap() {
+		this(s -> null);
+	}
+
+	public BlockAcousticMap(@Nonnull final Function<BlockState, IAcoustic> resolver) {
+		this.resolver = resolver;
 		put(BlockStateMatcher.create(Blocks.AIR.getDefaultState()), Constants.NOT_EMITTER);
 		put(BlockStateMatcher.create(Blocks.CAVE_AIR.getDefaultState()), Constants.NOT_EMITTER);
 		put(BlockStateMatcher.create(Blocks.VOID_AIR.getDefaultState()), Constants.NOT_EMITTER);
@@ -63,8 +71,8 @@ public final class BlockAcousticMap {
 			if (result != null)
 				return result;
 		}
-		//result = AcousticLibrary.getBlockAcoustics(state);
-		return MoreObjects.firstNonNull(result, Constants.EMPTY);
+
+		return Utilities.firstNonNull(this.resolver.apply(state), Constants.EMPTY);
 	}
 
 	@Nullable
