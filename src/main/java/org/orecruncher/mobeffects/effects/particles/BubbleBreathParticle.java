@@ -82,6 +82,6 @@ public class BubbleBreathParticle  extends SpriteTexturedParticle {
     }
 
     public IParticleRenderType getRenderType() {
-        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 }
