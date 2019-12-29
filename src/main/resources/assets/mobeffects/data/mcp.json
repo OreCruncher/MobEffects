@@ -163,6 +163,10 @@
     "minecraft:brown_concrete_powder": "sand",
     "minecraft:green_concrete_powder": "sand",
     "minecraft:red_concrete_powder": "sand",
-    "minecraft:black_concrete_powder": "sand"
+    "minecraft:black_concrete_powder": "sand",
+
+    "minecraft:snow_block": "snow",
+    "minecraft:snow": "snow",
+    "minecraft:snow+carpet": "snow"
   }
 }

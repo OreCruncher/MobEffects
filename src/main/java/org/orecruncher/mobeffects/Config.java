@@ -77,10 +77,13 @@ public final class Config {
         public final Logging logging;
         @Nonnull
         public final Footsteps footsteps;
+        @Nonnull
+        public final Effects effects;
 
         Client(@Nonnull final ForgeConfigSpec.Builder builder) {
             this.logging = new Logging(builder);
             this.footsteps = new Footsteps(builder);
+            this.effects = new Effects(builder);
         }
 
         public static class Logging {
@@ -136,6 +139,23 @@ public final class Config {
                         .comment("Generate footsteps as a quadruped (horse)")
                         .translation("mobeffects.cfg.footsteps.Quadruped")
                         .define("Footsteps as Quadruped", false);
+
+                builder.pop();
+            }
+        }
+
+        public static class Effects {
+
+            public final BooleanValue showBreath;
+
+            public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
+                builder.comment("Defines mob effect generation")
+                        .push("Mob Effect Options");
+
+                this.showBreath = builder
+                        .comment("Show breath effect")
+                        .translation("mobeffects.cfg.effects.Breath")
+                        .define("Show Breath Effect", true);
 
                 builder.pop();
             }

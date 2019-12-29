@@ -13,9 +13,16 @@ logoFile="logo.png"
 	authors="§6OreCruncher§r\n"
 	description="\nGiving §6mobs§r special §6effects§r."
 	
-[[dependencies.sndctrl]]
+[[dependencies.mobeffects]]
     modId="forge"
     mandatory=true
     versionRange="[28.1.96,)"
     ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.mobeffects]]
+    modId="sndctrl"
+    mandatory=true
+    versionRange="[0.0.2,)"
+    ordering="AFTER"
     side="CLIENT"
