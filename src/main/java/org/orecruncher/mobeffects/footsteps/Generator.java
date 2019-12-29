@@ -39,6 +39,7 @@ import org.orecruncher.lib.random.XorShiftRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.orecruncher.mobeffects.effects.particles.Collections;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
 import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
@@ -54,8 +55,8 @@ public class Generator {
 	protected static final Consumer<Footprint> GENERATE_PRINT = print -> {
 		final Vec3d loc = print.getStepLocation();
 		final World world = print.getEntity().getEntityWorld();
-		//ParticleCollections.addFootprint(print.getStyle(), world, loc, print.getRotation(), print.getScale(),
-		//		print.isRightFoot());
+		Collections.addFootprint(print.getStyle(), world, loc, print.getRotation(), print.getScale(),
+				print.isRightFoot());
 	};
 
 	protected final Variator VAR;
