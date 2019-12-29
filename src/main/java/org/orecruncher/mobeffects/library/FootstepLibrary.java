@@ -108,6 +108,12 @@ public final class FootstepLibrary {
         macros.put("#plant", entries);
 
         entries = new ArrayList<>();
+        entries.add(NOT_EMITTER);
+        entries.add(MESSY);
+        entries.add(new MacroEntry("foliage", "brush"));
+        macros.put("#tallplant", entries);
+
+        entries = new ArrayList<>();
         entries.add(new MacroEntry(null, "leaves"));
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "brush_straw_transition"));
@@ -208,7 +214,7 @@ public final class FootstepLibrary {
             }
 
             // Apply acoustics based on configured tagging
-            for (final Map.Entry<String, String> kvp : mod.tagged.entrySet()) {
+            for (final Map.Entry<String, String> kvp : mod.blockTags.entrySet()) {
                 registerTag(kvp.getKey(), kvp.getValue());
             }
 

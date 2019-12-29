@@ -857,5 +857,13 @@
 			"mobeffects:footsteps/wood/wood_walk8",
 			"mobeffects:footsteps/wood/wood_walk9"
 		]
+	},
+	"floorsqueak": {
+		"category": "footsteps",
+		"sounds": [
+			"mobeffects:footsteps/wood/floorsqueak1",
+			"mobeffects:footsteps/wood/floorsqueak2",
+			"mobeffects:footsteps/wood/floorsqueak3"
+		]
 	}
 }

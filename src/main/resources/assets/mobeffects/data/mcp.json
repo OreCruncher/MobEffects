@@ -14,7 +14,7 @@
     "minecraft:block.anvil.step": "mobeffects:metalcompressed,mobeffects:hardmetal",
     "minecraft:block.slime.step": "mobeffects:mud"
   },
-  "tagged": {
+  "blockTags": {
     "minecraft:logs": "log",
     "minecraft:planks": "planks",
     "minecraft:wooden_fences": "#fence",
@@ -77,8 +77,6 @@
     "minecraft:nether_brick_fence+bigger": "brickstone",
     "minecraft:nether_brick_stairs": "brickstone",
     "minecraft:red_nether_bricks": "brickstone",
-    "minecraft:lily_pad": "waterfine",
-    "minecraft:lily_pad+carpet": "waterfine",
     "minecraft:grass_block": "grass",
 
     "minecraft:black_shulker_box": "marble",
@@ -167,6 +165,20 @@
 
     "minecraft:snow_block": "snow",
     "minecraft:snow": "snow",
-    "minecraft:snow+carpet": "snow"
+    "minecraft:snow+carpet": "snow",
+    "minecraft:lily_pad": "waterfine",
+    "minecraft:lily_pad+carpet": "waterfine",
+    "minecraft:dead_bush": "not_emitter",
+    "minecraft:dead_bush+messy": "messy_ground",
+    "minecraft:dead_bush+foliage": "straw",
+    "minecraft:large_fern": "#tallplant",
+    "minecraft:tall_grass": "#tallplant",
+    "minecraft:rose_bush": "#tallplant",
+    "minecraft:sugar_cane": "#reed",
+
+    "minecraft:wheat": "#wheat",
+    "minecraft:carrots": "#crop",
+    "minecraft:potatoes": "#crop",
+    "minecraft:beets": "#beets"
   }
 }
