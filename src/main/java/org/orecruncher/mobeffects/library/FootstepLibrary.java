@@ -59,11 +59,12 @@ public final class FootstepLibrary {
     private static final BlockAcousticMap metaMap = new BlockAcousticMap(FootstepLibrary::primitiveResolver);
     private static final Map<Substrate, BlockAcousticMap> substrateMap = new EnumMap<>(Substrate.class);
 
-    private static final List<ResourceLocation> FOOTPRINT_SOUND_PROFILE =
+    private static final List<SoundType> FOOTPRINT_SOUND_PROFILE =
             Arrays.asList(
-                    new ResourceLocation("minecraft:block.sand.step"),
-                    new ResourceLocation("minecraft:block.gravel.step"),
-                    new ResourceLocation("minecraft:block.snow.step")
+                    SoundType.SAND,
+                    SoundType.GROUND,
+                    SoundType.SLIME,
+                    SoundType.SNOW
             );
 
     private static final Set<Material> FOOTPRINT_MATERIAL = new ReferenceOpenHashSet<>();
@@ -431,7 +432,7 @@ public final class FootstepLibrary {
     }
 
     public static boolean hasFootprint(@Nonnull final BlockState state) {
-        return FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_STATES.contains(state) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType().getStepSound().getName());
+        return FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_STATES.contains(state) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType());
     }
 
     private static class MacroEntry {
