@@ -110,6 +110,11 @@ public final class BlockAcousticMap {
 		entry.add(new BlockMapEntry(info, acoustics));
 	}
 
+	public void clear() {
+		this.cache.clear();
+		this.data.clear();
+	}
+
 	private static class BlockMapEntry {
 		public final BlockStateMatcher matcher;
 		public final IAcoustic acoustics;

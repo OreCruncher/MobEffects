@@ -72,16 +72,15 @@ public final class MobEffects {
     }
 
     private void commonSetup(@Nonnull final FMLCommonSetupEvent event) {
-        // CapabilityEntityFXData.register();
+
     }
 
     private void clientSetup(@Nonnull final FMLClientSetupEvent event) {
-
+        KeyBoard.initialize();
     }
 
     private void setupComplete(@Nonnull final FMLLoadCompleteEvent event) {
         EffectLibrary.initialize();
-        //FootstepLibrary.initialize();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

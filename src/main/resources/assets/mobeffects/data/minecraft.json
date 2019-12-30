@@ -27,6 +27,7 @@
     "minecraft:wool": "rug",
     "minecraft:stone_bricks": "brickstone",
     "minecraft:sand": "sand",
+    "minecraft:saplings": "#sapling",
 
     "forge:glass": "glass",
     "forge:glass_panes": "glass",
@@ -42,6 +43,7 @@
     "forge:gravel": "gravel"
   },
   "footsteps": {
+    "minecraft:water": "not_emitter",
     "minecraft:vine": "#vine",
     "minecraft:bricks": "brickstone",
     "minecraft:brick_stairs": "brickstone",
@@ -174,11 +176,13 @@
     "minecraft:large_fern": "#tallplant",
     "minecraft:tall_grass": "#tallplant",
     "minecraft:rose_bush": "#tallplant",
+    "minecraft:peony": "#tallplant",
+    "minecraft:lilac": "#tallplant",
     "minecraft:sugar_cane": "#reed",
 
     "minecraft:wheat": "#wheat",
     "minecraft:carrots": "#crop",
     "minecraft:potatoes": "#crop",
-    "minecraft:beets": "#beets"
+    "minecraft:beetroots": "#beets"
   }
 }

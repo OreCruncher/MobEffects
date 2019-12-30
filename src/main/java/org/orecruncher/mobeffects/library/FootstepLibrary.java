@@ -36,6 +36,7 @@ import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.lib.TagUtils;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.blockstate.BlockStateParser;
+import org.orecruncher.lib.fml.ForgeUtils;
 import org.orecruncher.lib.logging.IModLog;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
@@ -182,6 +183,11 @@ public final class FootstepLibrary {
 
     public static void initialize() {
 
+        variators.clear();
+        metaMap.clear();
+        substrateMap.clear();
+        FOOTPRINT_STATES.clear();
+
         // Load up the variators
         final Map<String, VariatorConfig> variatorMap = JsonUtils.loadConfig(new ResourceLocation(MobEffects.MOD_ID, "variators.json"), VariatorConfig.class);
         for (final Map.Entry<String, VariatorConfig> kvp : variatorMap.entrySet()) {
@@ -202,29 +208,35 @@ public final class FootstepLibrary {
             }
         }
 
-        // Load up footstep info
-        try {
+        // Get a list of the mods/packs that are installed
+        final List<String> installed = ForgeUtils.getModIdList();
 
-            final ModConfig mod = JsonUtils.load(new ResourceLocation(MobEffects.MOD_ID, "data/mcp.json"), ModConfig.class);
+        for (final String id: installed) {
+            // Load up footstep info
+            try {
 
-            // Handle our primitives first
-            for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
-                final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
-                AcousticLibrary.resolve(loc, kvp.getValue());
+                final String resource = String.format("data/%s.json", id);
+                final ModConfig mod = JsonUtils.load(new ResourceLocation(MobEffects.MOD_ID, resource), ModConfig.class);
+
+                // Handle our primitives first
+                for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
+                    final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
+                    AcousticLibrary.resolve(loc, kvp.getValue());
+                }
+
+                // Apply acoustics based on configured tagging
+                for (final Map.Entry<String, String> kvp : mod.blockTags.entrySet()) {
+                    registerTag(kvp.getKey(), kvp.getValue());
+                }
+
+                // Now do the regular block stuff
+                for (final Map.Entry<String, String> kvp : mod.footsteps.entrySet()) {
+                    register(kvp.getKey(), kvp.getValue());
+                }
+
+            } catch (@Nonnull final Throwable t) {
+                LOGGER.error(t, "Unable to load '%s.json' config data!", id);
             }
-
-            // Apply acoustics based on configured tagging
-            for (final Map.Entry<String, String> kvp : mod.blockTags.entrySet()) {
-                registerTag(kvp.getKey(), kvp.getValue());
-            }
-
-            // Now do the regular block stuff
-            for (final Map.Entry<String, String> kvp : mod.footsteps.entrySet()) {
-                register(kvp.getKey(), kvp.getValue());
-            }
-
-        } catch(@Nonnull final Throwable t) {
-            LOGGER.error(t, "Unable to load MCP config data!");
         }
 	}
 
@@ -313,7 +325,7 @@ public final class FootstepLibrary {
     @Nonnull
     public static IAcoustic getBlockAcoustics(@Nonnull final BlockState state, @Nullable final Substrate substrate) {
         // Walking an edge of a block can produce this
-        if (state == Blocks.AIR.getDefaultState())
+        if (state.getMaterial() == Material.AIR)
             return Constants.NOT_EMITTER;
         if (substrate != null) {
             final BlockAcousticMap sub = substrateMap.get(substrate);
@@ -434,6 +446,12 @@ public final class FootstepLibrary {
     }
 
     private static IAcoustic primitiveResolver(@Nonnull final BlockState state) {
+        // If the state does not block movement or is liquid, like grass and plants, then it is not an
+        // emitter.  Otherwise we get strange effects when edge walking on blocks with a plant
+        // to the side.
+        final Material mat = state.getMaterial();
+        if (!mat.blocksMovement() || mat.isLiquid())
+            return Constants.NOT_EMITTER;
         return AcousticLibrary.resolve(Objects.requireNonNull(state.getSoundType().getStepSound().getRegistryName()));
     }
 

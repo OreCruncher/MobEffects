@@ -12,6 +12,12 @@
       "entity.villager.step"
     ]
   },
+  "minecraft:pillager": {
+    "effects": "bow,swing,footprint,breath",
+    "blockedSounds": [
+      "entity.villager.step"
+    ]
+  },
   "minecraft:husk": {
     "effects": "bow,swing,footprint",
     "blockedSounds": [

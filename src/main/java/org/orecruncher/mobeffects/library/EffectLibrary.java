@@ -26,7 +26,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,8 +33,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
-import org.orecruncher.sndctrl.audio.SoundUtils;
-import org.orecruncher.sndctrl.audio.handlers.MusicFader;
 import org.orecruncher.sndctrl.library.AcousticLibrary;
 
 import javax.annotation.Nonnull;
@@ -60,6 +57,11 @@ public final class EffectLibrary {
     }
 
     public static void initialize() {
+
+        myEffects.clear();
+        effects.clear();
+        blockedSounds.clear();
+
         // Load up the effects
         final Map<String, EntityConfig> configMap = JsonUtils.loadConfig(new ResourceLocation(MobEffects.MOD_ID, "effects.json"), EntityConfig.class);
         for (final Map.Entry<String, EntityConfig> kvp : configMap.entrySet()) {

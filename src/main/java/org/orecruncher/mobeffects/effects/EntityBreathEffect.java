@@ -133,7 +133,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
             final World world = entity.getEntityWorld();
             final BlockPos entityPos = entity.getPosition();
             final Biome biome = world.getBiome(entityPos);
-            return biome.getTemperature(entityPos) <= 0.2F;
+            return biome.getTemperature(entityPos) < 0.2F;
         }
         return false;
     }
