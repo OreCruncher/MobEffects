@@ -31,6 +31,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.orecruncher.lib.fml.ConfigUtils;
 import org.orecruncher.lib.fml.UpdateChecker;
 import org.orecruncher.lib.logging.ModLog;
+import org.orecruncher.mobeffects.effects.EntityBowEffect;
 import org.orecruncher.mobeffects.effects.EntityBreathEffect;
 import org.orecruncher.mobeffects.effects.EntityFootprintEffect;
 import org.orecruncher.mobeffects.library.Constants;
@@ -111,6 +112,7 @@ public final class MobEffects {
         // Register our effect handlers
         IMC.registerEffectFactoryHandler(EntityFootprintEffect.DEFAULT_HANDLER);
         IMC.registerEffectFactoryHandler(EntityBreathEffect.DEFAULT_HANDLER);
+        IMC.registerEffectFactoryHandler(EntityBowEffect.DEFAULT_HANDLER);
 
         // Callback for completions
         IMC.registerCompletionCallback(Libraries::initialize);

@@ -70,19 +70,18 @@ public final class Constants {
     public static final ResourceLocation CHAIN_ARMOR_EQUIP = MEDIUM_ARMOR;
     public static final ResourceLocation CRYSTAL_ARMOR_EQUIP = CRYSTAL_ARMOR;
     public static final ResourceLocation PLATE_ARMOR_EQUIP = HEAVY_ARMOR;
-    public static final ResourceLocation UTILITY_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/utility_equip");
-    public static final ResourceLocation TOOL_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/tool_use");
-    public static final ResourceLocation TOOL_SWING = new ResourceLocation(MobEffects.MOD_ID, "item/tool_swing");
-    public static final ResourceLocation SHIELD_USE = new ResourceLocation(MobEffects.MOD_ID, "item/shield_use");
-    public static final ResourceLocation SHIELD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/shield_equip");
-    public static final ResourceLocation SWORD_SWING = new ResourceLocation(MobEffects.MOD_ID, "item/sword_swing");
-    public static final ResourceLocation SWORD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/sword_equip");
-    public static final ResourceLocation AXE_SWING = new ResourceLocation(MobEffects.MOD_ID, "item/axe_swing");
-    public static final ResourceLocation AXE_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/axe_equip");
-    public static final ResourceLocation BOW_PULL = new ResourceLocation(MobEffects.MOD_ID, "item/bow_pull");
-    public static final ResourceLocation BOW_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/bow_equip");
-    public static final ResourceLocation FOOD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/food_equip");
-    public static final ResourceLocation BOOK_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/book_equip");
-    public static final ResourceLocation POTION_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/potion_equip");
+    public static final ResourceLocation UTILITY_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "utility.equip");
+    public static final ResourceLocation TOOL_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "tool.equip");
+    public static final ResourceLocation TOOL_SWING = new ResourceLocation(MobEffects.MOD_ID, "tool.swing");
+    public static final ResourceLocation SHIELD_USE = new ResourceLocation(MobEffects.MOD_ID, "shield.use");
+    public static final ResourceLocation SHIELD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "shield.equip");
+    public static final ResourceLocation SWORD_SWING = new ResourceLocation(MobEffects.MOD_ID, "sword.swing");
+    public static final ResourceLocation SWORD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "sword.equip");
+    public static final ResourceLocation AXE_SWING = new ResourceLocation(MobEffects.MOD_ID, "blunt.swing");
+    public static final ResourceLocation AXE_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "blunt.equip");
+    public static final ResourceLocation BOW_PULL = new ResourceLocation(MobEffects.MOD_ID, "bow.pull");
+    public static final ResourceLocation BOW_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "bow.equip");
+    public static final ResourceLocation BOOK_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "pageflip");
+    public static final ResourceLocation POTION_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "potion.equip");
 
 }

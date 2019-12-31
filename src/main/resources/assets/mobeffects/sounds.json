@@ -865,5 +865,119 @@
 			"mobeffects:footsteps/wood/floorsqueak2",
 			"mobeffects:footsteps/wood/floorsqueak3"
 		]
+	},
+	"pageflip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/pageflip1",
+			"mobeffects:items/pageflip2",
+			"mobeffects:items/pageflip3"
+		]
+	},
+	"blunt.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/blunt_draw"
+		]
+	},
+	"blunt.swing": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/blunt_swing1",
+			"mobeffects:items/blunt_swing2",
+			"mobeffects:items/blunt_swing3",
+			"mobeffects:items/blunt_swing4",
+			"mobeffects:items/blunt_swing5"
+		]
+	},
+	"bow.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/bow_draw"
+		]
+	},
+	"bow.pull": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/bow_pull1",
+			"mobeffects:items/bow_pull2",
+			"mobeffects:items/bow_pull3",
+			"mobeffects:items/bow_pull4",
+			"mobeffects:items/bow_pull5"
+		]
+	},
+	"bow.loose": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/bow_loose1",
+			"mobeffects:items/bow_loose2",
+			"mobeffects:items/bow_loose3",
+			"mobeffects:items/bow_loose4"
+		]
+	},
+	"sword.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/sword_draw"
+		]
+	},
+	"sword.swing": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/sword_swing1",
+			"mobeffects:items/sword_swing2",
+			"mobeffects:items/sword_swing3",
+			"mobeffects:items/sword_swing4",
+			"mobeffects:items/sword_swing5",
+			"mobeffects:items/sword_swing6",
+			"mobeffects:items/sword_swing7",
+			"mobeffects:items/sword_swing8",
+			"mobeffects:items/sword_swing9"
+		]
+	},
+	"tool.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/tool_draw"
+		]
+	},
+	"tool.swing": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/swoosh1",
+			"mobeffects:items/swoosh2",
+			"mobeffects:items/swoosh3",
+			"mobeffects:items/swoosh4",
+			"mobeffects:items/swoosh5",
+			"mobeffects:items/swoosh6",
+			"mobeffects:items/swoosh7"
+		]
+	},
+	"utility.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/utility_draw"
+		]
+	},
+	"shield.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/tool_draw"
+		]
+	},
+	"shield.use": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/tool_draw"
+		]
+	},
+	"potion.equip": {
+		"category": "player",
+		"sounds": [
+			"mobeffects:items/potion_slosh1",
+			"mobeffects:items/potion_slosh2",
+			"mobeffects:items/potion_slosh3",
+			"mobeffects:items/potion_slosh4"
+		]
 	}
 }

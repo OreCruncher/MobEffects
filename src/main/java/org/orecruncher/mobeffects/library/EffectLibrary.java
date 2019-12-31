@@ -22,9 +22,11 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.LocatableSound;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -33,7 +35,9 @@ import net.minecraftforge.fml.common.Mod;
 import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
+import org.orecruncher.sndctrl.audio.SoundBuilder;
 import org.orecruncher.sndctrl.library.AcousticLibrary;
+import org.orecruncher.sndctrl.library.SoundLibrary;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -51,6 +55,8 @@ public final class EffectLibrary {
     private static final Map<ResourceLocation, EntityEffectInfo> myEffects = new Object2ObjectOpenHashMap<>();
     private static final Reference2ObjectOpenHashMap<Class<? extends Entity>, EntityEffectInfo> effects = new Reference2ObjectOpenHashMap<>();
     private static final Set<ResourceLocation> blockedSounds = new ObjectOpenHashSet<>();
+
+    private static final Map<ResourceLocation, SoundEvent> soundReplace = new Object2ObjectOpenHashMap<>();
 
     private EffectLibrary() {
 
@@ -79,6 +85,13 @@ public final class EffectLibrary {
         }
 
         playerEffects = myEffects.get(new ResourceLocation("minecraft:player"));
+
+        // Replace our bow loose sounds
+        final ResourceLocation bowLoose = new ResourceLocation(MobEffects.MOD_ID, "bow.loose");
+        SoundLibrary.getSound(bowLoose).ifPresent(se -> {
+            soundReplace.put(new ResourceLocation("minecraft:entity.arrow.shoot"), se);
+            soundReplace.put(new ResourceLocation("minecraft:entity.skeleton.shoot"), se);
+        });
     }
 
     public static boolean hasEffect(@Nonnull final Entity entity, @Nonnull final ResourceLocation loc) {
@@ -117,6 +130,11 @@ public final class EffectLibrary {
             final ResourceLocation soundResource = theSound.getSoundLocation();
             if (blockedSounds.contains(soundResource)) {
                 e.setResultSound(null);
+            } else {
+                final SoundEvent evt = soundReplace.get(soundResource);
+                if (evt != null) {
+                    e.setResultSound(SoundBuilder.builder(evt).from((LocatableSound) theSound).build());
+                }
             }
         }
     }
