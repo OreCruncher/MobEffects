@@ -198,8 +198,10 @@ public final class Config {
         public static class Effects {
 
             private final BooleanValue showBreath;
+            private final BooleanValue showArrowTrail;
 
             private boolean _showBreath;
+            private boolean _showArrowTrail;
 
             public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Defines mob effect generation")
@@ -210,15 +212,25 @@ public final class Config {
                         .translation("mobeffects.cfg.effects.Breath")
                         .define("Show Breath Effect", true);
 
+                this.showArrowTrail = builder
+                        .comment("Show arrow particle trail")
+                        .translation("mobeffects.cfg.effects.Arrow")
+                        .define("Show Arrow Particle Trail", false);
+
                 builder.pop();
             }
 
             void update() {
                 this._showBreath = this.showBreath.get();
+                this._showArrowTrail = this.showArrowTrail.get();
             }
 
             public boolean get_showBreath() {
                 return this._showBreath;
+            }
+
+            public boolean get_showArrowTrail() {
+                return this._showArrowTrail;
             }
         }
     }
