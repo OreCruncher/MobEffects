@@ -1,0 +1,88 @@
+/*
+ *  Dynamic Surroundings: Mob Effects
+ *  Copyright (C) 2019  OreCruncher
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
+package org.orecruncher.mobeffects.library;
+
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.orecruncher.mobeffects.MobEffects;
+import org.orecruncher.sndctrl.audio.Category;
+import org.orecruncher.sndctrl.audio.ISoundCategory;
+import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
+import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.audio.acoustic.NullAcoustic;
+
+import javax.annotation.Resource;
+
+@OnlyIn(Dist.CLIENT)
+public final class Constants {
+    private Constants() {
+
+    }
+
+    public static final ResourceLocation NONE = new ResourceLocation(MobEffects.MOD_ID, "empty");
+
+    public static final IAcoustic EMPTY = new NullAcoustic(NONE);
+    public static final IAcoustic NOT_EMITTER = new NullAcoustic(new ResourceLocation(MobEffects.MOD_ID,"not_emitter"));
+    public static final IAcoustic MESSY_GROUND = new NullAcoustic(new ResourceLocation(MobEffects.MOD_ID,"messy_ground"));
+
+    public static final AcousticEvent WALK = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "walk"), null);
+    public static final AcousticEvent WANDER = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "wander"), null);
+    public static final AcousticEvent SWIM = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "swim"), null);
+    public static final AcousticEvent RUN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "run"), WALK);
+    public static final AcousticEvent JUMP = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "jump"), WANDER);
+    public static final AcousticEvent LAND = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "land"), RUN);
+    public static final AcousticEvent CLIMB = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "climb"), WALK);
+    public static final AcousticEvent CLIMB_RUN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "climb_run"), RUN);
+    public static final AcousticEvent DOWN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "down"), WALK);
+    public static final AcousticEvent DOWN_RUN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "down_run"), RUN);
+    public static final AcousticEvent UP = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "up"), WALK);
+    public static final AcousticEvent UP_RUN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "up_run"), RUN);
+
+    public static final ISoundCategory FOOTSTEPS = new Category("footsteps", () -> 1F);
+
+    public static final ResourceLocation LIGHT_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_light");
+    public static final ResourceLocation MEDIUM_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_medium");
+    public static final ResourceLocation HEAVY_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_heavy");
+    public static final ResourceLocation CRYSTAL_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_crystal");
+    public static final ResourceLocation LIGHT_FOOT_ARMOR = LIGHT_ARMOR;
+    public static final ResourceLocation MEDIUM_FOOT_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "medium_foot");
+    public static final ResourceLocation HEAVY_FOOT_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "heavy_foot");
+    public static final ResourceLocation CRYSTAL_FOOT_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "crystal_foot");
+
+    public static final ResourceLocation LEATHER_ARMOR_EQUIP = LIGHT_ARMOR;
+    public static final ResourceLocation CHAIN_ARMOR_EQUIP = MEDIUM_ARMOR;
+    public static final ResourceLocation CRYSTAL_ARMOR_EQUIP = CRYSTAL_ARMOR;
+    public static final ResourceLocation PLATE_ARMOR_EQUIP = HEAVY_ARMOR;
+    public static final ResourceLocation UTILITY_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/utility_equip");
+    public static final ResourceLocation TOOL_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/tool_use");
+    public static final ResourceLocation TOOL_SWING = new ResourceLocation(MobEffects.MOD_ID, "item/tool_swing");
+    public static final ResourceLocation SHIELD_USE = new ResourceLocation(MobEffects.MOD_ID, "item/shield_use");
+    public static final ResourceLocation SHIELD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/shield_equip");
+    public static final ResourceLocation SWORD_SWING = new ResourceLocation(MobEffects.MOD_ID, "item/sword_swing");
+    public static final ResourceLocation SWORD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/sword_equip");
+    public static final ResourceLocation AXE_SWING = new ResourceLocation(MobEffects.MOD_ID, "item/axe_swing");
+    public static final ResourceLocation AXE_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/axe_equip");
+    public static final ResourceLocation BOW_PULL = new ResourceLocation(MobEffects.MOD_ID, "item/bow_pull");
+    public static final ResourceLocation BOW_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/bow_equip");
+    public static final ResourceLocation FOOD_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/food_equip");
+    public static final ResourceLocation BOOK_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/book_equip");
+    public static final ResourceLocation POTION_EQUIP = new ResourceLocation(MobEffects.MOD_ID, "item/potion_equip");
+
+}

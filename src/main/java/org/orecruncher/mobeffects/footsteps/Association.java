@@ -28,6 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 

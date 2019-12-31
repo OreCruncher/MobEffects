@@ -36,7 +36,6 @@ import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.lib.TagUtils;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.blockstate.BlockStateParser;
-import org.orecruncher.lib.fml.ForgeUtils;
 import org.orecruncher.lib.logging.IModLog;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
@@ -181,7 +180,7 @@ public final class FootstepLibrary {
 
     }
 
-    public static void initialize() {
+    static void initialize() {
 
         variators.clear();
         metaMap.clear();
@@ -207,38 +206,25 @@ public final class FootstepLibrary {
                 LOGGER.info(v);
             }
         }
-
-        // Get a list of the mods/packs that are installed
-        final List<String> installed = ForgeUtils.getModIdList();
-
-        for (final String id: installed) {
-            // Load up footstep info
-            try {
-
-                final String resource = String.format("data/%s.json", id);
-                final ModConfig mod = JsonUtils.load(new ResourceLocation(MobEffects.MOD_ID, resource), ModConfig.class);
-
-                // Handle our primitives first
-                for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
-                    final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
-                    AcousticLibrary.resolve(loc, kvp.getValue());
-                }
-
-                // Apply acoustics based on configured tagging
-                for (final Map.Entry<String, String> kvp : mod.blockTags.entrySet()) {
-                    registerTag(kvp.getKey(), kvp.getValue());
-                }
-
-                // Now do the regular block stuff
-                for (final Map.Entry<String, String> kvp : mod.footsteps.entrySet()) {
-                    register(kvp.getKey(), kvp.getValue());
-                }
-
-            } catch (@Nonnull final Throwable t) {
-                LOGGER.error(t, "Unable to load '%s.json' config data!", id);
-            }
-        }
 	}
+
+	static void initFromConfig(@Nonnull final ModConfig mod) {
+        // Handle our primitives first
+        for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
+            final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
+            AcousticLibrary.resolve(loc, kvp.getValue());
+        }
+
+        // Apply acoustics based on configured tagging
+        for (final Map.Entry<String, String> kvp : mod.blockTags.entrySet()) {
+            registerTag(kvp.getKey(), kvp.getValue());
+        }
+
+        // Now do the regular block stuff
+        for (final Map.Entry<String, String> kvp : mod.footsteps.entrySet()) {
+            register(kvp.getKey(), kvp.getValue());
+        }
+    }
 
     private static void seedMap() {
         // Iterate through the blockmap looking for known pattern types.

@@ -56,7 +56,7 @@ public final class EffectLibrary {
 
     }
 
-    public static void initialize() {
+    static void initialize() {
 
         myEffects.clear();
         effects.clear();

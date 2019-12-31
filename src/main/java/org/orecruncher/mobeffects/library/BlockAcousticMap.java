@@ -32,13 +32,9 @@ import org.orecruncher.lib.Utilities;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.collections.ObjectArray;
 
-import com.google.common.base.MoreObjects;
-
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.block.Block;
-import org.orecruncher.mobeffects.footsteps.Constants;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
-import org.orecruncher.sndctrl.library.AcousticLibrary;
 
 @OnlyIn(Dist.CLIENT)
 public final class BlockAcousticMap {

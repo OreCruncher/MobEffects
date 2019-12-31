@@ -33,9 +33,8 @@ import org.orecruncher.lib.fml.UpdateChecker;
 import org.orecruncher.lib.logging.ModLog;
 import org.orecruncher.mobeffects.effects.EntityBreathEffect;
 import org.orecruncher.mobeffects.effects.EntityFootprintEffect;
-import org.orecruncher.mobeffects.footsteps.Constants;
-import org.orecruncher.mobeffects.library.EffectLibrary;
-import org.orecruncher.mobeffects.library.FootstepLibrary;
+import org.orecruncher.mobeffects.library.Constants;
+import org.orecruncher.mobeffects.library.Libraries;
 import org.orecruncher.sndctrl.IMC;
 
 import javax.annotation.Nonnull;
@@ -80,7 +79,7 @@ public final class MobEffects {
     }
 
     private void setupComplete(@Nonnull final FMLLoadCompleteEvent event) {
-        EffectLibrary.initialize();
+
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -109,12 +108,13 @@ public final class MobEffects {
         // Register our acoustics.  Do this after the sound file because of dependencies.
         IMC.registerAcousticFile(new ResourceLocation(MOD_ID, "acoustics.json"));
 
-        // Register our footprint effect factory handler
+        // Register our effect handlers
         IMC.registerEffectFactoryHandler(EntityFootprintEffect.DEFAULT_HANDLER);
         IMC.registerEffectFactoryHandler(EntityBreathEffect.DEFAULT_HANDLER);
 
         // Callback for completions
-        IMC.registerCompletionCallback(FootstepLibrary::initialize);
+        IMC.registerCompletionCallback(Libraries::initialize);
+        IMC.registerCompletionCallback(Libraries::complete);
     }
 
     @SubscribeEvent

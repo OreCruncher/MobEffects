@@ -25,9 +25,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
-import org.orecruncher.lib.GameUtils;
-import org.orecruncher.mobeffects.library.EffectLibrary;
-import org.orecruncher.mobeffects.library.FootstepLibrary;
 
 import javax.annotation.Nonnull;
 
@@ -48,11 +45,6 @@ public final class KeyBoard {
 
     @SubscribeEvent
     public static void onKeyPress(@Nonnull final  TickEvent.ClientTickEvent evt) {
-
-        if (RELOAD != null && evt.phase == TickEvent.Phase.END && GameUtils.isInGame() && RELOAD.isPressed()) {
-            FootstepLibrary.initialize();
-            EffectLibrary.initialize();
-        }
 
     }
 }

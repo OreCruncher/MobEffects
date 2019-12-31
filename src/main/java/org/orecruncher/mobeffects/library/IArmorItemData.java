@@ -16,24 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package org.orecruncher.mobeffects.library.config;
+package org.orecruncher.mobeffects.library;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.annotations.SerializedName;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
-public class ModConfig {
-    @SerializedName("primitives")
-    public Map<String, String> primitives = ImmutableMap.of();
-    @SerializedName("blockTags")
-    public Map<String, String> blockTags = ImmutableMap.of();
-    @SerializedName("footsteps")
-    public Map<String, String> footsteps = ImmutableMap.of();
-    @SerializedName("items")
-    public Map<String, List<String>> items = ImmutableMap.of();
+public interface IArmorItemData {
+
+    @Nullable
+    IAcoustic getArmorSound(@Nonnull final ItemStack stack);
+
+    @Nullable
+    IAcoustic getFootArmorSound(@Nonnull final ItemStack stack);
+
 }
