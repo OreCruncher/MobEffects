@@ -34,6 +34,7 @@ import org.orecruncher.lib.logging.ModLog;
 import org.orecruncher.mobeffects.effects.EntityBowEffect;
 import org.orecruncher.mobeffects.effects.EntityBreathEffect;
 import org.orecruncher.mobeffects.effects.EntityFootprintEffect;
+import org.orecruncher.mobeffects.effects.PlayerToolbarEffect;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.Libraries;
 import org.orecruncher.sndctrl.IMC;
@@ -113,6 +114,7 @@ public final class MobEffects {
         IMC.registerEffectFactoryHandler(EntityFootprintEffect.DEFAULT_HANDLER);
         IMC.registerEffectFactoryHandler(EntityBreathEffect.DEFAULT_HANDLER);
         IMC.registerEffectFactoryHandler(EntityBowEffect.DEFAULT_HANDLER);
+        IMC.registerEffectFactoryHandler(PlayerToolbarEffect.DEFAULT_HANDLER);
 
         // Callback for completions
         IMC.registerCompletionCallback(Libraries::initialize);
