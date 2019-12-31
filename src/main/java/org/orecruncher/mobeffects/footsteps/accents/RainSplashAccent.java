@@ -50,7 +50,7 @@ class RainSplashAccent implements IFootstepAccentProvider {
         final World world = entity.getEntityWorld();
         if (world.isRaining()) {
             if (blockPos != null) {
-                this.mutable.setPos(blockPos);
+                this.mutable.setPos(blockPos.up());
             } else {
                 this.mutable.setPos(entity);
             }

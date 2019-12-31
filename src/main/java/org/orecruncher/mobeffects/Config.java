@@ -146,17 +146,26 @@ public final class Config {
 
         public static class Footsteps {
 
+            private final BooleanValue enableFootprints;
             private final BooleanValue firstPersonFootstepCadence;
             private final ForgeConfigSpec.EnumValue<FootprintStyle> playerFootprintStyle;
             private final BooleanValue footstepsAsQuadruped;
+            private final IntValue footstepVolume;
 
+            private boolean _enableFootprints;
             private boolean _firstPersonFootstepCadence;
             private FootprintStyle _playerFootprintStyle = FootprintStyle.LOWRES_SQUARE;
             private boolean _footstepsAsQuadruped;
+            private float _footstepVolumeScale;
 
             public Footsteps(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Defines footstep effect generation")
                         .push("Footstep Options");
+
+                this.enableFootprints = builder
+                        .comment("Enable Footprint particle effects")
+                        .translation("mobeffects.cfg.footsteps.Enable")
+                        .define("Enable Footprint Particles", true);
 
                 this.firstPersonFootstepCadence = builder
                         .comment("Use first person footstep cadence")
@@ -173,13 +182,24 @@ public final class Config {
                         .translation("mobeffects.cfg.footsteps.Quadruped")
                         .define("Footsteps as Quadruped", false);
 
+                this.footstepVolume = builder
+                        .comment("Footstep master volume scale")
+                        .translation("mobeffects.cfg.footsteps.Volume")
+                        .defineInRange("Footstep Volume Scale", 75, 0, 100);
+
                 builder.pop();
             }
 
             void update() {
+                this._enableFootprints = this.enableFootprints.get();
                 this._firstPersonFootstepCadence = this.firstPersonFootstepCadence.get();
                 this._footstepsAsQuadruped = this.footstepsAsQuadruped.get();
                 this._playerFootprintStyle = this.playerFootprintStyle.get();
+                this._footstepVolumeScale = this.footstepVolume.get() / 100F;
+            }
+
+            public boolean get_enableFootprints() {
+                return this._enableFootprints;
             }
 
             public boolean get_firstPersonFootstepCadence() {
@@ -193,29 +213,58 @@ public final class Config {
             public FootprintStyle get_playerFootprintStyle() {
                 return this._playerFootprintStyle;
             }
+
+            public float get_footstepVolumeScale() {
+                return this._footstepVolumeScale;
+            }
         }
 
         public static class Effects {
 
             private final BooleanValue showBreath;
             private final BooleanValue showArrowTrail;
+            private final BooleanValue enableToolbarEffect;
+            private final BooleanValue enableBowEffect;
+            private final BooleanValue enableSwingEffect;
 
             private boolean _showBreath;
             private boolean _showArrowTrail;
+            private boolean _enableToolbarEffect;
+            private boolean _enableBowEffect;
+            private boolean _enableSwingEffect;
 
             public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Defines mob effect generation")
                         .push("Mob Effect Options");
 
                 this.showBreath = builder
-                        .comment("Show breath effect")
+                        .worldRestart()
+                        .comment("Show breath effect in cold regions and underwater")
                         .translation("mobeffects.cfg.effects.Breath")
                         .define("Show Breath Effect", true);
 
                 this.showArrowTrail = builder
-                        .comment("Show arrow particle trail")
+                        .comment("Show arrow particle trail during flight")
                         .translation("mobeffects.cfg.effects.Arrow")
                         .define("Show Arrow Particle Trail", false);
+
+                this.enableToolbarEffect = builder
+                        .worldRestart()
+                        .comment("Enable toolbar item sound effects")
+                        .translation("mobeffects.cfg.effects.Toolbar")
+                        .define("Enable Toolbar Sound Effects", true);
+
+                this.enableBowEffect = builder
+                        .worldRestart()
+                        .comment("Enable bow/crossbow sound effects")
+                        .translation("mobeffects.cfg.effects.Bow")
+                        .define("Enable Bow Sound Effects", true);
+
+                this.enableSwingEffect = builder
+                        .worldRestart()
+                        .comment("Enable item swing sound effects")
+                        .translation("mobeffects.cfg.effects.Swing")
+                        .define("Enable Item Swing Sound Effects", true);
 
                 builder.pop();
             }
@@ -223,6 +272,9 @@ public final class Config {
             void update() {
                 this._showBreath = this.showBreath.get();
                 this._showArrowTrail = this.showArrowTrail.get();
+                this._enableToolbarEffect = this.enableToolbarEffect.get();
+                this._enableBowEffect = this.enableBowEffect.get();
+                this._enableSwingEffect = this.enableSwingEffect.get();
             }
 
             public boolean get_showBreath() {
@@ -231,6 +283,18 @@ public final class Config {
 
             public boolean get_showArrowTrail() {
                 return this._showArrowTrail;
+            }
+
+            public boolean get_enableToolbarEffect() {
+                return this._enableToolbarEffect;
+            }
+
+            public boolean get_enableBowEffect() {
+                return this._enableBowEffect;
+            }
+
+            public boolean get_enableSwingEffect() {
+                return this._enableSwingEffect;
             }
         }
     }

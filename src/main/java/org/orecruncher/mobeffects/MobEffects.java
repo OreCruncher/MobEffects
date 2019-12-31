@@ -108,11 +108,16 @@ public final class MobEffects {
         IMC.registerAcousticFile(new ResourceLocation(MOD_ID, "acoustics.json"));
 
         // Register our effect handlers
-        IMC.registerEffectFactoryHandler(EntityFootprintEffect.DEFAULT_HANDLER);
-        IMC.registerEffectFactoryHandler(EntityBreathEffect.DEFAULT_HANDLER);
-        IMC.registerEffectFactoryHandler(EntityBowEffect.DEFAULT_HANDLER);
-        IMC.registerEffectFactoryHandler(PlayerToolbarEffect.DEFAULT_HANDLER);
-        IMC.registerEffectFactoryHandler(EntitySwingEffect.DEFAULT_HANDLER);
+        if (Config.CLIENT.footsteps.get_enableFootprints())
+            IMC.registerEffectFactoryHandler(EntityFootprintEffect.DEFAULT_HANDLER);
+        if (Config.CLIENT.effects.get_showBreath())
+            IMC.registerEffectFactoryHandler(EntityBreathEffect.DEFAULT_HANDLER);
+        if (Config.CLIENT.effects.get_enableBowEffect())
+            IMC.registerEffectFactoryHandler(EntityBowEffect.DEFAULT_HANDLER);
+        if (Config.CLIENT.effects.get_enableToolbarEffect())
+            IMC.registerEffectFactoryHandler(PlayerToolbarEffect.DEFAULT_HANDLER);
+        if (Config.CLIENT.effects.get_enableSwingEffect())
+            IMC.registerEffectFactoryHandler(EntitySwingEffect.DEFAULT_HANDLER);
 
         // Callback for completions
         IMC.registerCompletionCallback(Libraries::initialize);

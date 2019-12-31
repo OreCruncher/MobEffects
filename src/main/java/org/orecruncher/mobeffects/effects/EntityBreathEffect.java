@@ -33,7 +33,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
 import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.lib.effects.EntityEffectManager;
-import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.effects.particles.BubbleBreathParticle;
 import org.orecruncher.mobeffects.effects.particles.FrostBreathParticle;
@@ -57,14 +56,12 @@ public class EntityBreathEffect extends AbstractEntityEffect {
 
         @Override
         public boolean appliesTo(@Nonnull final Entity entity) {
-            //return entity instanceof PlayerEntity;
             return EffectLibrary.hasEffect(entity, getName());
         }
 
         @Override
         public List<AbstractEntityEffect> get(@Nonnull final Entity entity) {
-            return ImmutableList
-                    .of(new EntityBreathEffect());
+            return ImmutableList.of(new EntityBreathEffect());
         }
     };
     private int seed;
@@ -108,9 +105,6 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     }
 
     protected boolean isBreathVisible(@Nonnull final Entity entity) {
-        if (!Config.CLIENT.effects.get_showBreath())
-            return false;
-
         final PlayerEntity player = GameUtils.getPlayer();
         if (entity == player) {
             return !player.isSpectator();

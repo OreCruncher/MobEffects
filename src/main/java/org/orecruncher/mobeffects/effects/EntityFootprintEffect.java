@@ -77,7 +77,6 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 
 		@Override
 		public boolean appliesTo(@Nonnull final Entity entity) {
-			//return entity instanceof PlayerEntity;
 			return EffectLibrary.hasEffect(entity, getName());
 		}
 

@@ -5,6 +5,7 @@
     "biomesoplenty:barley": "#bush",
     "biomesoplenty:willow_vine": "#vine",
     "biomesoplenty:mud": "mud",
-    "biomesoplenty:cattail": "#plant"
+    "biomesoplenty:cattail": "#plant",
+    "biomesoplenty:tall_cattail": "#reed"
   }
 }

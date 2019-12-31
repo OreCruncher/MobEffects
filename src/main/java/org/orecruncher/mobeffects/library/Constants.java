@@ -21,6 +21,7 @@ package org.orecruncher.mobeffects.library;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.sndctrl.audio.Category;
 import org.orecruncher.sndctrl.audio.ISoundCategory;
@@ -55,7 +56,7 @@ public final class Constants {
     public static final AcousticEvent UP = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "up"), WALK);
     public static final AcousticEvent UP_RUN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "up_run"), RUN);
 
-    public static final ISoundCategory FOOTSTEPS = new Category("footsteps", () -> 1F);
+    public static final ISoundCategory FOOTSTEPS = new Category("footsteps", Config.CLIENT.footsteps::get_footstepVolumeScale);
 
     public static final ResourceLocation LIGHT_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_light");
     public static final ResourceLocation MEDIUM_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_medium");
