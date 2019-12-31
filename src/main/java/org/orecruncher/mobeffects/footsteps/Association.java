@@ -29,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.orecruncher.mobeffects.library.Constants;
+import org.orecruncher.sndctrl.audio.acoustic.AcousticCompiler;
 import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
@@ -37,7 +38,7 @@ public class Association {
 
 	private final BlockState state;
 	private final FootStrikeLocation location;
-	private final IAcoustic data;
+	private IAcoustic data;
 	private final boolean isNotEmitter;
 
 	public Association(@Nonnull final LivingEntity entity, @Nonnull final IAcoustic association) {
@@ -54,6 +55,13 @@ public class Association {
 		this.location = pos;
 		this.data = association;
 		this.isNotEmitter = association == Constants.NOT_EMITTER;
+	}
+
+	public void merge(@Nonnull final IAcoustic... acoustics) {
+		final IAcoustic[] t = new IAcoustic[1 + acoustics.length];
+		t[0] = this.data;
+		System.arraycopy(acoustics, 0, t, 1, acoustics.length);
+		this.data = AcousticCompiler.combine(t);
 	}
 
 	public void play(@Nonnull final AcousticEvent event) {

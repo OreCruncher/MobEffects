@@ -28,6 +28,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
@@ -39,11 +41,14 @@ import org.orecruncher.lib.random.XorShiftRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.effects.particles.Collections;
+import org.orecruncher.mobeffects.footsteps.accents.FootstepAccents;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
 import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.audio.acoustic.SimultaneousAcoustic;
 
 @OnlyIn(Dist.CLIENT)
 public class Generator {
@@ -427,12 +432,9 @@ public class Generator {
 	protected boolean playSpecialStoppingConditions(@Nonnull final LivingEntity entity) {
 		if (entity.isInWater()) {
 			if (proceedWithStep(entity)) {
-				final float volume = (float) entity.getMotion().length() * 1.25F;
-				/*
-				this.soundPlayer.playAcoustic(entity.getPositionVector(), RegistryManager.FOOTSTEPS.SWIM,
-						entity.isInsideOfMaterial(Material.WATER) ? EventType.SWIM : EventType.WALK, options);
-
-				 */
+				final IFluidState fs = entity.getEntityWorld().getFluidState(new BlockPos(entity.getEyePosition(1F)));
+				final AcousticEvent evt = fs.isEmpty() ? Constants.WALK : Constants.SWIM;
+				FootstepLibrary.getSwimAcoustic().playAt(entity.getPositionVec(), evt);
 			}
 			return true;
 		}
@@ -474,20 +476,21 @@ public class Generator {
 	@Nullable
 	protected Association addSoundOverlay(@Nonnull final LivingEntity entity, @Nullable Association assoc) {
 
-		/*
 		// Don't apply overlays if the entity is not on the ground
 		if (entity.onGround) {
 			accents.clear();
 			final BlockPos pos = assoc != null ? assoc.getStepPos() : null;
 			FootstepAccents.provide(entity, pos, accents);
 			if (accents.size() > 0) {
-				if (assoc == null)
-					assoc = new Association(entity, accents.toArray(new IAcoustic[0]));
-				else
-					assoc.add(accents);
+				if (assoc == null) {
+					final SimultaneousAcoustic acoustic = new SimultaneousAcoustic(new ResourceLocation(MobEffects.MOD_ID, "adhoc"));
+					accents.forEach(acoustic::add);
+					assoc = new Association(entity, acoustic);
+				} else {
+					assoc.merge(accents.toArray(new IAcoustic[0]));
+				}
 			}
 		}
-		*/
 
 		return assoc;
 	}

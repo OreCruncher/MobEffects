@@ -77,6 +77,9 @@ public final class FootstepLibrary {
     private static Variator playerVariator;
     private static Variator playerQuadrupedVariator;
 
+    private static IAcoustic SPLASH;
+    private static IAcoustic SWIM;
+
     static {
 
         // Initialize the known materials that leave footprints
@@ -292,6 +295,18 @@ public final class FootstepLibrary {
 	public static void onInspectionEvent(@Nonnull final BlockInspectionEvent evt) {
         evt.data.add(TEXT_FOOTSTEPS);
         collectData(evt.state, evt.data);
+    }
+
+    public static IAcoustic getRainSplashAcoustic() {
+        if (SPLASH == null)
+            SPLASH = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "waterfine"));
+        return SPLASH;
+    }
+
+    public static IAcoustic getSwimAcoustic() {
+        if (SWIM == null)
+            SWIM = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "_swim"));
+        return SWIM;
     }
 
     public static boolean hasAcoustics(@Nonnull final BlockState state) {

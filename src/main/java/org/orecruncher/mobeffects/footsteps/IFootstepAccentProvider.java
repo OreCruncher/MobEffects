@@ -38,7 +38,6 @@ public interface IFootstepAccentProvider {
 
 	String getName();
 
-	ObjectArray<IAcoustic> provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos pos,
-								   @Nonnull final ObjectArray<IAcoustic> in);
+	void provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos pos, @Nonnull final ObjectArray<IAcoustic> acoustics);
 
 }
