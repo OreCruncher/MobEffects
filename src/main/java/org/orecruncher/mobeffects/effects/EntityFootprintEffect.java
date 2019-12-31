@@ -96,12 +96,12 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 		@Override
 		public void intitialize(@Nonnull final EntityEffectManager state) {
 			super.intitialize(state);
-			this.lastStyle = Config.CLIENT.footsteps.playerFootprintStyle.get();
+			this.lastStyle = Config.CLIENT.footsteps.get_playerFootprintStyle();
 		}
 
 		@Override
 		public void update() {
-			final FootprintStyle currentStyle = Config.CLIENT.footsteps.playerFootprintStyle.get();
+			final FootprintStyle currentStyle = Config.CLIENT.footsteps.get_playerFootprintStyle();
 			if (this.lastStyle != currentStyle) {
 				this.generator = FootstepLibrary.createGenerator((LivingEntity) getEntity());
 				this.lastStyle = currentStyle;

@@ -37,7 +37,7 @@ public final class KeyBoard {
     private static KeyBinding RELOAD;
 
     public static void initialize() {
-        if (Config.CLIENT.logging.enableLogging.get()) {
+        if (Config.CLIENT.logging.get_enableLogging()) {
             RELOAD = new KeyBinding("Reload", GLFW.GLFW_KEY_F12, "Debug");
             ClientRegistry.registerKeyBinding(RELOAD);
         }

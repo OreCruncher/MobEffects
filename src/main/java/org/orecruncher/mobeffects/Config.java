@@ -50,8 +50,9 @@ public final class Config {
     }
 
     private static void applyConfig() {
-        MobEffects.LOGGER.setDebug(Config.CLIENT.logging.enableLogging.get());
-        MobEffects.LOGGER.setTraceMask(Config.CLIENT.logging.flagMask.get());
+        CLIENT.update();
+        MobEffects.LOGGER.setDebug(Config.CLIENT.logging.get_enableLogging());
+        MobEffects.LOGGER.setTraceMask(Config.CLIENT.logging.get_flagMask());
     }
 
     @SubscribeEvent
@@ -86,11 +87,21 @@ public final class Config {
             this.effects = new Effects(builder);
         }
 
+        void update() {
+            this.logging.update();
+            this.footsteps.update();
+            this.effects.update();
+        }
+
         public static class Logging {
 
-            public final BooleanValue enableLogging;
-            public final BooleanValue onlineVersionCheck;
-            public final IntValue flagMask;
+            private final BooleanValue enableLogging;
+            private final BooleanValue onlineVersionCheck;
+            private final IntValue flagMask;
+
+            private boolean _enableLogging;
+            private boolean _onlineVersionCheck;
+            private int _flagMask;
 
             Logging(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Defines how logging will behave")
@@ -113,13 +124,35 @@ public final class Config {
 
                 builder.pop();
             }
+
+            void update() {
+                this._enableLogging = this.enableLogging.get();
+                this._onlineVersionCheck = this.onlineVersionCheck.get();
+                this._flagMask = this.flagMask.get();
+            }
+
+            public boolean get_enableLogging() {
+                return this._enableLogging;
+            }
+
+            public boolean get_onlineVersionCheck() {
+                return this._onlineVersionCheck;
+            }
+
+            public int get_flagMask() {
+                return this._flagMask;
+            }
         }
 
         public static class Footsteps {
 
-            public final BooleanValue firstPersonFootstepCadence;
-            public final ForgeConfigSpec.EnumValue<FootprintStyle> playerFootprintStyle;
-            public final BooleanValue footstepsAsQuadruped;
+            private final BooleanValue firstPersonFootstepCadence;
+            private final ForgeConfigSpec.EnumValue<FootprintStyle> playerFootprintStyle;
+            private final BooleanValue footstepsAsQuadruped;
+
+            private boolean _firstPersonFootstepCadence;
+            private FootprintStyle _playerFootprintStyle = FootprintStyle.LOWRES_SQUARE;
+            private boolean _footstepsAsQuadruped;
 
             public Footsteps(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Defines footstep effect generation")
@@ -142,11 +175,31 @@ public final class Config {
 
                 builder.pop();
             }
+
+            void update() {
+                this._firstPersonFootstepCadence = this.firstPersonFootstepCadence.get();
+                this._footstepsAsQuadruped = this.footstepsAsQuadruped.get();
+                this._playerFootprintStyle = this.playerFootprintStyle.get();
+            }
+
+            public boolean get_firstPersonFootstepCadence() {
+                return this._firstPersonFootstepCadence;
+            }
+
+            public boolean get_footstepsAsQuadruped() {
+                return this._footstepsAsQuadruped;
+            }
+
+            public FootprintStyle get_playerFootprintStyle() {
+                return this._playerFootprintStyle;
+            }
         }
 
         public static class Effects {
 
-            public final BooleanValue showBreath;
+            private final BooleanValue showBreath;
+
+            private boolean _showBreath;
 
             public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Defines mob effect generation")
@@ -158,6 +211,14 @@ public final class Config {
                         .define("Show Breath Effect", true);
 
                 builder.pop();
+            }
+
+            void update() {
+                this._showBreath = this.showBreath.get();
+            }
+
+            public boolean get_showBreath() {
+                return this._showBreath;
             }
         }
     }

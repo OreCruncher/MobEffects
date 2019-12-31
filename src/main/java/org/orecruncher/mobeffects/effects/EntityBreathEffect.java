@@ -108,7 +108,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     }
 
     protected boolean isBreathVisible(@Nonnull final Entity entity) {
-        if (!Config.CLIENT.effects.showBreath.get())
+        if (!Config.CLIENT.effects.get_showBreath())
             return false;
 
         final PlayerEntity player = GameUtils.getPlayer();

@@ -140,6 +140,7 @@
     "minecraft:nether_brick_stairs": "brickstone",
     "minecraft:red_nether_bricks": "brickstone",
     "minecraft:grass_block": "grass",
+    "minecraft:bone_block": "sandstone",
 
     "minecraft:black_shulker_box": "marble",
     "minecraft:blue_shulker_box": "marble",
@@ -239,10 +240,19 @@
     "minecraft:peony": "#tallplant",
     "minecraft:lilac": "#tallplant",
     "minecraft:sugar_cane": "#reed",
+    "minecraft:pumpkin": "organic_dry",
+    "minecraft:melon": "organic_dry",
 
     "minecraft:wheat": "#wheat",
     "minecraft:carrots": "#crop",
     "minecraft:potatoes": "#crop",
-    "minecraft:beetroots": "#beets"
+    "minecraft:beetroots": "#beets",
+
+    "minecraft:player_head": "organic",
+    "minecraft:zombie_head": "organic",
+    "minecraft:creeper_head": "organic",
+    "minecraft:dragon_head": "organic_dry",
+    "minecraft:skeleton_skull": "sandstone",
+    "minecraft:wither_skeleton_skull": "sandstone"
   }
 }
