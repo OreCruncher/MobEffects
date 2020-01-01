@@ -79,7 +79,7 @@ minecraft {
 			}
 
             mods {
-                sndctrl {
+                mobeffects {
                     source sourceSets.main
                 }
             }
@@ -95,7 +95,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                sndctrl {
+                mobeffects {
                     source sourceSets.main
                 }
             }
@@ -113,7 +113,7 @@ minecraft {
             args '--mod', 'mobeffects', '--all', '--output', file('src/generated/resources/')
 
             mods {
-                sndctrl {
+                mobeffects {
                     source sourceSets.main
                 }
             }
