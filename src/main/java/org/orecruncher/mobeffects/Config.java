@@ -170,7 +170,7 @@ public final class Config {
                 this.firstPersonFootstepCadence = builder
                         .comment("Use first person footstep cadence")
                         .translation("mobeffects.cfg.footsteps.Cadence")
-                        .define("First Person Cadence", false);
+                        .define("First Person Cadence", true);
 
                 this.playerFootprintStyle = builder
                         .comment("Style of footprint to display for a player")
