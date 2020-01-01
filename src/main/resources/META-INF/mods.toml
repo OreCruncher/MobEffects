@@ -7,7 +7,7 @@ logoFile="logo.png"
 [[mods]]
 	modId="mobeffects"
 	version="${version}"
-	displayName="§3Dynamic Surroundings\n§eMobEffects"
+	displayName="§3Dynamic Surroundings\n§eMob Effects"
 	updateJSONURL="https://raw.githubusercontent.com/OreCruncher/MobEffects/master/version.json"
 	credits="\n\n§6All the Players§r that installed and enjoyed §2Dynamic Surroundings§r\n"
 	authors="§6OreCruncher§r\n"
