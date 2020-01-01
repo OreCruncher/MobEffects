@@ -27,10 +27,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
+import org.orecruncher.lib.WorldUtils;
 import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.lib.effects.EntityEffectManager;
 import org.orecruncher.mobeffects.MobEffects;
@@ -125,9 +125,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     protected boolean showFrostBreath(final Entity entity, @Nonnull final BlockState headBlock) {
         if (headBlock.getMaterial() == Material.AIR) {
             final World world = entity.getEntityWorld();
-            final BlockPos entityPos = entity.getPosition();
-            final Biome biome = world.getBiome(entityPos);
-            return biome.getTemperature(entityPos) < 0.2F;
+            return WorldUtils.getTemperatureAt(world, entity.getPosition()) < 0.2F;
         }
         return false;
     }

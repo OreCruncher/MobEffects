@@ -249,6 +249,9 @@
     "minecraft:sugar_cane": "#reed",
     "minecraft:pumpkin": "organic_dry",
     "minecraft:melon": "organic_dry",
+    "minecraft:mushroom_stem": "organic_dry",
+    "minecraft:brown_mushroom_block": "organic_dry",
+    "minecraft:red_mushroom_block": "organic_dry",
 
     "minecraft:wheat": "#wheat",
     "minecraft:carrots": "#crop",
@@ -278,6 +281,9 @@
     "minecraft:trapped_chest": "squeakywood",
     "minecraft:repeater": "stoneutility",
     "minecraft:comparator": "stoneutility",
+    "minecraft:hopper": "metalbar",
+    "minecraft:cauldron": "metalbar",
+    "minecraft:cauldron[level=3]": "metalbar,waterfine",
 
     "minecraft:glowstone": "glowstone"
   }
