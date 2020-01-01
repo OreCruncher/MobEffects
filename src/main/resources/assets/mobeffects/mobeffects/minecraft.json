@@ -85,9 +85,11 @@
     "minecraft:carpets": "rug",
     "minecraft:carpets+carpet": "rug",
     "minecraft:wool": "rug",
+    "minecraft:beds": "rug",
     "minecraft:stone_bricks": "brickstone",
     "minecraft:sand": "sand",
     "minecraft:saplings": "#sapling",
+    "minecraft:ice": "ice",
 
     "forge:glass": "glass",
     "forge:glass_panes": "glass",
@@ -100,7 +102,11 @@
     "forge:sand": "sand",
     "forge:sandstone": "sandstone",
     "forge:netherrack": "grass,quicksand",
-    "forge:gravel": "gravel"
+    "forge:gravel": "gravel",
+    "forge:obsidian": "obsidian",
+
+    "forge:storage_blocks/diamond": "composite",
+    "forge:storage_blocks/emerald": "composite"
   },
   "footsteps": {
     "minecraft:water": "not_emitter",
@@ -141,6 +147,7 @@
     "minecraft:red_nether_bricks": "brickstone",
     "minecraft:grass_block": "grass",
     "minecraft:bone_block": "sandstone",
+    "minecraft:scaffolding": "squeakywood",
 
     "minecraft:black_shulker_box": "marble",
     "minecraft:blue_shulker_box": "marble",
@@ -253,6 +260,25 @@
     "minecraft:creeper_head": "organic",
     "minecraft:dragon_head": "organic_dry",
     "minecraft:skeleton_skull": "sandstone",
-    "minecraft:wither_skeleton_skull": "sandstone"
+    "minecraft:wither_skeleton_skull": "sandstone",
+
+    "minecraft:dispenser": "stonemachine",
+    "minecraft:dropper": "stonemachine",
+    "minecraft:observer": "stonemachine",
+    "minecraft:furnace": "stonemachine",
+    "minecraft:blast_furnace": "stonemachine",
+    "minecraft:stonecutter": "stonemachine",
+    "minecraft:piston": "stonemachine",
+    "minecraft:sticky_piston": "stonemachine",
+    "minecraft:piston[facing=up]": "wood",
+    "minecraft:sticky_piston[facing=up]": "mud",
+    "minecraft:piston_head": "wood",
+    "minecraft:piston_head[type=sticky]": "mud",
+    "minecraft:chest": "squeakywood",
+    "minecraft:trapped_chest": "squeakywood",
+    "minecraft:repeater": "stoneutility",
+    "minecraft:comparator": "stoneutility",
+
+    "minecraft:glowstone": "glowstone"
   }
 }

@@ -33,6 +33,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.orecruncher.lib.JsonUtils;
+import org.orecruncher.lib.fml.ForgeUtils;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
 import org.orecruncher.sndctrl.audio.SoundBuilder;
@@ -50,9 +51,9 @@ import java.util.Set;
 )
 public final class EffectLibrary {
 
+    private static final ResourceLocation PLAYER = new ResourceLocation("minecraft:player");
     private static final EntityEffectInfo DEFAULT = new EntityEffectInfo();
     private static EntityEffectInfo playerEffects = DEFAULT;
-    private static final Map<ResourceLocation, EntityEffectInfo> myEffects = new Object2ObjectOpenHashMap<>();
     private static final Reference2ObjectOpenHashMap<Class<? extends Entity>, EntityEffectInfo> effects = new Reference2ObjectOpenHashMap<>();
     private static final Set<ResourceLocation> blockedSounds = new ObjectOpenHashSet<>();
 
@@ -64,17 +65,25 @@ public final class EffectLibrary {
 
     static void initialize() {
 
-        myEffects.clear();
         effects.clear();
         blockedSounds.clear();
+
+        final Map<ResourceLocation, Class<? extends Entity>> entities = ForgeUtils.getRegisteredEntities();
 
         // Load up the effects
         final Map<String, EntityConfig> configMap = JsonUtils.loadConfig(new ResourceLocation(MobEffects.MOD_ID, "effects.json"), EntityConfig.class);
         for (final Map.Entry<String, EntityConfig> kvp : configMap.entrySet()) {
+            final EntityEffectInfo eei = new EntityEffectInfo(kvp.getValue());
             final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
-            myEffects.put(loc, new EntityEffectInfo(kvp.getValue()));
 
-            // Process blocked sounds
+            if (loc.equals(PLAYER)) {
+                playerEffects = eei;
+            } else if (entities.containsKey(loc)) {
+                final Class<? extends Entity> clazz = entities.get(loc);
+                effects.put(clazz, eei);
+                entities.remove(loc);
+            }
+
             for (final String r : kvp.getValue().blockedSounds) {
                 try {
                     blockedSounds.add(new ResourceLocation(r));
@@ -84,7 +93,21 @@ public final class EffectLibrary {
             }
         }
 
-        playerEffects = myEffects.get(new ResourceLocation("minecraft:player"));
+        // Process the other entries in the entity list looking for fuzzy matches
+        for(final Map.Entry<ResourceLocation, Class<? extends Entity>> kvp : entities.entrySet()) {
+            if (!effects.containsKey(kvp.getValue())) {
+                // Not found. Scan our list looking for those that can be assigned
+                for (final Map.Entry<Class<? extends Entity>, EntityEffectInfo> e : effects.entrySet()) {
+                    if (e.getKey().isAssignableFrom(kvp.getValue())) {
+                        effects.put(kvp.getValue(), e.getValue());
+                        break;
+                    }
+                }
+            }
+        }
+
+        // The default
+        effects.defaultReturnValue(DEFAULT);
 
         // Replace our bow loose sounds
         final ResourceLocation bowLoose = new ResourceLocation(MobEffects.MOD_ID, "bow.loose");
@@ -102,25 +125,7 @@ public final class EffectLibrary {
     private static EntityEffectInfo getEffectInfo(@Nonnull final Entity entity) {
         if (entity instanceof PlayerEntity)
             return playerEffects;
-
-        EntityEffectInfo info = effects.get(entity.getClass());
-        if (info == null) {
-            info = myEffects.get(entity.getType().getRegistryName());
-            if (info == null) {
-                // Slow crawl through looking for aliasing
-                for (final Map.Entry<Class<? extends Entity>, EntityEffectInfo> kvp : effects.entrySet()) {
-                    if (kvp.getKey().isAssignableFrom(entity.getClass())) {
-                        info = kvp.getValue();
-                        break;
-                    }
-                }
-                // If it is null we didn't find a class hit so assume default
-                if (info == null)
-                    info = DEFAULT;
-            }
-            effects.put(entity.getClass(), info);
-        }
-        return info;
+        return effects.get(entity.getClass());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

@@ -12,6 +12,12 @@
       "entity.villager.step"
     ]
   },
+  "minecraft:wandering_trader": {
+    "effects": "bow,swing,footprint,breath,chat",
+    "blockedSounds": [
+      "entity.villager.step"
+    ]
+  },
   "minecraft:pillager": {
     "effects": "bow,swing,footprint,breath",
     "blockedSounds": [
@@ -36,13 +42,13 @@
       "entity.zombie_villager.step"
     ]
   },
-  "minecraft:evocation_illager": {
+  "minecraft:evoker": {
     "effects": "bow,swing,footprint,breath"
   },
-  "minecraft:vindication_illager": {
+  "minecraft:vindicator": {
     "effects": "bow,swing,footprint,breath"
   },
-  "minecraft:illusion_illager": {
+  "minecraft:illusioner": {
     "effects": "bow,swing,footprint,breath"
   },
   "minecraft:skeleton": {
