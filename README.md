@@ -1,9 +1,9 @@
 ### Mob Effects
 Forge mod that adds special audio and visual effects to mobs.
 
-<a href="https://minecraft.curseforge.com/projects/mob-effects"><img src="http://cf.way2muchnoise.eu/versions/mob-effects.svg" alt="CurseForge Project"/></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/dynamic-surroundings-mobeffects"><img src="http://cf.way2muchnoise.eu/versions/dynamic-surroundings-mobeffects.svg" alt="CurseForge Project"/></a>
 </br></br>
-<a href="https://minecraft.curseforge.com/projects/mob-effects"><img src="http://cf.way2muchnoise.eu/mob-effects_downloads.svg" alt="CurseForge Project"/></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/dynamic-surroundings-mobeffects"><img src="http://cf.way2muchnoise.eu/full_dynamic-surroundings-mobeffects_downloads.svg" alt="CurseForge Project"/></a>
 </br></br>
 
 ### License
