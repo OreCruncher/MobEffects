@@ -91,6 +91,9 @@
     "minecraft:saplings": "#sapling",
     "minecraft:ice": "ice",
 
+    "minecraft:banners": "rug,straw,squeakywood",
+    "minecraft:banners+foliage": "rug,straw,squeakywood",
+
     "forge:glass": "glass",
     "forge:glass_panes": "glass",
     "forge:fences/wooden": "#fence",
@@ -252,6 +255,7 @@
     "minecraft:mushroom_stem": "organic_dry",
     "minecraft:brown_mushroom_block": "organic_dry",
     "minecraft:red_mushroom_block": "organic_dry",
+    "minecraft:sunflower": "#tallplant",
 
     "minecraft:wheat": "#wheat",
     "minecraft:carrots": "#crop",

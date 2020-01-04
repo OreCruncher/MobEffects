@@ -19,6 +19,7 @@
 package org.orecruncher.mobeffects.library;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -35,6 +36,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.lib.TagUtils;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
+import org.orecruncher.lib.blockstate.BlockStateMatcherMap;
 import org.orecruncher.lib.blockstate.BlockStateParser;
 import org.orecruncher.lib.logging.IModLog;
 import org.orecruncher.mobeffects.Config;
@@ -68,7 +70,7 @@ public final class FootstepLibrary {
             );
 
     private static final Set<Material> FOOTPRINT_MATERIAL = new ReferenceOpenHashSet<>();
-    private static final Set<BlockState> FOOTPRINT_STATES = new ReferenceOpenHashSet<>();
+    private static final BlockStateMatcherMap<Boolean> FOOTPRINT_STATES = new BlockStateMatcherMap<>();
     private static final Map<String, List<MacroEntry>> macros = new Object2ObjectOpenHashMap<>();
     private static final Map<String, Variator> variators = new Object2ObjectOpenHashMap<>();
 
@@ -226,6 +228,13 @@ public final class FootstepLibrary {
         // Now do the regular block stuff
         for (final Map.Entry<String, String> kvp : mod.footsteps.entrySet()) {
             register(kvp.getKey(), kvp.getValue());
+        }
+
+        // Register special blocks for footprints
+        for (final String print : mod.footprints) {
+            final BlockStateMatcher matcher = BlockStateMatcher.create(print);
+            if (matcher != BlockStateMatcher.AIR)
+                FOOTPRINT_STATES.put(matcher, true);
         }
     }
 
@@ -457,7 +466,13 @@ public final class FootstepLibrary {
     }
 
     public static boolean hasFootprint(@Nonnull final BlockState state) {
-        return FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_STATES.contains(state) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType());
+        Boolean result = FOOTPRINT_STATES.get(state);
+        if (result != null)
+            return result;
+
+        result = FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType());
+        FOOTPRINT_STATES.put(state, result);
+        return result;
     }
 
     private static class MacroEntry {

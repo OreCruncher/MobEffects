@@ -18,6 +18,7 @@
 
 package org.orecruncher.mobeffects.library.config;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.annotations.SerializedName;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,6 +35,8 @@ public class ModConfig {
     public Map<String, String> blockTags = ImmutableMap.of();
     @SerializedName("footsteps")
     public Map<String, String> footsteps = ImmutableMap.of();
+    @SerializedName("footprints")
+    public List<String> footprints = ImmutableList.of();
     @SerializedName("items")
     public Map<String, List<String>> items = ImmutableMap.of();
 }

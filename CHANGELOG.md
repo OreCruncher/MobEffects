@@ -1,3 +1,11 @@
+### MobEffects-1.14.4-0.0.3.0
+**Requirements**
+* Forge 1.14.4-28.1.96+
+* Dynamic Surroundings: Sound Control 1.14.4-0.0.3.0+
+
+**Fixes**
+* Add configs for solid blocks that are using material that is not solid.
+
 ### MobEffects-1.14.4-0.0.2.0
 **Requirements**
 * Forge 1.14.4-28.1.96+
