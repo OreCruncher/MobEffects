@@ -17,7 +17,7 @@ function log(message)
 function initializeCoreMod()
 {
     return {
-        "sabstractarrowentity_transformer": {
+        "mobeffects_abstractarrowentity_transformer": {
             "target": {
                 "type": "CLASS",
                 "names": function(listofclasses) { return ["net.minecraft.entity.projectile.AbstractArrowEntity"]; }

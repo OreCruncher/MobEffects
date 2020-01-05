@@ -31,6 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public enum Substrate {
 
+	NORMAL("normal"),
 	CARPET("carpet"),
 	FOLIAGE("foliage"),
 	MESSY("messy"),
@@ -48,8 +49,8 @@ public enum Substrate {
 		this.name = name;
 	}
 
-	@Nullable
+	@Nonnull
 	public static Substrate get(@Nullable final String name) {
-		return StringUtils.isNullOrEmpty(name) ? null : lookup.get(name);
+		return StringUtils.isNullOrEmpty(name) ? Substrate.NORMAL : lookup.get(name);
 	}
 }

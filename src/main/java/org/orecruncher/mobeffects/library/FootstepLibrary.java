@@ -19,7 +19,6 @@
 package org.orecruncher.mobeffects.library;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -27,18 +26,18 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.tuple.Pair;
 import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.lib.TagUtils;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.blockstate.BlockStateMatcherMap;
 import org.orecruncher.lib.blockstate.BlockStateParser;
 import org.orecruncher.lib.logging.IModLog;
+import org.orecruncher.lib.reflection.ObjectField;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.*;
@@ -57,8 +56,21 @@ public final class FootstepLibrary {
 
     private static IModLog LOGGER = MobEffects.LOGGER.createChild(FootstepLibrary.class);
 
+    private static final ObjectField<BlockState, Boolean> mobeffects_hasfootprint =
+            new ObjectField<>(
+                    BlockState.class,
+                    () -> null,
+                    "mobeffects_hasfootprint"
+            );
+
+    private static final ObjectField<BlockState, IAcoustic[]> mobeffects_acoustic =
+            new ObjectField<>(
+                    BlockState.class,
+                    () -> null,
+                    "mobeffects_acoustic"
+            );
+
     private static final String TEXT_FOOTSTEPS = TextFormatting.DARK_PURPLE + "<Footsteps>";
-    private static final BlockAcousticMap metaMap = new BlockAcousticMap(FootstepLibrary::primitiveResolver);
     private static final Map<Substrate, BlockAcousticMap> substrateMap = new EnumMap<>(Substrate.class);
 
     private static final List<SoundType> FOOTPRINT_SOUND_PROFILE =
@@ -83,6 +95,11 @@ public final class FootstepLibrary {
     private static IAcoustic SWIM;
 
     static {
+
+        // Initialize our substrate maps
+        for (final Substrate s : Substrate.values())
+            substrateMap.put(s, new BlockAcousticMap());
+        substrateMap.put(Substrate.NORMAL, new BlockAcousticMap(FootstepLibrary::primitiveResolver));
 
         // Initialize the known materials that leave footprints
         FOOTPRINT_MATERIAL.add(Material.CLAY);
@@ -188,9 +205,10 @@ public final class FootstepLibrary {
     static void initialize() {
 
         variators.clear();
-        metaMap.clear();
-        substrateMap.clear();
         FOOTPRINT_STATES.clear();
+
+        for (final BlockAcousticMap m : substrateMap.values())
+            m.clear();
 
         // Load up the variators
         final Map<String, VariatorConfig> variatorMap = JsonUtils.loadConfig(new ResourceLocation(MobEffects.MOD_ID, "variators.json"), VariatorConfig.class);
@@ -198,10 +216,10 @@ public final class FootstepLibrary {
             variators.put(kvp.getKey(), new Variator(kvp.getValue()));
         }
 
-    	defaultVariator = getVariator("default");
-    	childVariator = getVariator("child");
-		playerVariator = getVariator(Config.CLIENT.footsteps.get_firstPersonFootstepCadence() ? "player_slow" : "player");
-		playerQuadrupedVariator = getVariator(Config.CLIENT.footsteps.get_firstPersonFootstepCadence() ? "quadruped_slow" : "quadruped");
+        defaultVariator = getVariator("default");
+        childVariator = getVariator("child");
+        playerVariator = getVariator(Config.CLIENT.footsteps.get_firstPersonFootstepCadence() ? "player_slow" : "player");
+        playerQuadrupedVariator = getVariator(Config.CLIENT.footsteps.get_firstPersonFootstepCadence() ? "quadruped_slow" : "quadruped");
 
         if (Config.CLIENT.logging.get_enableLogging()) {
             LOGGER.info("Registered Variators");
@@ -211,7 +229,7 @@ public final class FootstepLibrary {
                 LOGGER.info(v);
             }
         }
-	}
+    }
 
 	static void initFromConfig(@Nonnull final ModConfig mod) {
         // Handle our primitives first
@@ -238,63 +256,6 @@ public final class FootstepLibrary {
         }
     }
 
-    private static void seedMap() {
-        // Iterate through the blockmap looking for known pattern types.
-        // Though they probably should all be registered with Forge
-        // dictionary it's not a requirement.
-        for (final Block block : ForgeRegistries.BLOCKS) {
-            final String blockName = Objects.requireNonNull(block.getRegistryName()).toString();
-            if (block instanceof CropsBlock) {
-                final CropsBlock crop = (CropsBlock) block;
-                if (crop.getMaxAge() == 3) {
-                    // Like beets
-                    registerBlocks("#beets", blockName);
-                } else if (blockName.equals("minecraft:wheat")) {
-                    // Wheat is special because it is straw like
-                    registerBlocks("#wheat", blockName);
-                } else if (crop.getMaxAge() == 7) {
-                    // Like carrots and potatoes
-                    registerBlocks("#crop", blockName);
-                }
-            } else if (block instanceof SaplingBlock) {
-                registerBlocks("#sapling", blockName);
-            } else if (block instanceof SugarCaneBlock) {
-                registerBlocks("#reed", blockName);
-            } else if (block instanceof FenceBlock) {
-                registerBlocks("#fence", blockName);
-            } else if (block instanceof VineBlock) {
-                registerBlocks("#vine", blockName);
-            } else if (block instanceof FlowerBlock || block instanceof MushroomBlock) {
-                registerBlocks("not_emitter", blockName);
-            } else if (block instanceof LogBlock) {
-                registerBlocks("log", blockName);
-            } else if (block instanceof DoorBlock) {
-                registerBlocks("bluntwood", blockName);
-            } else if (block instanceof LeavesBlock) {
-                registerBlocks("leaves", blockName);
-            } else if (block instanceof OreBlock) {
-                registerBlocks("ore", blockName);
-            } else if (block instanceof IceBlock) {
-                registerBlocks("ice", blockName);
-            } else if (block instanceof ChestBlock) {
-                registerBlocks("squeakywood", blockName);
-            } else if (block instanceof GlassBlock) {
-                registerBlocks("glass", blockName);
-            } else if (block instanceof BedBlock) {
-                registerBlocks("rug", blockName);
-            } else if (block instanceof AbstractRailBlock) {
-                registerBlocks("#rail", blockName);
-            } else {
-                // Register generics based on sound type
-                final BlockState state = block.getDefaultState();
-                if (state.getMaterial() != Material.AIR) {
-                    final SoundType st = state.getSoundType();
-                    registerBlocks(st.getStepSound().getName().toString(), blockName);
-                }
-            }
-        }
-    }
-
     private static void registerBlocks(@Nonnull final String blockClass, @Nonnull final String... blocks) {
         for (final String s : blocks)
             register(s, blockClass);
@@ -312,14 +273,11 @@ public final class FootstepLibrary {
         return SPLASH;
     }
 
+    @Nonnull
     public static IAcoustic getSwimAcoustic() {
         if (SWIM == null)
             SWIM = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "_swim"));
         return SWIM;
-    }
-
-    public static boolean hasAcoustics(@Nonnull final BlockState state) {
-        return metaMap.getBlockAcoustics(state) != Constants.EMPTY;
     }
 
 	@Nonnull
@@ -329,25 +287,29 @@ public final class FootstepLibrary {
 
 	@Nonnull
     public static IAcoustic getBlockAcoustics(@Nonnull final BlockState state) {
-        return getBlockAcoustics(state, null);
+        return getBlockAcoustics(state, Substrate.NORMAL);
     }
 
     @Nonnull
-    public static IAcoustic getBlockAcoustics(@Nonnull final BlockState state, @Nullable final Substrate substrate) {
+    public static IAcoustic getBlockAcoustics(@Nonnull final BlockState state, @Nonnull final Substrate substrate) {
         // Walking an edge of a block can produce this
         if (state.getMaterial() == Material.AIR)
             return Constants.NOT_EMITTER;
-        if (substrate != null) {
-            final BlockAcousticMap sub = substrateMap.get(substrate);
-            return sub != null ? sub.getBlockAcoustics(state) : Constants.EMPTY;
+        // Get our cached entries
+        IAcoustic[] cached = mobeffects_acoustic.get(state);
+        if (cached == null) {
+            mobeffects_acoustic.set(state, cached = new IAcoustic[Substrate.values().length]);
         }
-        return metaMap.getBlockAcoustics(state);
+        IAcoustic result = cached[substrate.ordinal()];
+        if (result == null) {
+            result = cached[substrate.ordinal()] = substrateMap.get(substrate).getBlockAcoustics(state);
+        }
+        return result;
     }
 
     private static void put(@Nonnull final BlockStateMatcher info, @Nullable final String substrate,
                             @Nonnull final String acousticList) {
 
-        final Substrate s = Substrate.get(substrate);
         final IAcoustic acoustics = AcousticLibrary.resolve(
                 MobEffects.MOD_ID,
                 acousticList,
@@ -359,14 +321,7 @@ public final class FootstepLibrary {
                     return null;
                 });
 
-        if (s == null) {
-            metaMap.put(info, acoustics);
-        } else {
-            BlockAcousticMap sub = substrateMap.get(s);
-            if (sub == null)
-                substrateMap.put(s, sub = new BlockAcousticMap());
-            sub.put(info, acoustics);
-        }
+        substrateMap.get(Substrate.get(substrate)).put(info, acoustics);
     }
 
     private static void register0(@Nonnull final String key, @Nonnull final String acousticList) {
@@ -414,7 +369,7 @@ public final class FootstepLibrary {
             if (macro != null) {
                 macro.stream()
                         .map(m -> m.expand(key))
-                        .forEach(t -> register0(t.getA(), t.getB()));
+                        .forEach(t -> register0(t.getLeft(), t.getRight()));
             } else {
                 LOGGER.debug("Unknown macro '%s'", acousticList);
             }
@@ -455,6 +410,7 @@ public final class FootstepLibrary {
         }
     }
 
+    @Nonnull
     private static IAcoustic primitiveResolver(@Nonnull final BlockState state) {
         // If the state does not block movement or is liquid, like grass and plants, then it is not an
         // emitter.  Otherwise we get strange effects when edge walking on blocks with a plant
@@ -466,12 +422,15 @@ public final class FootstepLibrary {
     }
 
     public static boolean hasFootprint(@Nonnull final BlockState state) {
-        Boolean result = FOOTPRINT_STATES.get(state);
+        Boolean result = mobeffects_hasfootprint.get(state);
         if (result != null)
             return result;
 
-        result = FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType());
-        FOOTPRINT_STATES.put(state, result);
+        result = FOOTPRINT_STATES.get(state);
+        if (result == null) {
+            result = FOOTPRINT_MATERIAL.contains(state.getMaterial()) || FOOTPRINT_SOUND_PROFILE.contains(state.getSoundType());
+        }
+        mobeffects_hasfootprint.set(state, result);
         return result;
     }
 
@@ -494,7 +453,7 @@ public final class FootstepLibrary {
         }
 
         @Nonnull
-        public Tuple<String, String> expand(@Nonnull final String base) {
+        public Pair<String, String> expand(@Nonnull final String base) {
             final StringBuilder builder = new StringBuilder();
             builder.append(base);
             if (this.propertyName != null) {
@@ -507,7 +466,7 @@ public final class FootstepLibrary {
                 builder.append('+').append(this.substrate);
             }
 
-            return new Tuple<>(builder.toString(), this.value);
+            return Pair.of(builder.toString(), this.value);
         }
     }
 

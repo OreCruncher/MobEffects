@@ -39,7 +39,7 @@ import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 @OnlyIn(Dist.CLIENT)
 public final class BlockAcousticMap {
 
-	protected final Map<BlockState, IAcoustic> cache = new Reference2ObjectOpenHashMap<>();
+	//protected final Map<BlockState, IAcoustic> cache = new Reference2ObjectOpenHashMap<>();
 	protected final Map<Block, ObjectArray<BlockMapEntry>> data = new Reference2ObjectOpenHashMap<>();
 	protected final Function<BlockState, IAcoustic> resolver;
 
@@ -90,12 +90,15 @@ public final class BlockAcousticMap {
 	 */
 	@Nonnull
 	public IAcoustic getBlockAcoustics(@Nonnull final BlockState state) {
+		return cacheMiss(state);
+		/*
 		IAcoustic result = this.cache.get(state);
 		if (result == null) {
 			result = cacheMiss(state);
 			this.cache.put(state, result);
 		}
 		return result;
+		 */
 	}
 
 	public void put(@Nonnull final BlockStateMatcher info, @Nonnull final IAcoustic acoustics) {
@@ -107,7 +110,7 @@ public final class BlockAcousticMap {
 	}
 
 	public void clear() {
-		this.cache.clear();
+		//this.cache.clear();
 		this.data.clear();
 	}
 

@@ -1,3 +1,4 @@
 {
-  "abstractarrowentity": "transformers/arrow.js"
+  "abstractarrowentity": "transformers/arrow.js",
+  "blockstate": "transformers/blockstate.js"
 }
