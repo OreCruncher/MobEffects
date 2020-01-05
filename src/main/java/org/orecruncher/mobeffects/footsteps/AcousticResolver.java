@@ -25,7 +25,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,23 +32,18 @@ import org.orecruncher.lib.math.MathStuff;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.facade.FacadeHelper;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
+import org.orecruncher.sndctrl.audio.acoustic.AcousticCompiler;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
-import org.orecruncher.sndctrl.audio.acoustic.SimultaneousAcoustic;
 
 @OnlyIn(Dist.CLIENT)
 public class AcousticResolver {
 
-	private static final ResourceLocation ADHOC = new ResourceLocation(MobEffects.MOD_ID, "adhoc");
-
 	protected final IWorldReader world;
 	protected final FootStrikeLocation loc;
 	protected final double distanceToCenter;
-
-	protected final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
 	public AcousticResolver(@Nonnull final IWorldReader world,
 			@Nonnull final FootStrikeLocation loc, final double distanceToCenter) {
@@ -145,7 +139,7 @@ public class AcousticResolver {
 
 	@Nullable
 	protected Association resolve(@Nonnull Vec3d vec) {
-		BlockState in = null;
+		BlockState in;
 		IAcoustic acoustics = Constants.EMPTY;
 
 		Vec3d tPos = vec.add(0, 1, 0);
@@ -183,10 +177,7 @@ public class AcousticResolver {
 				if (above.getMaterial() != Material.AIR) {
 					final IAcoustic foliage = FootstepLibrary.getBlockAcoustics(above, Substrate.FOLIAGE);
 					if (foliage != Constants.NOT_EMITTER) {
-						final SimultaneousAcoustic a = new SimultaneousAcoustic(ADHOC);
-						a.add(acoustics);
-						a.add(foliage);
-						acoustics = a;
+						acoustics = AcousticCompiler.combine(acoustics, foliage);
 					}
 				}
 			}

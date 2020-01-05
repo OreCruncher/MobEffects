@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IWorldReader;
@@ -38,7 +38,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.orecruncher.mobeffects.MobEffects;
-import org.orecruncher.mobeffects.compat.ModEnvironment;
 
 @OnlyIn(Dist.CLIENT)
 public final class FacadeHelper {
@@ -84,7 +83,7 @@ public final class FacadeHelper {
 	@Nonnull
 	public static BlockState resolveState(@Nonnull final LivingEntity entity, @Nonnull final BlockState state,
 										  @Nonnull final IWorldReader world, @Nonnull final Vec3d pos, @Nullable final Direction side) {
-		if (crackers.size() > 0 && state != Blocks.AIR.getDefaultState()) {
+		if (crackers.size() > 0 && state.getMaterial() != Material.AIR) {
 			final IFacadeAccessor accessor = crackers.get(state.getBlock());
 			if (accessor != null) {
 				final BlockState newState = accessor.getBlockState(entity, state, world, pos, side);

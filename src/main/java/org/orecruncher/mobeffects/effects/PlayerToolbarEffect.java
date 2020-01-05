@@ -18,8 +18,6 @@
 
 package org.orecruncher.mobeffects.effects;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,36 +28,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.lib.effects.EntityEffectManager;
 import org.orecruncher.mobeffects.MobEffects;
-import org.orecruncher.mobeffects.library.EffectLibrary;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
-import org.orecruncher.sndctrl.library.EntityEffectLibrary;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class PlayerToolbarEffect extends AbstractEntityEffect {
 
     private static final ResourceLocation NAME = new ResourceLocation(MobEffects.MOD_ID, "toolbar");
-    public static final EntityEffectLibrary.IEntityEffectFactoryHandler DEFAULT_HANDLER = new EntityEffectLibrary.IEntityEffectFactoryHandler() {
-
-        @Override
-        public ResourceLocation getName() {
-            return PlayerToolbarEffect.NAME;
-        }
-
-        @Override
-        public boolean appliesTo(@Nonnull final Entity entity) {
-            return EffectLibrary.hasEffect(entity, getName());
-        }
-
-        @Override
-        public List<AbstractEntityEffect> get(@Nonnull final Entity entity) {
-            return ImmutableList.of(new PlayerToolbarEffect());
-        }
-    };
+    public static final FactoryHandler FACTORY = new FactoryHandler(
+            PlayerToolbarEffect.NAME,
+            entity -> new PlayerToolbarEffect());
 
     protected static class HandTracker {
 

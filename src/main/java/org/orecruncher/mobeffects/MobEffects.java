@@ -109,15 +109,15 @@ public final class MobEffects {
 
         // Register our effect handlers
         if (Config.CLIENT.footsteps.get_enableFootprints())
-            IMC.registerEffectFactoryHandler(EntityFootprintEffect.DEFAULT_HANDLER);
+            IMC.registerEffectFactoryHandler(EntityFootprintEffect.FACTORY);
         if (Config.CLIENT.effects.get_showBreath())
-            IMC.registerEffectFactoryHandler(EntityBreathEffect.DEFAULT_HANDLER);
+            IMC.registerEffectFactoryHandler(EntityBreathEffect.FACTORY);
         if (Config.CLIENT.effects.get_enableBowEffect())
-            IMC.registerEffectFactoryHandler(EntityBowEffect.DEFAULT_HANDLER);
+            IMC.registerEffectFactoryHandler(EntityBowEffect.FACTORY);
         if (Config.CLIENT.effects.get_enableToolbarEffect())
-            IMC.registerEffectFactoryHandler(PlayerToolbarEffect.DEFAULT_HANDLER);
+            IMC.registerEffectFactoryHandler(PlayerToolbarEffect.FACTORY);
         if (Config.CLIENT.effects.get_enableSwingEffect())
-            IMC.registerEffectFactoryHandler(EntitySwingEffect.DEFAULT_HANDLER);
+            IMC.registerEffectFactoryHandler(EntitySwingEffect.FACTORY);
 
         // Callback for completions
         IMC.registerCompletionCallback(Libraries::initialize);

@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -30,7 +29,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -133,7 +131,6 @@ public final class FootStrikeLocation {
 			final double entityY = this.entity.getBoundingBox().minY;
 			final double blockY = getBoundingBoxY(entityY, world, state, this.stepPos);
 			return new Vec3d(this.strike.x, Math.max(entityY, blockY), this.strike.z);
-
 		}
 		return null;
 	}
@@ -141,7 +138,7 @@ public final class FootStrikeLocation {
 	protected double getBoundingBoxY(final double baseY, @Nonnull final IWorldReader world,
 			@Nonnull final BlockState state, @Nonnull final BlockPos pos) {
 		final VoxelShape shape = state.getCollisionShape(world, pos);
-		final double boundingY =state.getShape(world, pos).getBoundingBox().maxY;
+		final double boundingY = state.getShape(world, pos).getBoundingBox().maxY;
 		final double collisionY = shape.isEmpty() ? 0 : shape.getBoundingBox().maxY;
 		if (boundingY == collisionY)
 			return baseY;

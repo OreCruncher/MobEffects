@@ -18,8 +18,6 @@
 
 package org.orecruncher.mobeffects.effects;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.LivingEntity;
@@ -30,21 +28,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.lib.effects.EntityEffectManager;
 
-import com.google.common.collect.ImmutableList;
-
-import net.minecraft.entity.Entity;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.FootprintStyle;
 import org.orecruncher.mobeffects.footsteps.Generator;
-import org.orecruncher.mobeffects.library.EffectLibrary;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
-import org.orecruncher.sndctrl.library.EntityEffectLibrary;
 
 @OnlyIn(Dist.CLIENT)
 public class EntityFootprintEffect extends AbstractEntityEffect {
 
 	private static final ResourceLocation NAME = new ResourceLocation(MobEffects.MOD_ID, "footprint");
+	public static final FactoryHandler FACTORY = new FactoryHandler(
+			EntityFootprintEffect.NAME,
+			entity -> entity instanceof PlayerEntity ? new PlayerFootprintEffect() : new EntityFootprintEffect());
 
 	protected Generator generator;
 
@@ -67,25 +63,6 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 	public String toString() {
 		return super.toString() + ": " + this.generator.getPedometer();
 	}
-
-	public static final EntityEffectLibrary.IEntityEffectFactoryHandler DEFAULT_HANDLER = new EntityEffectLibrary.IEntityEffectFactoryHandler() {
-
-		@Override
-		public ResourceLocation getName() {
-			return EntityFootprintEffect.NAME;
-		}
-
-		@Override
-		public boolean appliesTo(@Nonnull final Entity entity) {
-			return EffectLibrary.hasEffect(entity, getName());
-		}
-
-		@Override
-		public List<AbstractEntityEffect> get(@Nonnull final Entity entity) {
-			return ImmutableList
-					.of(entity instanceof PlayerEntity ? new PlayerFootprintEffect() : new EntityFootprintEffect());
-		}
-	};
 
 	@OnlyIn(Dist.CLIENT)
 	private static class PlayerFootprintEffect extends EntityFootprintEffect {
