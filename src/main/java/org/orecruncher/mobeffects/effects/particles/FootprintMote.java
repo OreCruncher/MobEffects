@@ -27,10 +27,10 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.orecruncher.lib.WorldUtils;
 import org.orecruncher.lib.math.MathStuff;
 import org.orecruncher.lib.particles.AgeableMote;
 import org.orecruncher.mobeffects.footsteps.FootprintStyle;
-import org.orecruncher.mobeffects.library.FootstepLibrary;
 
 import javax.annotation.Nonnull;
 
@@ -117,10 +117,9 @@ public class FootprintMote extends AgeableMote {
 
     @Override
     protected void update() {
-        if (!FootstepLibrary.hasFootprint(this.world.getBlockState(this.downPos))) {
+        if (!WorldUtils.isTopSolid(this.world, this.downPos)) {
             kill();
-        } else if (this.isSnowLayer
-                && world.getBlockState(this.position).getBlock() != Blocks.SNOW) {
+        } else if (this.isSnowLayer && world.getBlockState(this.position).getBlock() != Blocks.SNOW) {
             kill();
         }
     }
