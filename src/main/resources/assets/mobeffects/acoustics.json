@@ -507,8 +507,13 @@
         {
           "type": "probability",
           "array": [
-            "1", "mobeffects:floorsqueak",
-            "10", ""
+            "1",
+            {
+              "name": "mobeffects:floorsqueak",
+              "vol_min": 30,
+              "vol_max": 60
+            },
+            "18", ""
           ]
         }
       ]
