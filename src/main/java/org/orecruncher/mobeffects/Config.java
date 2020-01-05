@@ -151,15 +151,17 @@ public final class Config {
             private final ForgeConfigSpec.EnumValue<FootprintStyle> playerFootprintStyle;
             private final BooleanValue footstepsAsQuadruped;
             private final IntValue footstepVolume;
+            private final BooleanValue enableFootstepAccents;
 
             private boolean _enableFootprints;
             private boolean _firstPersonFootstepCadence;
             private FootprintStyle _playerFootprintStyle = FootprintStyle.LOWRES_SQUARE;
             private boolean _footstepsAsQuadruped;
             private float _footstepVolumeScale;
+            private boolean _enableFootstepAccents;
 
             public Footsteps(@Nonnull final ForgeConfigSpec.Builder builder) {
-                builder.comment("Defines footstep effect generation")
+                builder.comment("Defines footstep effect generation parameters")
                         .push("Footstep Options");
 
                 this.enableFootprints = builder
@@ -187,6 +189,11 @@ public final class Config {
                         .translation("mobeffects.cfg.footsteps.Volume")
                         .defineInRange("Footstep Volume Scale", 75, 0, 100);
 
+                this.enableFootstepAccents = builder
+                        .comment("Enable armor rustle and rain splash accents for footstep acoustics")
+                        .translation("mobeffects.cfg.footsteps.Accents")
+                        .define("Enable Footstep Accents", true);
+
                 builder.pop();
             }
 
@@ -196,6 +203,7 @@ public final class Config {
                 this._footstepsAsQuadruped = this.footstepsAsQuadruped.get();
                 this._playerFootprintStyle = this.playerFootprintStyle.get();
                 this._footstepVolumeScale = this.footstepVolume.get() / 100F;
+                this._enableFootstepAccents = this.enableFootstepAccents.get();
             }
 
             public boolean get_enableFootprints() {
@@ -217,6 +225,10 @@ public final class Config {
             public float get_footstepVolumeScale() {
                 return this._footstepVolumeScale;
             }
+
+            public boolean get_enableFootstepAccents() {
+                return this._enableFootstepAccents;
+            }
         }
 
         public static class Effects {
@@ -234,7 +246,7 @@ public final class Config {
             private boolean _enableSwingEffect;
 
             public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
-                builder.comment("Defines mob effect generation")
+                builder.comment("Options for mob effect generation")
                         .push("Mob Effect Options");
 
                 this.showBreath = builder

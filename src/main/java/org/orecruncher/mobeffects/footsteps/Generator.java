@@ -41,6 +41,7 @@ import org.orecruncher.lib.random.XorShiftRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.effects.particles.Collections;
 import org.orecruncher.mobeffects.footsteps.accents.FootstepAccents;
@@ -406,7 +407,7 @@ public class Generator {
 		final AcousticResolver resolver = new AcousticResolver(entity.getEntityWorld(), loc,
 				this.VAR.DISTANCE_TO_CENTER);
 
-		final Association result = addSoundOverlay(entity, resolver.findAssociationForEvent());
+		final Association result = addFootstepAccent(entity, resolver.findAssociationForEvent());
 
 		// It is possible that the association has no position, so it
 		// needs to be checked.
@@ -474,10 +475,9 @@ public class Generator {
 	 * aspects, such as armor being worn.
 	 */
 	@Nullable
-	protected Association addSoundOverlay(@Nonnull final LivingEntity entity, @Nullable Association assoc) {
-
+	protected Association addFootstepAccent(@Nonnull final LivingEntity entity, @Nullable Association assoc) {
 		// Don't apply overlays if the entity is not on the ground
-		if (entity.onGround) {
+		if (Config.CLIENT.footsteps.get_enableFootstepAccents() && entity.onGround) {
 			accents.clear();
 			final BlockPos pos = assoc != null ? assoc.getStepPos() : null;
 			FootstepAccents.provide(entity, pos, accents);
