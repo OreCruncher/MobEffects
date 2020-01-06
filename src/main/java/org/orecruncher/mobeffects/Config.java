@@ -233,12 +233,14 @@ public final class Config {
 
         public static class Effects {
 
+            private final BooleanValue hidePlayerPotionParticles;
             private final BooleanValue showBreath;
             private final BooleanValue showArrowTrail;
             private final BooleanValue enableToolbarEffect;
             private final BooleanValue enableBowEffect;
             private final BooleanValue enableSwingEffect;
 
+            private boolean _hidePlayerPotionParticles;
             private boolean _showBreath;
             private boolean _showArrowTrail;
             private boolean _enableToolbarEffect;
@@ -248,6 +250,11 @@ public final class Config {
             public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Options for mob effect generation")
                         .push("Mob Effect Options");
+
+                this.hidePlayerPotionParticles = builder
+                        .comment("Hides the player's potion particles to avoid cluttering display")
+                        .translation("mobeffects.cfg.effects.PotionParticles")
+                        .define("Hide Player Potion Particles", true);
 
                 this.showBreath = builder
                         .worldRestart()
@@ -282,11 +289,16 @@ public final class Config {
             }
 
             void update() {
+                this._hidePlayerPotionParticles = this.hidePlayerPotionParticles.get();
                 this._showBreath = this.showBreath.get();
                 this._showArrowTrail = this.showArrowTrail.get();
                 this._enableToolbarEffect = this.enableToolbarEffect.get();
                 this._enableBowEffect = this.enableBowEffect.get();
                 this._enableSwingEffect = this.enableSwingEffect.get();
+            }
+
+            public boolean get_hidePlayerPotionParticles() {
+                return this._hidePlayerPotionParticles;
             }
 
             public boolean get_showBreath() {
