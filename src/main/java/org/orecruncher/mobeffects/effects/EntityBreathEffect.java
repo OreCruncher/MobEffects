@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
+import org.orecruncher.lib.TickCounter;
 import org.orecruncher.lib.WorldUtils;
 import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.lib.effects.EntityEffectManager;
@@ -63,7 +64,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     public void update() {
         final Entity entity = getEntity();
         if (isBreathVisible(entity)) {
-            final int c = (int) ((GameUtils.getWorld().getDayTime() + this.seed));
+            final int c = (int) (TickCounter.getTickCount() + this.seed);
             final BlockPos headPos = getHeadPosition(entity);
             final BlockState state = entity.getEntityWorld().getBlockState(headPos);
             if (showWaterBubbles(state)) {
