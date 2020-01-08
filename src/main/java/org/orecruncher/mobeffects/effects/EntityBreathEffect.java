@@ -57,7 +57,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     @Override
     public void intitialize(@Nonnull final EntityEffectManager state) {
         super.intitialize(state);
-        this.seed = MurmurHash3.hash(getEntity().getEntityId());
+        this.seed = MurmurHash3.hash(getEntity().getEntityId()) & 0xFFFF;
     }
 
     @Override
