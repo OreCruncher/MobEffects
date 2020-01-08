@@ -1,6 +1,6 @@
 /*
- * Dynamic Surroundings: Mob Effects
- * Copyright (C) 2019  OreCruncher
+ *  Dynamic Surroundings: Mob Effects
+ *  Copyright (C) 2019  OreCruncher
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,15 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package org.orecruncher.mobeffects.footsteps;
+package org.orecruncher.mobeffects.footsteps.accents;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,10 +34,8 @@ import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
  * producing step sounds.
  */
 @OnlyIn(Dist.CLIENT)
-public interface IFootstepAccentProvider {
+interface IFootstepAccentProvider {
 
-	String getName();
-
-	void provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos pos, @Nonnull final ObjectArray<IAcoustic> acoustics);
+	void provide(@Nonnull final LivingEntity entity, @Nonnull final BlockPos pos, @Nonnull final BlockState posState, @Nonnull final ObjectArray<IAcoustic> acoustics);
 
 }

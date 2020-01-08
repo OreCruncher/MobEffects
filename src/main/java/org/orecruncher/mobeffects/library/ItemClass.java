@@ -102,7 +102,7 @@ public enum ItemClass {
      * Determines the effective armor class of the Entity. Chest and legs are used
      * to make the determination.
      */
-    public static ItemStack effectiveArmorStack(@Nonnull final LivingEntity entity) {
+    public static ItemStack effectiveArmorItemStack(@Nonnull final LivingEntity entity) {
         final ItemStack chest = resolveSlot(entity, EquipmentSlotType.CHEST);
         final ItemStack legs = resolveSlot(entity, EquipmentSlotType.LEGS);
         final ItemClass chestic = ItemLibrary.getItemClass(chest).getItemClass();
@@ -113,7 +113,7 @@ public enum ItemClass {
     /**
      * Gets the armor class of the entities feet.
      */
-    public static ItemStack footArmorStack(@Nonnull final LivingEntity entity) {
+    public static ItemStack footArmorItemStack(@Nonnull final LivingEntity entity) {
         return resolveSlot(entity, EquipmentSlotType.FEET);
     }
 

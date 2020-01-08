@@ -18,18 +18,15 @@
 
 package org.orecruncher.mobeffects.footsteps.accents;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.collections.ObjectArray;
-import org.orecruncher.mobeffects.footsteps.IFootstepAccentProvider;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class FootstepAccents {
@@ -38,7 +35,7 @@ public class FootstepAccents {
 
     }
 
-    private static final List<IFootstepAccentProvider> providers = new ArrayList<>();
+    private static final ObjectArray<IFootstepAccentProvider> providers = new ObjectArray<>();
 
     static {
         providers.add(new ArmorAccents());
@@ -46,9 +43,8 @@ public class FootstepAccents {
         providers.add(new WaterLoggedAccent());
     }
 
-    @Nonnull
-    public static ObjectArray<IAcoustic> provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos pos, @Nonnull final ObjectArray<IAcoustic> in) {
-        providers.forEach(provider -> provider.provide(entity, pos, in));
-        return in;
+    public static void provide(@Nonnull final LivingEntity entity, @Nonnull final BlockPos pos, @Nonnull final ObjectArray<IAcoustic> in) {
+        final BlockState state = entity.getEntityWorld().getBlockState(pos);
+        providers.forEach(provider -> provider.provide(entity, pos, state, in));
     }
 }

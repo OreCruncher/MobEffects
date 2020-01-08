@@ -477,7 +477,7 @@ public class Generator {
 		// Don't apply overlays if the entity is not on the ground
 		if (Config.CLIENT.footsteps.get_enableFootstepAccents() && entity.onGround) {
 			accents.clear();
-			final BlockPos pos = assoc != null ? assoc.getStepPos() : null;
+			final BlockPos pos = assoc != null ? assoc.getStepPos() : new BlockPos(entity);
 			FootstepAccents.provide(entity, pos, accents);
 			if (accents.size() > 0) {
 				if (assoc == null) {

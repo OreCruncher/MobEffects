@@ -18,6 +18,7 @@
 
 package org.orecruncher.mobeffects.footsteps.accents;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,39 +27,27 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.WorldUtils;
 import org.orecruncher.lib.collections.ObjectArray;
-import org.orecruncher.mobeffects.footsteps.IFootstepAccentProvider;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 class RainSplashAccent implements IFootstepAccentProvider {
 
-    protected final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-
     @Override
-    @Nonnull
-    public String getName() {
-        return "Rain Splash Accent";
-    }
-
-    @Override
-    public void provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos blockPos,
-                                          @Nonnull final ObjectArray<IAcoustic> in) {
+    public void provide(
+            @Nonnull final LivingEntity entity,
+            @Nonnull final BlockPos blockPos,
+            @Nonnull final BlockState posState,
+            @Nonnull final ObjectArray<IAcoustic> acoustics)
+    {
         final World world = entity.getEntityWorld();
         if (world.isRaining()) {
-            if (blockPos != null) {
-                this.mutable.setPos(blockPos.up());
-            } else {
-                this.mutable.setPos(entity);
-            }
-
             // Get the precipitation type at the location
-            final Biome.RainType rainType = WorldUtils.getCurrentPrecipitationAt(world, this.mutable);
+            final Biome.RainType rainType = WorldUtils.getCurrentPrecipitationAt(world, blockPos.up());
             if (rainType == Biome.RainType.RAIN)
-                in.add(FootstepLibrary.getRainSplashAcoustic());
+                acoustics.add(FootstepLibrary.getRainSplashAcoustic());
         }
     }
 

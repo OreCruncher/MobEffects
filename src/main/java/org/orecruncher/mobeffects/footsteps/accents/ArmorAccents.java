@@ -18,13 +18,13 @@
 
 package org.orecruncher.mobeffects.footsteps.accents;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.collections.ObjectArray;
-import org.orecruncher.mobeffects.footsteps.IFootstepAccentProvider;
 import org.orecruncher.mobeffects.library.IArmorItemData;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemClass;
@@ -36,12 +36,6 @@ import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 class ArmorAccents implements IFootstepAccentProvider {
-
-    @Override
-    @Nonnull
-    public String getName() {
-        return "Armor Accents";
-    }
 
     @Nullable
     protected IAcoustic resolveArmor(@Nonnull final ItemStack stack) {
@@ -61,20 +55,25 @@ class ArmorAccents implements IFootstepAccentProvider {
     }
 
     @Override
-    public void provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos pos, @Nonnull final ObjectArray<IAcoustic> in) {
-        final ItemStack armor = ItemClass.effectiveArmorStack(entity);
-        final ItemStack foot = ItemClass.footArmorStack(entity);
+    public void provide(
+            @Nonnull final LivingEntity entity,
+            @Nonnull final BlockPos blockPos,
+            @Nonnull final BlockState posState,
+            @Nonnull final ObjectArray<IAcoustic> acoustics)
+    {
+        final ItemStack armor = ItemClass.effectiveArmorItemStack(entity);
+        final ItemStack foot = ItemClass.footArmorItemStack(entity);
         final IAcoustic armorAddon = resolveArmor(armor);
         IAcoustic footAddon = resolveFootArmor(foot);
 
         if (armorAddon != null) {
-            in.add(armorAddon);
+            acoustics.add(armorAddon);
             if (armorAddon == footAddon)
                 footAddon = null;
         }
 
         if (footAddon != null)
-            in.add(footAddon);
+            acoustics.add(footAddon);
     }
 
 }
