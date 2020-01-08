@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
@@ -416,7 +416,7 @@ public class Generator {
 			if (printPos != null) {
 				FootprintStyle style = this.VAR.FOOTPRINT_STYLE;
 				if (entity instanceof PlayerEntity) {
-					style = FootprintStyle.LOWRES_SQUARE;
+					style = Config.CLIENT.footsteps.get_playerFootprintStyle();
 				}
 				final Footprint print = Footprint.produce(style, entity, printPos, rotDegrees, this.VAR.FOOTPRINT_SCALE,
 						isRightFoot);
@@ -451,20 +451,18 @@ public class Generator {
 	}
 
 	@Nullable
-	protected Association findAssociationMessyFoliage(@Nonnull final LivingEntity entity,
-			@Nonnull final BlockPos pos) {
+	protected Association findAssociationMessyFoliage(@Nonnull final LivingEntity entity, @Nonnull final BlockPos pos) {
 		Association result = null;
 		final BlockPos up = pos.up();
 		final BlockState above = entity.getEntityWorld().getBlockState(up);
 
-		if (above != Blocks.AIR.getDefaultState()) {
+		if (above.getMaterial() != Material.AIR) {
 			IAcoustic acoustics = FootstepLibrary.getBlockAcoustics(above, Substrate.MESSY);
 			if (acoustics == Constants.MESSY_GROUND) {
 				acoustics = FootstepLibrary.getBlockAcoustics(above, Substrate.FOLIAGE);
 				if (acoustics != Constants.NOT_EMITTER) {
 					result = new Association(entity, acoustics);
 				}
-
 			}
 		}
 		return result;
