@@ -96,10 +96,8 @@ public class FootprintMote extends AgeableMote {
         this.texV2 = 1F;
         this.scale = scale;
 
-        // Rotate our vertex coordinates. Since prints are static
-        // doing the rotation on the vertex points during
-        // constructions makes for a much more efficient render
-        // process.
+        // Rotate our vertex coordinates. Since prints are static doing the rotation on the vertex points during
+        // constructions makes for a much more efficient render process.
         final float theRotation = MathStuff.toRadians(-rotation + 180);
         this.firstPoint = MathStuff.rotateScale(FIRST_POINT, theRotation, this.scale);
         this.secondPoint = MathStuff.rotateScale(SECOND_POINT, theRotation, this.scale);
@@ -117,9 +115,9 @@ public class FootprintMote extends AgeableMote {
 
     @Override
     protected void update() {
-        if (!WorldUtils.isTopSolid(this.world, this.downPos)) {
+        if (this.isSnowLayer && world.getBlockState(this.position).getBlock() != Blocks.SNOW) {
             kill();
-        } else if (this.isSnowLayer && world.getBlockState(this.position).getBlock() != Blocks.SNOW) {
+        } else if (!WorldUtils.isBlockSolid(this.world, this.downPos)) {
             kill();
         }
     }
