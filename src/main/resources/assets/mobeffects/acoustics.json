@@ -27,6 +27,30 @@
       "pitch_max": 110
     }
   },
+  "_waterlogged": {
+    "type": "event",
+    "walk": {
+      "type": "probability",
+      "array": [
+        "1", "water.water_through",
+        "1", "water_stereofix.water_through"
+      ]
+    },
+    "wander": {
+      "type": "probability",
+      "array": [
+        "1", "water.water_wander",
+        "1", "water_stereofix.water_wander"
+      ]
+    },
+    "land": {
+      "type": "simultaneous",
+      "array": [
+        "water.water_through",
+        "water_stereofix.water_through"
+      ]
+    }
+  },
   "armor_light": {
     "type": "event",
     "walk": {

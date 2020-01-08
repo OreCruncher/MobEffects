@@ -93,6 +93,7 @@ public final class FootstepLibrary {
 
     private static IAcoustic SPLASH;
     private static IAcoustic SWIM;
+    private static IAcoustic WATERLOGGED;
 
     static {
 
@@ -278,6 +279,12 @@ public final class FootstepLibrary {
         if (SWIM == null)
             SWIM = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "_swim"));
         return SWIM;
+    }
+
+    public static IAcoustic getWaterLoggedAcoustic() {
+        if (WATERLOGGED == null)
+            WATERLOGGED = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "_waterlogged"));
+        return WATERLOGGED;
     }
 
 	@Nonnull

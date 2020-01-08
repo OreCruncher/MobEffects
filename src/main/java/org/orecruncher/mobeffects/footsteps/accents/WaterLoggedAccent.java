@@ -18,37 +18,44 @@
 
 package org.orecruncher.mobeffects.footsteps.accents;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.collections.ObjectArray;
 import org.orecruncher.mobeffects.footsteps.IFootstepAccentProvider;
+import org.orecruncher.mobeffects.library.FootstepLibrary;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class FootstepAccents {
+class WaterLoggedAccent implements IFootstepAccentProvider {
 
-    private FootstepAccents() {
-
+    @Override
+    public String getName() {
+        return "Water Logged Accent";
     }
 
-    private static final List<IFootstepAccentProvider> providers = new ArrayList<>();
+    @Override
+    public void provide(@Nonnull LivingEntity entity, @Nullable BlockPos blockPos, @Nonnull ObjectArray<IAcoustic> acoustics) {
+        final World world = entity.getEntityWorld();
 
-    static {
-        providers.add(new ArmorAccents());
-        providers.add(new RainSplashAccent());
-        providers.add(new WaterLoggedAccent());
-    }
+        if (blockPos == null)
+            blockPos = new BlockPos(entity);
 
-    @Nonnull
-    public static ObjectArray<IAcoustic> provide(@Nonnull final LivingEntity entity, @Nullable final BlockPos pos, @Nonnull final ObjectArray<IAcoustic> in) {
-        providers.forEach(provider -> provider.provide(entity, pos, in));
-        return in;
+        final BlockState state = world.getBlockState(blockPos);
+        if (state.getBlock() instanceof IWaterLoggable) {
+            final IFluidState fluid = state.getFluidState();
+            if (!fluid.isEmpty()) {
+                final IAcoustic acoustic = FootstepLibrary.getWaterLoggedAcoustic();
+                acoustics.add(acoustic);
+            }
+        }
     }
 }
