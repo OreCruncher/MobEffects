@@ -18,29 +18,27 @@
 
 package org.orecruncher.mobeffects.library;
 
-import java.util.Map;
-import java.util.function.Function;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.commons.lang3.tuple.Pair;
 import org.orecruncher.lib.Utilities;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.collections.ObjectArray;
-
-import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import net.minecraft.block.Block;
 import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
 public final class BlockAcousticMap {
 
-	//protected final Map<BlockState, IAcoustic> cache = new Reference2ObjectOpenHashMap<>();
-	protected final Map<Block, ObjectArray<BlockMapEntry>> data = new Reference2ObjectOpenHashMap<>();
+	protected final Map<Block, ObjectArray<Pair<BlockStateMatcher, IAcoustic>>> data = new Reference2ObjectOpenHashMap<>();
 	protected final Function<BlockState, IAcoustic> resolver;
 
 	public BlockAcousticMap() {
@@ -54,10 +52,14 @@ public final class BlockAcousticMap {
 		put(BlockStateMatcher.create(Blocks.VOID_AIR.getDefaultState()), Constants.NOT_EMITTER);
 	}
 
+	/**
+	 * Obtain acoustic information for a block. If the block has variants (subtypes)
+	 * it will fall back to searching for a generic if a specific one is not found.
+	 */
 	@Nonnull
-	protected IAcoustic cacheMiss(@Nonnull final BlockState state) {
-		IAcoustic result = null;
-		final ObjectArray<BlockMapEntry> entries = this.data.get(state.getBlock());
+	public IAcoustic getBlockAcoustics(@Nonnull final BlockState state) {
+		IAcoustic result;
+		final ObjectArray<Pair<BlockStateMatcher, IAcoustic>> entries = this.data.get(state.getBlock());
 		if (entries != null) {
 			final BlockStateMatcher matcher = BlockStateMatcher.create(state);
 			result = find(entries, matcher);
@@ -72,55 +74,27 @@ public final class BlockAcousticMap {
 	}
 
 	@Nullable
-	private IAcoustic find(@Nonnull final ObjectArray<BlockMapEntry> entries,
-			@Nonnull final BlockStateMatcher matcher) {
-		// Search backwards. In general highly specified states are at
-		// the end of the array.
+	private IAcoustic find(@Nonnull final ObjectArray<Pair<BlockStateMatcher, IAcoustic>> entries,
+						   @Nonnull final BlockStateMatcher matcher) {
+		// Search backwards. In general highly specified states are at the end of the array.
 		for (int i = entries.size() - 1; i >= 0; i--) {
-			final BlockMapEntry e = entries.get(i);
-			if (matcher.equals(e.matcher))
-				return e.acoustics;
+			final Pair<BlockStateMatcher, IAcoustic> e = entries.get(i);
+			if (matcher.equals(e.getKey()))
+				return e.getValue();
 		}
 		return null;
 	}
 
-	/**
-	 * Obtain acoustic information for a block. If the block has variants (subtypes)
-	 * it will fall back to searching for a generic if a specific one is not found.
-	 */
-	@Nonnull
-	public IAcoustic getBlockAcoustics(@Nonnull final BlockState state) {
-		return cacheMiss(state);
-		/*
-		IAcoustic result = this.cache.get(state);
-		if (result == null) {
-			result = cacheMiss(state);
-			this.cache.put(state, result);
-		}
-		return result;
-		 */
-	}
-
 	public void put(@Nonnull final BlockStateMatcher info, @Nonnull final IAcoustic acoustics) {
-		ObjectArray<BlockMapEntry> entry = this.data.get(info.getBlock());
+		ObjectArray<Pair<BlockStateMatcher, IAcoustic>> entry = this.data.get(info.getBlock());
 		if (entry == null) {
 			this.data.put(info.getBlock(), entry = new ObjectArray<>(2));
 		}
-		entry.add(new BlockMapEntry(info, acoustics));
+		entry.add(Pair.of(info, acoustics));
 	}
 
 	public void clear() {
-		//this.cache.clear();
 		this.data.clear();
 	}
 
-	private static class BlockMapEntry {
-		public final BlockStateMatcher matcher;
-		public final IAcoustic acoustics;
-
-		public BlockMapEntry(@Nonnull final BlockStateMatcher matcher, @Nonnull final IAcoustic acoustics) {
-			this.matcher = matcher;
-			this.acoustics = acoustics;
-		}
-	}
 }

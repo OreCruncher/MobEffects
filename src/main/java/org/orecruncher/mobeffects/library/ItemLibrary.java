@@ -78,9 +78,7 @@ public final class ItemLibrary {
     }
 
     static void complete() {
-
-        // Iterate through the list of registered Items to see
-        // if we know about them, or can infer based on class
+        // Iterate through the list of registered Items to see if we know about them, or can infer based on class
         // matching.
         for (final Item item : ForgeRegistries.ITEMS) {
             if (!items.containsKey(item)) {
@@ -122,7 +120,6 @@ public final class ItemLibrary {
             return;
 
         final ItemClass ic = ItemClass.valueOf(itemClass);
-
         final Set<Class<?>> theList = classMap.get(ic);
 
         for (final String c : itemList) {
@@ -130,11 +127,15 @@ public final class ItemLibrary {
             Matcher match = ITEM_PATTERN.matcher(c);
             if (match.matches()) {
                 final String itemName = match.group(1);
-                final Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
-                if (item != null) {
-                    items.put(item,  SimpleItemData.CACHE.get(ic));
+                if (ResourceLocation.isResouceNameValid(itemName)) {
+                    final Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
+                    if (item != null) {
+                        items.put(item, SimpleItemData.CACHE.get(ic));
+                    } else {
+                        LOGGER.warn("Cannot locate item [%s] for ItemRegistry", c);
+                    }
                 } else {
-                    LOGGER.warn("Cannot locate item [%s] for ItemRegistry", c);
+                    LOGGER.warn("Item specification [%s] is not valid", itemName);
                 }
             } else {
                 match = FQCN.matcher(c);
@@ -155,7 +156,7 @@ public final class ItemLibrary {
     }
 
     @Nonnull
-    public static IItemData getItemClass(@Nonnull final ItemStack stack) {
+    public static IItemData getItemData(@Nonnull final ItemStack stack) {
         return stack.isEmpty() ? NONE_DATA : items.get(stack.getItem());
     }
 }

@@ -50,7 +50,7 @@ public class EntityBowEffect extends AbstractEntityEffect {
         final ItemStack currentStack = entity.getActiveItemStack();
         if (!currentStack.isEmpty()) {
             if (!ItemStack.areItemStacksEqual(currentStack, this.lastActiveStack)) {
-                final IItemData data = ItemLibrary.getItemClass(currentStack);
+                final IItemData data = ItemLibrary.getItemData(currentStack);
                 final ItemClass itemClass = data.getItemClass();
                 if (itemClass == ItemClass.BOW || itemClass == ItemClass.CROSSBOW || itemClass == ItemClass.SHIELD) {
                     final IAcoustic soundEffect = data.getUseSound(currentStack);

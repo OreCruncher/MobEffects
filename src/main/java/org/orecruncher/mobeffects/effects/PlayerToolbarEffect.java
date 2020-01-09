@@ -69,7 +69,7 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
         public void update(@Nonnull final PlayerEntity player) {
             if (triggerNewEquipSound(player)) {
                 final ItemStack currentStack = player.getHeldItem(this.hand);
-                final IItemData data = ItemLibrary.getItemClass(currentStack);
+                final IItemData data = ItemLibrary.getItemData(currentStack);
                 final IAcoustic soundEffect = data.getEquipSound(currentStack);
                 if (soundEffect != null) {
                     soundEffect.playAt(player.getPositionVec());

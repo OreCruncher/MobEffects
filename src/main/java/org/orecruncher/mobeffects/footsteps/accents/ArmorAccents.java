@@ -39,7 +39,7 @@ class ArmorAccents implements IFootstepAccentProvider {
 
     @Nullable
     protected IAcoustic resolveArmor(@Nonnull final ItemStack stack) {
-        final IItemData id = ItemLibrary.getItemClass(stack);
+        final IItemData id = ItemLibrary.getItemData(stack);
         if (id instanceof IArmorItemData) {
             return ((IArmorItemData) id).getArmorSound(stack);
         }
@@ -47,7 +47,7 @@ class ArmorAccents implements IFootstepAccentProvider {
     }
 
     protected IAcoustic resolveFootArmor(@Nonnull final ItemStack stack) {
-        final IItemData id = ItemLibrary.getItemClass(stack);
+        final IItemData id = ItemLibrary.getItemData(stack);
         if (id instanceof IArmorItemData) {
             return ((IArmorItemData) id).getFootArmorSound(stack);
         }

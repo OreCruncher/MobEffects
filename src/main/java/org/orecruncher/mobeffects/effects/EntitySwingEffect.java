@@ -62,7 +62,7 @@ public class EntitySwingEffect extends AbstractEntityEffect {
         if (entity.swingingHand != null && entity.swingProgressInt > this.swingProgress) {
             if (!this.isSwinging) {
                 final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
-                final IItemData data = ItemLibrary.getItemClass(currentItem);
+                final IItemData data = ItemLibrary.getItemData(currentItem);
                 final IAcoustic soundEffect = data.getSwingSound(currentItem);
                 if (soundEffect != null && freeSwing(entity)) {
                     soundEffect.playAt(entity.getPositionVec());
