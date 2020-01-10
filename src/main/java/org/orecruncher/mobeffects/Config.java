@@ -146,14 +146,14 @@ public final class Config {
 
         public static class Footsteps {
 
-            private final BooleanValue enableFootprints;
+            private final BooleanValue enableFootprintParticles;
             private final BooleanValue firstPersonFootstepCadence;
             private final ForgeConfigSpec.EnumValue<FootprintStyle> playerFootprintStyle;
             private final BooleanValue footstepsAsQuadruped;
             private final IntValue footstepVolume;
             private final BooleanValue enableFootstepAccents;
 
-            private boolean _enableFootprints;
+            private boolean _enableFootprintParticles;
             private boolean _firstPersonFootstepCadence;
             private FootprintStyle _playerFootprintStyle = FootprintStyle.LOWRES_SQUARE;
             private boolean _footstepsAsQuadruped;
@@ -164,7 +164,7 @@ public final class Config {
                 builder.comment("Defines footstep effect generation parameters")
                         .push("Footstep Options");
 
-                this.enableFootprints = builder
+                this.enableFootprintParticles = builder
                         .comment("Enable Footprint particle effects")
                         .translation("mobeffects.cfg.footsteps.Enable")
                         .define("Enable Footprint Particles", true);
@@ -198,7 +198,7 @@ public final class Config {
             }
 
             void update() {
-                this._enableFootprints = this.enableFootprints.get();
+                this._enableFootprintParticles = this.enableFootprintParticles.get();
                 this._firstPersonFootstepCadence = this.firstPersonFootstepCadence.get();
                 this._footstepsAsQuadruped = this.footstepsAsQuadruped.get();
                 this._playerFootprintStyle = this.playerFootprintStyle.get();
@@ -206,8 +206,8 @@ public final class Config {
                 this._enableFootstepAccents = this.enableFootstepAccents.get();
             }
 
-            public boolean get_enableFootprints() {
-                return this._enableFootprints;
+            public boolean get_enableFootprintParticles() {
+                return this._enableFootprintParticles;
             }
 
             public boolean get_firstPersonFootstepCadence() {

@@ -108,8 +108,7 @@ public final class MobEffects {
         IMC.registerAcousticFile(new ResourceLocation(MOD_ID, "acoustics.json"));
 
         // Register our effect handlers
-        if (Config.CLIENT.footsteps.get_enableFootprints())
-            IMC.registerEffectFactoryHandler(EntityFootprintEffect.FACTORY);
+        IMC.registerEffectFactoryHandler(EntityFootprintEffect.FACTORY);
         if (Config.CLIENT.effects.get_showBreath())
             IMC.registerEffectFactoryHandler(EntityBreathEffect.FACTORY);
         if (Config.CLIENT.effects.get_enableBowEffect())

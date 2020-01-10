@@ -380,6 +380,7 @@ public class Generator {
 
 	protected boolean shouldProducePrint(@Nonnull final LivingEntity entity) {
 		return this.VAR.HAS_FOOTPRINT
+				&& Config.CLIENT.footsteps.get_enableFootprintParticles()
 				&& (entity.onGround || !(this.isJumping || entity.isAirBorne))
 				&& !entity.isInvisibleToPlayer(GameUtils.getPlayer());
 	}
