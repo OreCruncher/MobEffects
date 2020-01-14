@@ -18,6 +18,9 @@
 
 package org.orecruncher.mobeffects.effects.particles;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -26,8 +29,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.orecruncher.lib.opengl.OpenGlUtil;
 import org.orecruncher.lib.particles.IParticleMote;
 import org.orecruncher.lib.particles.ParticleCollectionHelper;
+import org.orecruncher.lib.particles.ParticleRenderType;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.FootprintStyle;
 
@@ -36,10 +41,20 @@ import javax.annotation.Nonnull;
 @Mod.EventBusSubscriber(modid = MobEffects.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class Collections {
 
-    private static final ResourceLocation FOOTPRINT_TEXTURE = new ResourceLocation(MobEffects.MOD_ID, "textures/particles/footprint.png");
+    private static final ParticleRenderType FOOTPRINT_RENDER =
+            new ParticleRenderType(new ResourceLocation(MobEffects.MOD_ID, "textures/particles/footprint.png")) {
+                @Override
+                public void beginRender(@Nonnull final BufferBuilder buffer, @Nonnull final TextureManager textureManager) {
+                    super.beginRender(buffer, textureManager);
+                    GlStateManager.depthMask(false);
+                    OpenGlUtil.setStandardBlend();
+                }
+            };
 
-    private final static ParticleCollectionHelper thePrints = new ParticleCollectionHelper("Footprints",
-            FootprintParticleCollection.FACTORY, FOOTPRINT_TEXTURE);
+    private final static ParticleCollectionHelper thePrints =
+            new ParticleCollectionHelper(
+                    "Footprints",
+                    FOOTPRINT_RENDER);
 
     private Collections() {
 

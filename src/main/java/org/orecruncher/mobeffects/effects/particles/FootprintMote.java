@@ -22,6 +22,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
@@ -108,8 +109,8 @@ public class FootprintMote extends AgeableMote {
     @Override
     protected boolean advanceAge() {
         // Footprints age faster when raining
-        if (world.isRaining())
-            this.age += (world.getRainStrength(1f) * 100F) / 25;
+        if (world instanceof World && ((World) world).isRaining())
+            this.age += (((World) world).getRainStrength(1f) * 100F) / 25;
         return super.advanceAge();
     }
 
