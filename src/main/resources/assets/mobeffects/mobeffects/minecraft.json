@@ -289,6 +289,8 @@
     "minecraft:cauldron": "metalbar",
     "minecraft:cauldron[level=3]": "metalbar,waterfine",
 
-    "minecraft:glowstone": "glowstone"
+    "minecraft:glowstone": "glowstone",
+
+    "minecraft:ladder": "ladder_default"
   }
 }
