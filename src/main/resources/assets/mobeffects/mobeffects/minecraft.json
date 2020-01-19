@@ -256,6 +256,7 @@
     "minecraft:brown_mushroom_block": "organic_dry",
     "minecraft:red_mushroom_block": "organic_dry",
     "minecraft:sunflower": "#tallplant",
+    "minecraft:sweet_berry_bush": "#bush",
 
     "minecraft:wheat": "#wheat",
     "minecraft:carrots": "#crop",
