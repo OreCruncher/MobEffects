@@ -92,7 +92,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     protected boolean isBreathVisible(@Nonnull final Entity entity) {
         final PlayerEntity player = GameUtils.getPlayer();
         if (entity == player) {
-            return !player.isSpectator();
+            return !(player.isSpectator() || GameUtils.getGameSettings().hideGUI);
         }
         return !entity.isInvisibleToPlayer(player) && player.canEntityBeSeen(entity);
     }
