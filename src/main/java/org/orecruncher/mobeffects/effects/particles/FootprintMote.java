@@ -22,7 +22,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
@@ -128,11 +127,8 @@ public class FootprintMote extends AgeableMote {
                        float rotYZ, float rotXY, float rotXZ) {
 
         float f = (this.age + partialTicks) / ((float) this.maxAge + 1);
-        f = f * f;
-        this.alpha = (int) (MathStuff.clamp(1.0F - f, 0F, 1F) * 255);
-
-        // Sets the alpha
-        this.alpha = (int) (this.alpha * 0.4F);
+        f *= f;
+        this.alpha = MathStuff.clamp1(1.0F - f) * 0.4F;
 
         final double x = renderX(partialTicks);
         final double y = renderY(partialTicks);
