@@ -6,6 +6,7 @@
     "quark:thatch_vertical_slab"
   ],
   "footsteps": {
+    "quark:root": "#vine",
     "quark:thatch": "leaves",
     "quark:thatch_slab": "leaves",
     "quark:thatch_stairs": "leaves",

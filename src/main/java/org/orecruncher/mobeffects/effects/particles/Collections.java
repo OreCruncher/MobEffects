@@ -21,24 +21,22 @@ package org.orecruncher.mobeffects.effects.particles;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.opengl.OpenGlUtil;
+import org.orecruncher.lib.particles.CollectionManager;
+import org.orecruncher.lib.particles.IParticleCollection;
 import org.orecruncher.lib.particles.IParticleMote;
-import org.orecruncher.lib.particles.ParticleCollectionHelper;
 import org.orecruncher.lib.particles.ParticleRenderType;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.FootprintStyle;
 
 import javax.annotation.Nonnull;
 
-@Mod.EventBusSubscriber(modid = MobEffects.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@OnlyIn(Dist.CLIENT)
 public final class Collections {
 
     private static final ParticleRenderType FOOTPRINT_RENDER =
@@ -51,10 +49,7 @@ public final class Collections {
                 }
             };
 
-    private final static ParticleCollectionHelper thePrints =
-            new ParticleCollectionHelper(
-                    "Footprints",
-                    FOOTPRINT_RENDER);
+    private final static IParticleCollection thePrints = CollectionManager.create("Footprints", FOOTPRINT_RENDER);
 
     private Collections() {
 
@@ -62,16 +57,9 @@ public final class Collections {
 
     public static void addFootprint(@Nonnull final FootprintStyle style, @Nonnull final World world,
                                     final Vec3d loc, final float rot, final float scale, final boolean isRight) {
-        if (thePrints.get().canFit()) {
+        if (thePrints.canFit()) {
             final IParticleMote mote = new FootprintMote(style, world, loc.x, loc.y, loc.z, rot, scale, isRight);
-            thePrints.get().addParticle(mote);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onWorldUnload(@Nonnull final WorldEvent.Unload event) {
-        if (event.getWorld() instanceof ClientWorld) {
-            thePrints.clear();
+            thePrints.add(mote);
         }
     }
 }
