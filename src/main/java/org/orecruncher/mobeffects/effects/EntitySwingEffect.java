@@ -25,7 +25,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.common.Mod;
+import org.orecruncher.lib.GameUtils;
+import org.orecruncher.lib.TickCounter;
 import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.IItemData;
@@ -34,14 +39,18 @@ import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
 import javax.annotation.Nonnull;
 
-@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MobEffects.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntitySwingEffect extends AbstractEntityEffect {
+
+    // Grace for time between the right click being triggered and when the effect update happens
+    private static final long RIGHT_CLICK_GRACE = 5;
 
     private static final ResourceLocation NAME = new ResourceLocation(MobEffects.MOD_ID, "swing");
     public static final FactoryHandler FACTORY = new FactoryHandler(
             EntitySwingEffect.NAME,
             entity -> new EntitySwingEffect());
 
+    private static long lastRightClick;
     protected int swingProgress = 0;
     protected boolean isSwinging = false;
 
@@ -61,11 +70,13 @@ public class EntitySwingEffect extends AbstractEntityEffect {
         // Is the swing in motion
         if (entity.swingingHand != null && entity.swingProgressInt > this.swingProgress) {
             if (!this.isSwinging) {
-                final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
-                final IItemData data = ItemLibrary.getItemData(currentItem);
-                final IAcoustic soundEffect = data.getSwingSound(currentItem);
-                if (soundEffect != null && freeSwing(entity)) {
-                    soundEffect.playAt(entity.getPositionVec());
+                if (isClickOK(entity)) {
+                    final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
+                    final IItemData data = ItemLibrary.getItemData(currentItem);
+                    final IAcoustic soundEffect = data.getSwingSound(currentItem);
+                    if (soundEffect != null && freeSwing(entity)) {
+                        soundEffect.playAt(entity.getPositionVec());
+                    }
                 }
             }
 
@@ -97,6 +108,17 @@ public class EntitySwingEffect extends AbstractEntityEffect {
         final Vec3d look = entity.getLook(1F);
         final Vec3d rangedLook = eyes.add(look.x * range, look.y * range, look.z * range);
         return entity.getEntityWorld().rayTraceBlocks(new RayTraceContext(eyes, rangedLook, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.SOURCE_ONLY, entity));
+    }
+
+    private boolean isClickOK(@Nonnull final LivingEntity entity) {
+        return entity == GameUtils.getPlayer() && (lastRightClick < (TickCounter.getTickCount() - RIGHT_CLICK_GRACE));
+    }
+
+    @SubscribeEvent
+    public static void onRightClick(@Nonnull final PlayerInteractEvent.RightClickBlock event) {
+        if (event.getSide() == LogicalSide.CLIENT) {
+            lastRightClick = TickCounter.getTickCount();
+        }
     }
 
 }
