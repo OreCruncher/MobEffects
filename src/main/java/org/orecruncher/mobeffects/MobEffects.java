@@ -74,7 +74,7 @@ public final class MobEffects {
     }
 
     private void clientSetup(@Nonnull final FMLClientSetupEvent event) {
-        KeyBoard.initialize();
+
     }
 
     private void setupComplete(@Nonnull final FMLLoadCompleteEvent event) {
