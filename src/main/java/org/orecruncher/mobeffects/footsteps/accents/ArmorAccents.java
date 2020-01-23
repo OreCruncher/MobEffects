@@ -29,7 +29,7 @@ import org.orecruncher.mobeffects.library.IArmorItemData;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemClass;
 import org.orecruncher.mobeffects.library.ItemLibrary;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

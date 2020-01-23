@@ -22,15 +22,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.mobeffects.library.EffectLibrary;
-import org.orecruncher.sndctrl.library.EntityEffectLibrary;
+import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
+import org.orecruncher.sndctrl.api.effects.IEntityEffectFactoryHandler;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
-public class FactoryHandler implements EntityEffectLibrary.IEntityEffectFactoryHandler {
+public class FactoryHandler implements IEntityEffectFactoryHandler {
 
     private final ResourceLocation name;
     private final Function<Entity, AbstractEntityEffect> factory;

@@ -23,12 +23,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemClass;
 import org.orecruncher.mobeffects.library.ItemLibrary;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
+import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
 
 @OnlyIn(Dist.CLIENT)
 public class EntityBowEffect extends AbstractEntityEffect {

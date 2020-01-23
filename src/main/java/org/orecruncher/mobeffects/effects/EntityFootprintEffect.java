@@ -25,14 +25,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.lib.effects.AbstractEntityEffect;
-import org.orecruncher.lib.effects.EntityEffectManager;
 
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.FootprintStyle;
 import org.orecruncher.mobeffects.footsteps.Generator;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
+import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
+import org.orecruncher.sndctrl.api.effects.IEntityEffectManager;
 
 @OnlyIn(Dist.CLIENT)
 public class EntityFootprintEffect extends AbstractEntityEffect {
@@ -49,7 +49,7 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 	}
 
 	@Override
-	public void intitialize(@Nonnull final EntityEffectManager state) {
+	public void intitialize(@Nonnull final IEntityEffectManager state) {
 		super.intitialize(state);
 		this.generator = FootstepLibrary.createGenerator((LivingEntity)getEntity());
 	}
@@ -70,7 +70,7 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 		protected FootprintStyle lastStyle;
 
 		@Override
-		public void intitialize(@Nonnull final EntityEffectManager state) {
+		public void intitialize(@Nonnull final IEntityEffectManager state) {
 			super.intitialize(state);
 			this.lastStyle = Config.CLIENT.footsteps.get_playerFootprintStyle();
 		}

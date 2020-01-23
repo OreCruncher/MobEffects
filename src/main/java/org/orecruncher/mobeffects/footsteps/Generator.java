@@ -47,8 +47,8 @@ import org.orecruncher.mobeffects.effects.particles.Collections;
 import org.orecruncher.mobeffects.footsteps.accents.FootstepAccents;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
-import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.AcousticEvent;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 import org.orecruncher.sndctrl.audio.acoustic.SimultaneousAcoustic;
 
 @OnlyIn(Dist.CLIENT)

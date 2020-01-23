@@ -35,8 +35,8 @@ import net.minecraft.util.math.Vec3d;
 import org.orecruncher.mobeffects.footsteps.facade.FacadeHelper;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 import org.orecruncher.sndctrl.audio.acoustic.AcousticCompiler;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 
 @OnlyIn(Dist.CLIENT)
 public class AcousticResolver {

@@ -43,7 +43,7 @@ import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.footsteps.*;
 import org.orecruncher.mobeffects.library.config.ModConfig;
 import org.orecruncher.mobeffects.library.config.VariatorConfig;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 import org.orecruncher.sndctrl.events.BlockInspectionEvent;
 import org.orecruncher.sndctrl.library.AcousticLibrary;
 

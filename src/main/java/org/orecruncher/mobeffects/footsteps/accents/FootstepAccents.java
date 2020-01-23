@@ -24,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.collections.ObjectArray;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
 import javax.annotation.Nonnull;
 

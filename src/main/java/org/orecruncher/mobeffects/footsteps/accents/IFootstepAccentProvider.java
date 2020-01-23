@@ -24,10 +24,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.lib.collections.ObjectArray;
 
 import net.minecraft.util.math.BlockPos;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.lib.collections.ObjectArray;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
 /**
  * Interface for objects that provide additional accents to acoustics when

@@ -109,7 +109,7 @@ public class FootprintMote extends AgeableMote {
     protected boolean advanceAge() {
         // Footprints age faster when raining
         if (world instanceof World && ((World) world).isRaining())
-            this.age += (((World) world).getRainStrength(1f) * 100F) / 25;
+            this.age += (WorldUtils.getRainStrength((World) world, 1F) * 100F) / 25;
         return super.advanceAge();
     }
 

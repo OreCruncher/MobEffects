@@ -34,7 +34,7 @@ import org.orecruncher.lib.logging.ModLog;
 import org.orecruncher.mobeffects.effects.*;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.Libraries;
-import org.orecruncher.sndctrl.IMC;
+import org.orecruncher.sndctrl.api.IMC;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Path;

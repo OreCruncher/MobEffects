@@ -31,11 +31,11 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import org.orecruncher.lib.GameUtils;
 import org.orecruncher.lib.TickCounter;
-import org.orecruncher.lib.effects.AbstractEntityEffect;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
+import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
 
 import javax.annotation.Nonnull;
 

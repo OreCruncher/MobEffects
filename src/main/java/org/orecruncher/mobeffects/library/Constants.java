@@ -23,13 +23,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
+import org.orecruncher.sndctrl.api.acoustics.AcousticEvent;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.ISoundCategory;
 import org.orecruncher.sndctrl.audio.Category;
-import org.orecruncher.sndctrl.audio.ISoundCategory;
-import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
 import org.orecruncher.sndctrl.audio.acoustic.NullAcoustic;
-
-import javax.annotation.Resource;
 
 @OnlyIn(Dist.CLIENT)
 public final class Constants {

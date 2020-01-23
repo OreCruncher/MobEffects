@@ -28,7 +28,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.orecruncher.lib.Utilities;
 import org.orecruncher.lib.blockstate.BlockStateMatcher;
 import org.orecruncher.lib.collections.ObjectArray;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -25,12 +25,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.lib.effects.AbstractEntityEffect;
-import org.orecruncher.lib.effects.EntityEffectManager;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
-import org.orecruncher.sndctrl.audio.acoustic.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
+import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
+import org.orecruncher.sndctrl.api.effects.IEntityEffectManager;
 
 import javax.annotation.Nonnull;
 
@@ -45,7 +45,7 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
     protected static class HandTracker {
 
         protected final Hand hand;
-        protected Item lastHeld = null;
+        protected Item lastHeld;
 
         protected HandTracker(@Nonnull final PlayerEntity player) {
             this(player, Hand.OFF_HAND);
@@ -81,7 +81,7 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
 
     protected static class MainHandTracker extends HandTracker {
 
-        protected int lastSlot = -1;
+        protected int lastSlot;
 
         public MainHandTracker(@Nonnull final PlayerEntity player) {
             super(player, Hand.MAIN_HAND);
@@ -107,7 +107,7 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
         super(NAME);
     }
 
-    public void intitialize(@Nonnull EntityEffectManager manager) {
+    public void intitialize(@Nonnull IEntityEffectManager manager) {
         super.intitialize(manager);
         final PlayerEntity player = (PlayerEntity) getEntity();
         this.mainHand = new MainHandTracker(player);

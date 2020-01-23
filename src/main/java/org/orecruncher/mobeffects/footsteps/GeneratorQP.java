@@ -24,7 +24,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.mobeffects.library.Constants;
-import org.orecruncher.sndctrl.audio.acoustic.AcousticEvent;
+import org.orecruncher.sndctrl.api.acoustics.AcousticEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class GeneratorQP extends Generator {
@@ -93,7 +93,7 @@ public class GeneratorQP extends Generator {
 	}
 
 	@Override
-	protected float reevaluateDistance(@Nonnull final AcousticEvent event, @Nonnull final float distance) {
+	protected float reevaluateDistance(@Nonnull final AcousticEvent event, final float distance) {
 		final float ret = distance;
 		if (event == Constants.WALK)
 			switch (USE_FUNCTION) {

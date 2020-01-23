@@ -31,12 +31,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
 import org.orecruncher.lib.TickCounter;
 import org.orecruncher.lib.WorldUtils;
-import org.orecruncher.lib.effects.AbstractEntityEffect;
-import org.orecruncher.lib.effects.EntityEffectManager;
 import org.orecruncher.lib.random.MurmurHash3;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.effects.particles.BubbleBreathParticle;
 import org.orecruncher.mobeffects.effects.particles.FrostBreathParticle;
+import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
+import org.orecruncher.sndctrl.api.effects.IEntityEffectManager;
 
 import javax.annotation.Nonnull;
 
@@ -55,7 +55,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     }
 
     @Override
-    public void intitialize(@Nonnull final EntityEffectManager state) {
+    public void intitialize(@Nonnull final IEntityEffectManager state) {
         super.intitialize(state);
         this.seed = MurmurHash3.hash(getEntity().getEntityId()) & 0xFFFF;
     }
