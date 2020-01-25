@@ -257,6 +257,10 @@ public final class FootstepLibrary {
         }
     }
 
+    static void complete() {
+        substrateMap.forEach((key, value) -> value.trim());
+    }
+
     private static void registerBlocks(@Nonnull final String blockClass, @Nonnull final String... blocks) {
         for (final String s : blocks)
             register(s, blockClass);

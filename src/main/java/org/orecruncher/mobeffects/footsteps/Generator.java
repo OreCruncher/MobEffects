@@ -98,8 +98,8 @@ public class Generator {
 	protected double distanceWalkedOnStepModified;
 	protected int pedometer;
 
-	protected static final ObjectArray<IAcoustic> accents = new ObjectArray<>(4);
-	protected final ObjectArray<Footprint> footprints = new ObjectArray<>(4);
+	protected static final ObjectArray<IAcoustic> accents = new ObjectArray<>();
+	protected final ObjectArray<Footprint> footprints = new ObjectArray<>();
 
 	public Generator(@Nonnull final Variator var) {
 		this.VAR = var;

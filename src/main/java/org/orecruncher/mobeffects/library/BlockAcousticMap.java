@@ -88,13 +88,17 @@ public final class BlockAcousticMap {
 	public void put(@Nonnull final BlockStateMatcher info, @Nonnull final IAcoustic acoustics) {
 		ObjectArray<Pair<BlockStateMatcher, IAcoustic>> entry = this.data.get(info.getBlock());
 		if (entry == null) {
-			this.data.put(info.getBlock(), entry = new ObjectArray<>(2));
+			this.data.put(info.getBlock(), entry = new ObjectArray<>());
 		}
 		entry.add(Pair.of(info, acoustics));
 	}
 
 	public void clear() {
 		this.data.clear();
+	}
+
+	public void trim() {
+		this.data.forEach((key, value) -> value.trim());
 	}
 
 }
