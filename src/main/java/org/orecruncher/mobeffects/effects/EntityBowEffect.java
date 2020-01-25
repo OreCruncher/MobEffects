@@ -46,7 +46,7 @@ public class EntityBowEffect extends AbstractEntityEffect {
 
     @Override
     public void update() {
-        final LivingEntity entity = (LivingEntity) getEntity();
+        final LivingEntity entity = getEntity();
         final ItemStack currentStack = entity.getActiveItemStack();
         if (!currentStack.isEmpty()) {
             if (!ItemStack.areItemStacksEqual(currentStack, this.lastActiveStack)) {

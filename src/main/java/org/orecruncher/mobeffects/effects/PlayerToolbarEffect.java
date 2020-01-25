@@ -107,7 +107,7 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
         super(NAME);
     }
 
-    public void intitialize(@Nonnull IEntityEffectManager manager) {
+    public void intitialize(@Nonnull final IEntityEffectManager manager) {
         super.intitialize(manager);
         final PlayerEntity player = (PlayerEntity) getEntity();
         this.mainHand = new MainHandTracker(player);

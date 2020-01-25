@@ -61,7 +61,7 @@ public class EntitySwingEffect extends AbstractEntityEffect {
     @Override
     public void update() {
 
-        final LivingEntity entity = (LivingEntity) getEntity();
+        final LivingEntity entity = getEntity();
 
         // Boats are strange - ignore them for now
         if (entity.getRidingEntity() instanceof BoatEntity)
@@ -102,7 +102,7 @@ public class EntitySwingEffect extends AbstractEntityEffect {
         return entity.getWidth() * 2F + 0.6F; // 0.6 == default entity width
     }
 
-    protected static BlockRayTraceResult rayTraceBlock(LivingEntity entity) {
+    protected static BlockRayTraceResult rayTraceBlock(@Nonnull final LivingEntity entity) {
         double range = getReach(entity);
         final Vec3d eyes = entity.getEyePosition(1F);
         final Vec3d look = entity.getLook(1F);

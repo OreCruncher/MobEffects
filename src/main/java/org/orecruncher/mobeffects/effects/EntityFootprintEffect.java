@@ -20,7 +20,6 @@ package org.orecruncher.mobeffects.effects;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -51,12 +50,12 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 	@Override
 	public void intitialize(@Nonnull final IEntityEffectManager state) {
 		super.intitialize(state);
-		this.generator = FootstepLibrary.createGenerator((LivingEntity)getEntity());
+		this.generator = FootstepLibrary.createGenerator(getEntity());
 	}
 
 	@Override
 	public void update() {
-		this.generator.generateFootsteps((LivingEntity) getEntity());
+		this.generator.generateFootsteps(getEntity());
 	}
 
 	@Override
@@ -79,7 +78,7 @@ public class EntityFootprintEffect extends AbstractEntityEffect {
 		public void update() {
 			final FootprintStyle currentStyle = Config.CLIENT.footsteps.get_playerFootprintStyle();
 			if (this.lastStyle != currentStyle) {
-				this.generator = FootstepLibrary.createGenerator((LivingEntity) getEntity());
+				this.generator = FootstepLibrary.createGenerator(getEntity());
 				this.lastStyle = currentStyle;
 			}
 			super.update();

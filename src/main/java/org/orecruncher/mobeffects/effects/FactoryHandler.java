@@ -18,7 +18,7 @@
 
 package org.orecruncher.mobeffects.effects;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,9 +33,9 @@ import java.util.function.Function;
 public class FactoryHandler implements IEntityEffectFactoryHandler {
 
     private final ResourceLocation name;
-    private final Function<Entity, AbstractEntityEffect> factory;
+    private final Function<LivingEntity, AbstractEntityEffect> factory;
 
-    public FactoryHandler(@Nonnull final ResourceLocation res, @Nonnull final Function<Entity, AbstractEntityEffect> factory) {
+    public FactoryHandler(@Nonnull final ResourceLocation res, @Nonnull final Function<LivingEntity, AbstractEntityEffect> factory) {
         this.name = res;
         this.factory = factory;
     }
@@ -47,13 +47,13 @@ public class FactoryHandler implements IEntityEffectFactoryHandler {
     }
 
     @Override
-    public boolean appliesTo(@Nonnull final Entity entity) {
+    public boolean appliesTo(@Nonnull final LivingEntity entity) {
         return EffectLibrary.hasEffect(entity, getName());
     }
 
     @Override
     @Nonnull
-    public AbstractEntityEffect get(@Nonnull final Entity entity) {
+    public AbstractEntityEffect get(@Nonnull final LivingEntity entity) {
         return this.factory.apply(entity);
     }
 }

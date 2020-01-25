@@ -20,7 +20,6 @@ package org.orecruncher.mobeffects.effects;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -62,7 +61,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
 
     @Override
     public void update() {
-        final Entity entity = getEntity();
+        final LivingEntity entity = getEntity();
         if (isBreathVisible(entity)) {
             final int c = (int) (TickCounter.getTickCount() + this.seed);
             final BlockPos headPos = getHeadPosition(entity);
@@ -89,7 +88,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
         }
     }
 
-    protected boolean isBreathVisible(@Nonnull final Entity entity) {
+    protected boolean isBreathVisible(@Nonnull final LivingEntity entity) {
         final PlayerEntity player = GameUtils.getPlayer();
         if (entity == player) {
             return !(player.isSpectator() || GameUtils.getGameSettings().hideGUI);
@@ -97,7 +96,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
         return !entity.isInvisibleToPlayer(player) && player.canEntityBeSeen(entity);
     }
 
-    protected BlockPos getHeadPosition(final Entity entity) {
+    protected BlockPos getHeadPosition(@Nonnull final LivingEntity entity) {
         final double d0 = entity.posY + entity.getEyeHeight();
         return new BlockPos(entity.posX, d0, entity.posZ);
     }
@@ -106,7 +105,7 @@ public class EntityBreathEffect extends AbstractEntityEffect {
         return headBlock.getMaterial().isLiquid();
     }
 
-    protected boolean showFrostBreath(final Entity entity, @Nonnull final BlockState headBlock, @Nonnull final BlockPos pos) {
+    protected boolean showFrostBreath(final LivingEntity entity, @Nonnull final BlockState headBlock, @Nonnull final BlockPos pos) {
         if (headBlock.getMaterial() == Material.AIR) {
             final World world = entity.getEntityWorld();
             return WorldUtils.isColdTemperature(WorldUtils.getTemperatureAt(world, pos));
@@ -115,12 +114,12 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     }
 
     protected void createBubbleParticle(boolean isDrowning) {
-        final BubbleBreathParticle p = new BubbleBreathParticle((LivingEntity) getEntity(), isDrowning);
+        final BubbleBreathParticle p = new BubbleBreathParticle(getEntity(), isDrowning);
         addParticle(p);
     }
 
     protected void createFrostParticle() {
-        final FrostBreathParticle p = new FrostBreathParticle((LivingEntity) getEntity());
+        final FrostBreathParticle p = new FrostBreathParticle(getEntity());
         addParticle(p);
     }
 
