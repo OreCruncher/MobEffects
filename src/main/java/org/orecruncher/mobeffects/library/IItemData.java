@@ -21,7 +21,6 @@ package org.orecruncher.mobeffects.library;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
 import javax.annotation.Nonnull;
 
@@ -29,9 +28,9 @@ import javax.annotation.Nonnull;
 public interface IItemData {
     ItemClass getItemClass();
 
-    IAcoustic getEquipSound(@Nonnull final ItemStack stack);
+    void playEquipSound(@Nonnull final ItemStack stack);
 
-    IAcoustic getSwingSound(@Nonnull final ItemStack stack);
+    void playSwingSound(@Nonnull final ItemStack stack);
 
-    IAcoustic getUseSound(@Nonnull final ItemStack stack);
+    void playUseSound(@Nonnull final ItemStack stack);
 }

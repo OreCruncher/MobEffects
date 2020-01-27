@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
-import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
 import org.orecruncher.sndctrl.api.effects.IEntityEffectManager;
 
@@ -70,11 +69,8 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
             if (triggerNewEquipSound(player)) {
                 final ItemStack currentStack = player.getHeldItem(this.hand);
                 final IItemData data = ItemLibrary.getItemData(currentStack);
-                final IAcoustic soundEffect = data.getEquipSound(currentStack);
-                if (soundEffect != null) {
-                    soundEffect.playAt(player.getPositionVec());
-                    this.lastHeld = currentStack.getItem();
-                }
+                data.playEquipSound(currentStack);
+                this.lastHeld = currentStack.getItem();
             }
         }
     }

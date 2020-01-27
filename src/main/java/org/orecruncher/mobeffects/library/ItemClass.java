@@ -24,10 +24,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.IAcousticFactory;
+import org.orecruncher.sndctrl.api.acoustics.IFadableSoundInstance;
+import org.orecruncher.sndctrl.audio.AudioEngine;
+import org.orecruncher.sndctrl.audio.BackgroundSoundInstance;
 import org.orecruncher.sndctrl.library.AcousticLibrary;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public enum ItemClass {
@@ -71,26 +75,31 @@ public enum ItemClass {
         this.isArmor = isArmor;
     }
 
-    // Package internal
-    @Nonnull
-    public IAcoustic getSwingSound() {
-        return AcousticLibrary.resolve(this.swing);
+    public void playSwingSound() {
+        play(this.swing);
     }
 
-    // Package internal
-    @Nonnull
-    public IAcoustic getUseSound() {
-        return AcousticLibrary.resolve(this.use);
+    public void playUseSound() {
+        play(this.use);
     }
 
-    // Package internal
-    @Nonnull
-    public IAcoustic getEquipSound() {
-        return AcousticLibrary.resolve(this.equip);
+    public void playEquipSound() {
+        play(this.equip);
     }
 
     public boolean isArmor() {
         return this.isArmor;
+    }
+
+    private void play(@Nullable final ResourceLocation acoustic) {
+        if (acoustic == null)
+            return;
+        final IAcousticFactory factory = AcousticLibrary.resolve(acoustic).getFactory();
+        if (factory != null) {
+            final IFadableSoundInstance instance = new BackgroundSoundInstance(factory.createSound(), Constants.TOOLBAR);
+            instance.noFade();
+            AudioEngine.play(instance);
+        }
     }
 
     /**

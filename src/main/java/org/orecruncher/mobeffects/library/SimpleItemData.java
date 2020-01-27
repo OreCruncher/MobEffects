@@ -22,10 +22,8 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class SimpleItemData implements IItemData {
@@ -53,21 +51,18 @@ public class SimpleItemData implements IItemData {
     }
 
     @Override
-    @Nullable
-    public IAcoustic getEquipSound(@Nonnull final ItemStack stack) {
-        return this.itemClass.getEquipSound();
+    public void playEquipSound(@Nonnull final ItemStack stack) {
+        this.itemClass.playEquipSound();
     }
 
     @Override
-    @Nullable
-    public IAcoustic getSwingSound(@Nonnull final ItemStack stack) {
-        return this.itemClass.getSwingSound();
+    public void playSwingSound(@Nonnull final ItemStack stack) {
+        this.itemClass.playSwingSound();
     }
 
     @Override
-    @Nullable
-    public IAcoustic getUseSound(@Nonnull final ItemStack stack) {
-        return this.itemClass.getUseSound();
+    public void playUseSound(@Nonnull final ItemStack stack) {
+        this.itemClass.playUseSound();
     }
 
 }

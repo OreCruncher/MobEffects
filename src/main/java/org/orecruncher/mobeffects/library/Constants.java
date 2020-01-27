@@ -55,6 +55,7 @@ public final class Constants {
     public static final AcousticEvent UP_RUN = new AcousticEvent(new ResourceLocation(MobEffects.MOD_ID, "up_run"), RUN);
 
     public static final ISoundCategory FOOTSTEPS = new Category("footsteps", Config.CLIENT.footsteps::get_footstepVolumeScale);
+    public static final ISoundCategory TOOLBAR = new Category("toolbar", Config.CLIENT.effects::get_toolbarVolumeScale);
 
     public static final ResourceLocation LIGHT_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_light");
     public static final ResourceLocation MEDIUM_ARMOR = new ResourceLocation(MobEffects.MOD_ID, "armor_medium");

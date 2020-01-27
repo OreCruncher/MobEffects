@@ -239,6 +239,7 @@ public final class Config {
             private final BooleanValue enableToolbarEffect;
             private final BooleanValue enableBowEffect;
             private final BooleanValue enableSwingEffect;
+            private final IntValue toolbarVolume;
 
             private boolean _hidePlayerPotionParticles;
             private boolean _showBreath;
@@ -246,6 +247,7 @@ public final class Config {
             private boolean _enableToolbarEffect;
             private boolean _enableBowEffect;
             private boolean _enableSwingEffect;
+            private float _toolbarVolume;
 
             public Effects(@Nonnull final ForgeConfigSpec.Builder builder) {
                 builder.comment("Options for mob effect generation")
@@ -285,6 +287,11 @@ public final class Config {
                         .translation("mobeffects.cfg.effects.Swing")
                         .define("Enable Item Swing Sound Effects", true);
 
+                this.toolbarVolume = builder
+                        .comment("Toolbar master volume scale")
+                        .translation("mobeffects.cfg.effects.ToolbarVolume")
+                        .defineInRange("Toolbar Volume Scale", 50, 0, 100);
+
                 builder.pop();
             }
 
@@ -295,6 +302,7 @@ public final class Config {
                 this._enableToolbarEffect = this.enableToolbarEffect.get();
                 this._enableBowEffect = this.enableBowEffect.get();
                 this._enableSwingEffect = this.enableSwingEffect.get();
+                this._toolbarVolume = this.toolbarVolume.get() / 100F;
             }
 
             public boolean get_hidePlayerPotionParticles() {
@@ -319,6 +327,10 @@ public final class Config {
 
             public boolean get_enableSwingEffect() {
                 return this._enableSwingEffect;
+            }
+
+            public float get_toolbarVolumeScale() {
+                return this._toolbarVolume;
             }
         }
     }

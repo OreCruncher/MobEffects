@@ -82,8 +82,11 @@ public final class MobEffects {
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
-        // Sound Category
-        IMC.registerSoundCategory(Constants.FOOTSTEPS);
+        // Sound Categories
+        IMC.registerSoundCategory(
+                Constants.FOOTSTEPS,
+                Constants.TOOLBAR
+        );
 
         // Register our AcousticEvents
         IMC.registerAcousticEvent(

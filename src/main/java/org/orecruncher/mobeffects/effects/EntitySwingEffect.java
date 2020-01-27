@@ -34,7 +34,6 @@ import org.orecruncher.lib.TickCounter;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.IItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
-import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
 
 import javax.annotation.Nonnull;
@@ -73,10 +72,8 @@ public class EntitySwingEffect extends AbstractEntityEffect {
                 if (isClickOK(entity)) {
                     final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
                     final IItemData data = ItemLibrary.getItemData(currentItem);
-                    final IAcoustic soundEffect = data.getSwingSound(currentItem);
-                    if (soundEffect != null && freeSwing(entity)) {
-                        soundEffect.playAt(entity.getPositionVec());
-                    }
+                    if (freeSwing(entity))
+                        data.playSwingSound(currentItem);
                 }
             }
 
