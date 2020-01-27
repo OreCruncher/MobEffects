@@ -36,7 +36,7 @@ import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.lib.fml.ForgeUtils;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
-import org.orecruncher.sndctrl.audio.SoundBuilder;
+import org.orecruncher.sndctrl.api.sound.SoundBuilder;
 import org.orecruncher.sndctrl.library.AcousticLibrary;
 import org.orecruncher.sndctrl.library.SoundLibrary;
 
