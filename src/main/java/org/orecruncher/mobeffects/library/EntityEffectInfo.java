@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
-import org.orecruncher.sndctrl.library.AcousticLibrary;
+import org.orecruncher.sndctrl.api.acoustics.Library;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -42,7 +42,7 @@ public class EntityEffectInfo {
 	public EntityEffectInfo(@Nonnull final EntityConfig ec) {
 		final String[] effects = ec.effects.split(",");
 		for (final String e : effects) {
-			final ResourceLocation r = AcousticLibrary.resolveResource(MobEffects.MOD_ID, e);
+			final ResourceLocation r = Library.resolveResource(MobEffects.MOD_ID, e);
 			this.effects.add(r);
 		}
 		this.variator = ec.variator;

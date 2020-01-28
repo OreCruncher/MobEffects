@@ -24,7 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
-import org.orecruncher.sndctrl.library.AcousticLibrary;
+import org.orecruncher.sndctrl.api.acoustics.Library;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -54,13 +54,13 @@ public final class SimpleArmorItemData extends SimpleItemData implements IArmorI
     @Nonnull
     @Override
     public IAcoustic getArmorSound(@Nonnull final ItemStack stack) {
-        return AcousticLibrary.resolve(ARMOR.get(this.itemClass));
+        return Library.resolve(ARMOR.get(this.itemClass));
     }
 
     @Nonnull
     @Override
     public IAcoustic getFootArmorSound(@Nonnull final ItemStack stack) {
-        return AcousticLibrary.resolve(FOOT.get(this.itemClass));
+        return Library.resolve(FOOT.get(this.itemClass));
     }
 
 }

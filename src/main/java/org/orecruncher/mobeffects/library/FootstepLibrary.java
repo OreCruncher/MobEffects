@@ -44,8 +44,8 @@ import org.orecruncher.mobeffects.footsteps.*;
 import org.orecruncher.mobeffects.library.config.ModConfig;
 import org.orecruncher.mobeffects.library.config.VariatorConfig;
 import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
+import org.orecruncher.sndctrl.api.acoustics.Library;
 import org.orecruncher.sndctrl.events.BlockInspectionEvent;
-import org.orecruncher.sndctrl.library.AcousticLibrary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -235,8 +235,8 @@ public final class FootstepLibrary {
 	static void initFromConfig(@Nonnull final ModConfig mod) {
         // Handle our primitives first
         for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
-            final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
-            AcousticLibrary.resolve(loc, kvp.getValue());
+            final ResourceLocation loc = Library.resolveResource(MobEffects.MOD_ID, kvp.getKey());
+            Library.resolve(loc, kvp.getValue());
         }
 
         // Apply acoustics based on configured tagging
@@ -272,22 +272,23 @@ public final class FootstepLibrary {
         collectData(evt.state, evt.data);
     }
 
+    @Nonnull
     public static IAcoustic getRainSplashAcoustic() {
         if (SPLASH == null)
-            SPLASH = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "waterfine"));
+            SPLASH = Library.resolve(new ResourceLocation(MobEffects.MOD_ID, "waterfine"));
         return SPLASH;
     }
 
     @Nonnull
     public static IAcoustic getSwimAcoustic() {
         if (SWIM == null)
-            SWIM = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "_swim"));
+            SWIM = Library.resolve(new ResourceLocation(MobEffects.MOD_ID, "_swim"));
         return SWIM;
     }
 
     public static IAcoustic getWaterLoggedAcoustic() {
         if (WATERLOGGED == null)
-            WATERLOGGED = AcousticLibrary.resolve(new ResourceLocation(MobEffects.MOD_ID, "_waterlogged"));
+            WATERLOGGED = Library.resolve(new ResourceLocation(MobEffects.MOD_ID, "_waterlogged"));
         return WATERLOGGED;
     }
 
@@ -321,7 +322,7 @@ public final class FootstepLibrary {
     private static void put(@Nonnull final BlockStateMatcher info, @Nullable final String substrate,
                             @Nonnull final String acousticList) {
 
-        final IAcoustic acoustics = AcousticLibrary.resolve(
+        final IAcoustic acoustics = Library.resolve(
                 MobEffects.MOD_ID,
                 acousticList,
                 r -> {
@@ -429,7 +430,7 @@ public final class FootstepLibrary {
         final Material mat = state.getMaterial();
         if (!mat.blocksMovement() || mat.isLiquid())
             return Constants.NOT_EMITTER;
-        return AcousticLibrary.resolve(Objects.requireNonNull(state.getSoundType().getStepSound().getRegistryName()));
+        return Library.resolve(Objects.requireNonNull(state.getSoundType().getStepSound().getRegistryName()));
     }
 
     public static boolean hasFootprint(@Nonnull final BlockState state) {

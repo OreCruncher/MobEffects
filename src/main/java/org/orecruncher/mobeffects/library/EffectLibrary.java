@@ -36,9 +36,8 @@ import org.orecruncher.lib.JsonUtils;
 import org.orecruncher.lib.fml.ForgeUtils;
 import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.library.config.EntityConfig;
+import org.orecruncher.sndctrl.api.acoustics.Library;
 import org.orecruncher.sndctrl.api.sound.SoundBuilder;
-import org.orecruncher.sndctrl.library.AcousticLibrary;
-import org.orecruncher.sndctrl.library.SoundLibrary;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -74,7 +73,7 @@ public final class EffectLibrary {
         final Map<String, EntityConfig> configMap = JsonUtils.loadConfig(new ResourceLocation(MobEffects.MOD_ID, "effects.json"), EntityConfig.class);
         for (final Map.Entry<String, EntityConfig> kvp : configMap.entrySet()) {
             final EntityEffectInfo eei = new EntityEffectInfo(kvp.getValue());
-            final ResourceLocation loc = AcousticLibrary.resolveResource(MobEffects.MOD_ID, kvp.getKey());
+            final ResourceLocation loc = Library.resolveResource(MobEffects.MOD_ID, kvp.getKey());
 
             if (loc.equals(PLAYER)) {
                 playerEffects = eei;
@@ -111,7 +110,7 @@ public final class EffectLibrary {
 
         // Replace our bow loose sounds
         final ResourceLocation bowLoose = new ResourceLocation(MobEffects.MOD_ID, "bow.loose");
-        SoundLibrary.getSound(bowLoose).ifPresent(se -> {
+        Library.getSound(bowLoose).ifPresent(se -> {
             soundReplace.put(new ResourceLocation("minecraft:entity.arrow.shoot"), se);
             soundReplace.put(new ResourceLocation("minecraft:entity.skeleton.shoot"), se);
         });
