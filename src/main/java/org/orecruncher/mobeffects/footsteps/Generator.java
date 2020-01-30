@@ -29,7 +29,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
@@ -42,14 +41,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.orecruncher.mobeffects.Config;
-import org.orecruncher.mobeffects.MobEffects;
 import org.orecruncher.mobeffects.effects.particles.Collections;
 import org.orecruncher.mobeffects.footsteps.accents.FootstepAccents;
 import org.orecruncher.mobeffects.library.Constants;
 import org.orecruncher.mobeffects.library.FootstepLibrary;
 import org.orecruncher.sndctrl.api.acoustics.AcousticEvent;
 import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
-import org.orecruncher.sndctrl.audio.acoustic.SimultaneousAcoustic;
+import org.orecruncher.sndctrl.audio.acoustic.AcousticCompiler;
 
 @OnlyIn(Dist.CLIENT)
 public class Generator {
@@ -412,7 +410,7 @@ public class Generator {
 
 		// It is possible that the association has no position, so it
 		// needs to be checked.
-		if (result != null && result.hasStrikeLocation() && shouldProducePrint(entity)) {
+		if (result != null && shouldProducePrint(entity)) {
 			final Vec3d printPos = result.getStrikeLocation().footprintPosition();
 			if (printPos != null) {
 				FootprintStyle style = this.VAR.FOOTPRINT_STYLE;
@@ -482,8 +480,7 @@ public class Generator {
 			FootstepAccents.provide(entity, pos, accents);
 			if (accents.size() > 0) {
 				if (assoc == null) {
-					final SimultaneousAcoustic acoustic = new SimultaneousAcoustic(new ResourceLocation(MobEffects.MOD_ID, "adhoc"));
-					accents.forEach(acoustic::add);
+					final IAcoustic acoustic = AcousticCompiler.combine(accents);
 					assoc = new Association(entity, acoustic);
 				} else {
 					assoc.merge(accents.toArray(new IAcoustic[0]));
@@ -496,10 +493,10 @@ public class Generator {
 
 	@Override
 	public String toString() {
-		return "didJump: " + Boolean.toString(this.didJump) + ' ' +
-				"onLadder: " + Boolean.toString(this.isOnLadder) + ' ' +
-				"flying: " + Boolean.toString(this.isFlying) + ' ' +
-				"immobile: " + Boolean.toString(this.isImmobile) + ' ' +
+		return "didJump: " + this.didJump + ' ' +
+				"onLadder: " + this.isOnLadder + ' ' +
+				"flying: " + this.isFlying + ' ' +
+				"immobile: " + this.isImmobile + ' ' +
 				"steps: " + this.pedometer;
 	}
 

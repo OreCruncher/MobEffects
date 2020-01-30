@@ -183,7 +183,6 @@ public class AcousticResolver {
 			}
 		} else {
 			vec = tPos;
-			in = above;
 		}
 
 		if (acoustics == Constants.NOT_EMITTER) {
@@ -191,7 +190,7 @@ public class AcousticResolver {
 			return null;
 		} else {
 			// Let's play the fancy acoustics we have defined for the block
-			return new Association(in, this.loc.rebase(new BlockPos(vec)), acoustics);
+			return new Association(this.loc.rebase(new BlockPos(vec)), acoustics);
 		}
 	}
 

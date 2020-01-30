@@ -138,8 +138,8 @@ public final class FootStrikeLocation {
 	protected double getBoundingBoxY(final double baseY, @Nonnull final IWorldReader world,
 			@Nonnull final BlockState state, @Nonnull final BlockPos pos) {
 		final VoxelShape shape = state.getCollisionShape(world, pos);
-		final double boundingY = state.getShape(world, pos).getBoundingBox().maxY;
-		final double collisionY = shape.isEmpty() ? 0 : shape.getBoundingBox().maxY;
+		final double boundingY = state.getShape(world, pos).getEnd(Direction.Axis.Y);
+		final double collisionY = shape.isEmpty() ? 0 : shape.getEnd(Direction.Axis.Y);
 		if (boundingY == collisionY)
 			return baseY;
 		return Math.max(baseY, pos.getY() + Math.max(boundingY, collisionY));
