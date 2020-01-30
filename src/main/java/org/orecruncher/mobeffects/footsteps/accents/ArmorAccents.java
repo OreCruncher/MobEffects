@@ -25,9 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.collections.ObjectArray;
-import org.orecruncher.mobeffects.library.IArmorItemData;
-import org.orecruncher.mobeffects.library.IItemData;
-import org.orecruncher.mobeffects.library.ItemClass;
+import org.orecruncher.mobeffects.library.ItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
 import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 
@@ -39,17 +37,17 @@ class ArmorAccents implements IFootstepAccentProvider {
 
     @Nullable
     protected IAcoustic resolveArmor(@Nonnull final ItemStack stack) {
-        final IItemData id = ItemLibrary.getItemData(stack);
-        if (id instanceof IArmorItemData) {
-            return ((IArmorItemData) id).getArmorSound(stack);
+        final ItemData id = ItemLibrary.getItemData(stack);
+        if (id.isArmor()) {
+            return ((ItemData.ArmorItemData) id).getArmorSound(stack);
         }
         return null;
     }
 
     protected IAcoustic resolveFootArmor(@Nonnull final ItemStack stack) {
-        final IItemData id = ItemLibrary.getItemData(stack);
-        if (id instanceof IArmorItemData) {
-            return ((IArmorItemData) id).getFootArmorSound(stack);
+        final ItemData id = ItemLibrary.getItemData(stack);
+        if (id.isArmor()) {
+            return ((ItemData.ArmorItemData) id).getFootArmorSound(stack);
         }
         return null;
     }
@@ -59,10 +57,9 @@ class ArmorAccents implements IFootstepAccentProvider {
             @Nonnull final LivingEntity entity,
             @Nonnull final BlockPos blockPos,
             @Nonnull final BlockState posState,
-            @Nonnull final ObjectArray<IAcoustic> acoustics)
-    {
-        final ItemStack armor = ItemClass.effectiveArmorItemStack(entity);
-        final ItemStack foot = ItemClass.footArmorItemStack(entity);
+            @Nonnull final ObjectArray<IAcoustic> acoustics) {
+        final ItemStack armor = ItemData.effectiveArmorItemStack(entity);
+        final ItemStack foot = ItemData.footArmorItemStack(entity);
         final IAcoustic armorAddon = resolveArmor(armor);
         IAcoustic footAddon = resolveFootArmor(foot);
 

@@ -18,6 +18,8 @@
 
 package org.orecruncher.mobeffects.library;
 
+import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,25 +40,52 @@ import java.util.regex.Pattern;
 @OnlyIn(Dist.CLIENT)
 public final class ItemLibrary {
 
+    // For things that don't make an equip sound - like AIR
+    public static final ItemData EMPTY = new ItemData("EMPTY", Constants.NONE);
+    public static final ItemData NONE = new ItemData("NONE", Constants.NONE, Constants.NONE, Constants.UTILITY_EQUIP);
+    public static final ItemData LEATHER = new ItemData.ArmorItemData("LEATHER", Constants.LEATHER_ARMOR_EQUIP, Constants.LIGHT_ARMOR, Constants.LIGHT_FOOT_ARMOR, 0);
+    public static final ItemData CHAIN = new ItemData.ArmorItemData("CHAIN", Constants.CHAIN_ARMOR_EQUIP, Constants.MEDIUM_ARMOR, Constants.MEDIUM_FOOT_ARMOR, 1);
+    public static final ItemData CRYSTAL = new ItemData.ArmorItemData("CRYSTAL", Constants.CRYSTAL_ARMOR_EQUIP, Constants.CRYSTAL_ARMOR, Constants.CRYSTAL_FOOT_ARMOR, 2);
+    public static final ItemData PLATE = new ItemData.ArmorItemData("PLATE", Constants.PLATE_ARMOR_EQUIP, Constants.HEAVY_ARMOR, Constants.HEAVY_FOOT_ARMOR, 3);
+    public static final ItemData SHIELD = new ItemData("SHIELD", Constants.TOOL_SWING, Constants.SHIELD_USE, Constants.SHIELD_EQUIP);
+    public static final ItemData SWORD = new ItemData("SWORD", Constants.SWORD_SWING, Constants.NONE, Constants.SWORD_EQUIP);
+    public static final ItemData AXE = new ItemData("AXE", Constants.AXE_SWING, Constants.NONE, Constants.AXE_EQUIP);
+    public static final ItemData BOW = new ItemData("BOW", Constants.TOOL_SWING, Constants.BOW_PULL, Constants.BOW_EQUIP);
+    public static final ItemData CROSSBOW = new ItemData("CROSSBOW", Constants.TOOL_SWING, Constants.BOW_PULL, Constants.BOW_EQUIP);
+    public static final ItemData TOOL = new ItemData("TOOL", Constants.TOOL_SWING, Constants.NONE, Constants.TOOL_EQUIP);
+    public static final ItemData BOOK = new ItemData("BOOK", Constants.BOOK_EQUIP, Constants.BOOK_EQUIP, Constants.BOOK_EQUIP);
+    public static final ItemData POTION = new ItemData("POTION", Constants.POTION_EQUIP, Constants.POTION_EQUIP, Constants.POTION_EQUIP);
+
     private static final IModLog LOGGER = MobEffects.LOGGER.createChild(ItemLibrary.class);
-
-    // https://www.regexplanet.com/advanced/java/index.html
-
+    private static final Object2ReferenceOpenHashMap<String, ItemData> CACHE = new Object2ReferenceOpenHashMap<>();
     // Pattern for matching Java class names
     private static final String ID_PATTERN = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*";
-    private static final Pattern FQCN = Pattern.compile(ID_PATTERN + "(\\." + ID_PATTERN + ")*");
 
+    // https://www.regexplanet.com/advanced/java/index.html
+    private static final Pattern FQCN = Pattern.compile(ID_PATTERN + "(\\." + ID_PATTERN + ")*");
     // Pattern for matching ItemStack names
     private static final Pattern ITEM_PATTERN = Pattern.compile("([\\w\\-]+:[\\w\\.\\-/]+)[:]?(\\d+|\\*)?(\\{.*\\})?");
-
     private static final int SET_CAPACITY = 64;
     private static final int MAP_CAPACITY = 256;
+    private static final Reference2ReferenceOpenHashMap<ItemData, Set<Class<?>>> classMap = new Reference2ReferenceOpenHashMap<>();
+    private static final Map<Item, ItemData> items = new IdentityHashMap<>(MAP_CAPACITY);
 
-    private static SimpleItemData NONE_DATA;
-
-    private static final EnumMap<ItemClass, Set<Class<?>>> classMap = new EnumMap<>(ItemClass.class);
-
-    private static final Map<Item, IItemData> items = new IdentityHashMap<>(MAP_CAPACITY);
+    static {
+        CACHE.put(EMPTY.getName(), EMPTY);
+        CACHE.put(NONE.getName(), NONE);
+        CACHE.put(LEATHER.getName(), LEATHER);
+        CACHE.put(CHAIN.getName(), CHAIN);
+        CACHE.put(CRYSTAL.getName(), CRYSTAL);
+        CACHE.put(PLATE.getName(), PLATE);
+        CACHE.put(SHIELD.getName(), SHIELD);
+        CACHE.put(SWORD.getName(), SWORD);
+        CACHE.put(AXE.getName(), AXE);
+        CACHE.put(BOW.getName(), BOW);
+        CACHE.put(CROSSBOW.getName(), CROSSBOW);
+        CACHE.put(TOOL.getName(), TOOL);
+        CACHE.put(BOOK.getName(), BOOK);
+        CACHE.put(POTION.getName(), POTION);
+    }
 
     private ItemLibrary() {
     }
@@ -64,9 +93,8 @@ public final class ItemLibrary {
     static void initialize() {
         classMap.clear();
         items.clear();
-        NONE_DATA = SimpleItemData.CACHE.get(ItemClass.NONE);
 
-        for (final ItemClass ic : ItemClass.values())
+        for (final ItemData ic : CACHE.values())
             classMap.put(ic, new ReferenceOpenHashSet<>(SET_CAPACITY));
     }
 
@@ -74,7 +102,6 @@ public final class ItemLibrary {
         for (final Map.Entry<String, List<String>> entry : mod.items.entrySet()) {
             process(entry.getValue(), entry.getKey());
         }
-
     }
 
     static void complete() {
@@ -82,19 +109,19 @@ public final class ItemLibrary {
         // matching.
         for (final Item item : ForgeRegistries.ITEMS) {
             if (!items.containsKey(item)) {
-                final ItemClass ic = resolveClass(item);
-                items.put(item, SimpleItemData.CACHE.get(ic));
+                final ItemData ic = resolveClass(item);
+                items.put(item, ic);
             }
         }
     }
 
-    private static ItemClass resolveClass(@Nonnull final Item item) {
-        for (final ItemClass ic : ItemClass.values()) {
+    private static ItemData resolveClass(@Nonnull final Item item) {
+        for (final ItemData ic : CACHE.values()) {
             final Set<Class<?>> itemSet = classMap.get(ic);
             if (doesBelong(itemSet, item))
                 return ic;
         }
-        return ItemClass.NONE;
+        return NONE;
     }
 
     private static boolean doesBelong(@Nonnull final Set<Class<?>> itemSet, @Nonnull final Item item) {
@@ -119,7 +146,7 @@ public final class ItemLibrary {
         if (itemList == null || itemList.isEmpty())
             return;
 
-        final ItemClass ic = ItemClass.valueOf(itemClass);
+        final ItemData ic = CACHE.get(itemClass);
         final Set<Class<?>> theList = classMap.get(ic);
 
         for (final String c : itemList) {
@@ -130,7 +157,7 @@ public final class ItemLibrary {
                 if (ResourceLocation.isResouceNameValid(itemName)) {
                     final Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
                     if (item != null) {
-                        items.put(item, SimpleItemData.CACHE.get(ic));
+                        items.put(item, ic);
                     } else {
                         LOGGER.warn("Cannot locate item [%s] for ItemRegistry", c);
                     }
@@ -156,7 +183,7 @@ public final class ItemLibrary {
     }
 
     @Nonnull
-    public static IItemData getItemData(@Nonnull final ItemStack stack) {
-        return stack.isEmpty() ? NONE_DATA : items.get(stack.getItem());
+    public static ItemData getItemData(@Nonnull final ItemStack stack) {
+        return stack.isEmpty() ? NONE : items.get(stack.getItem());
     }
 }

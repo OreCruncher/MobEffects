@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.orecruncher.lib.GameUtils;
 import org.orecruncher.lib.TickCounter;
 import org.orecruncher.mobeffects.MobEffects;
-import org.orecruncher.mobeffects.library.IItemData;
+import org.orecruncher.mobeffects.library.ItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
 import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
 
@@ -71,9 +71,9 @@ public class EntitySwingEffect extends AbstractEntityEffect {
             if (!this.isSwinging) {
                 if (isClickOK(entity)) {
                     final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
-                    final IItemData data = ItemLibrary.getItemData(currentItem);
+                    final ItemData data = ItemLibrary.getItemData(currentItem);
                     if (freeSwing(entity))
-                        data.playSwingSound(currentItem);
+                        data.playSwingSound();
                 }
             }
 

@@ -20,7 +20,9 @@ package org.orecruncher.mobeffects.library;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +42,10 @@ import org.orecruncher.lib.logging.IModLog;
 import org.orecruncher.lib.reflection.ObjectField;
 import org.orecruncher.mobeffects.Config;
 import org.orecruncher.mobeffects.MobEffects;
-import org.orecruncher.mobeffects.footsteps.*;
+import org.orecruncher.mobeffects.footsteps.Generator;
+import org.orecruncher.mobeffects.footsteps.GeneratorQP;
+import org.orecruncher.mobeffects.footsteps.Substrate;
+import org.orecruncher.mobeffects.footsteps.Variator;
 import org.orecruncher.mobeffects.library.config.ModConfig;
 import org.orecruncher.mobeffects.library.config.VariatorConfig;
 import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
@@ -54,25 +59,20 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = MobEffects.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class FootstepLibrary {
 
-    private static IModLog LOGGER = MobEffects.LOGGER.createChild(FootstepLibrary.class);
-
     private static final ObjectField<BlockState, Boolean> mobeffects_hasfootprint =
             new ObjectField<>(
                     BlockState.class,
                     () -> null,
                     "mobeffects_hasfootprint"
             );
-
     private static final ObjectField<BlockState, IAcoustic[]> mobeffects_acoustic =
             new ObjectField<>(
                     BlockState.class,
                     () -> null,
                     "mobeffects_acoustic"
             );
-
     private static final String TEXT_FOOTSTEPS = TextFormatting.DARK_PURPLE + "<Footsteps>";
     private static final Map<Substrate, BlockAcousticMap> substrateMap = new EnumMap<>(Substrate.class);
-
     private static final List<SoundType> FOOTPRINT_SOUND_PROFILE =
             Arrays.asList(
                     SoundType.SAND,
@@ -80,12 +80,11 @@ public final class FootstepLibrary {
                     SoundType.SLIME,
                     SoundType.SNOW
             );
-
     private static final Set<Material> FOOTPRINT_MATERIAL = new ReferenceOpenHashSet<>();
     private static final BlockStateMatcherMap<Boolean> FOOTPRINT_STATES = new BlockStateMatcherMap<>();
     private static final Map<String, List<MacroEntry>> macros = new Object2ObjectOpenHashMap<>();
     private static final Map<String, Variator> variators = new Object2ObjectOpenHashMap<>();
-
+    private static IModLog LOGGER = MobEffects.LOGGER.createChild(FootstepLibrary.class);
     private static Variator defaultVariator;
     private static Variator childVariator;
     private static Variator playerVariator;
@@ -117,53 +116,53 @@ public final class FootstepLibrary {
         final MacroEntry MESSY = new MacroEntry("messy", "messy_ground");
         final MacroEntry NOT_EMITTER = new MacroEntry(null, "not_emitter");
 
-        List<MacroEntry> entries = new ArrayList<>();
+        List<MacroEntry> entries = new ArrayList<>(3);
         entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "straw"));
         macros.put("#sapling", entries);
         macros.put("#reed", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(3);
         entries.add(new MacroEntry(null, "leaves"));
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "brush"));
         macros.put("#plant", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(3);
         entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "brush"));
         macros.put("#tallplant", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(3);
         entries.add(new MacroEntry(null, "leaves"));
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "brush_straw_transition"));
         macros.put("#bush", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(2);
         entries.add(NOT_EMITTER);
         entries.add(new MacroEntry("bigger", "bluntwood"));
         macros.put("#fence", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(2);
         entries.add(NOT_EMITTER);
         entries.add(new MacroEntry("foliage", "rails"));
         macros.put("#rail", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(3);
         entries.add(new MacroEntry(null, "straw"));
         entries.add(MESSY);
         entries.add(new MacroEntry("foliage", "straw"));
         macros.put("#vine", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(2);
         entries.add(NOT_EMITTER);
         entries.add(new MacroEntry("carpet", "rug"));
         macros.put("#moss", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(10);
         entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("age", "0", "foliage", "not_emitter"));
@@ -176,7 +175,7 @@ public final class FootstepLibrary {
         entries.add(new MacroEntry("age", "7", "foliage", "straw"));
         macros.put("#wheat", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(10);
         entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("age", "0", "foliage", "not_emitter"));
@@ -189,7 +188,7 @@ public final class FootstepLibrary {
         entries.add(new MacroEntry("age", "7", "foliage", "brush"));
         macros.put("#crop", entries);
 
-        entries = new ArrayList<>();
+        entries = new ArrayList<>(6);
         entries.add(NOT_EMITTER);
         entries.add(MESSY);
         entries.add(new MacroEntry("age", "0", "foliage", "not_emitter"));
@@ -232,7 +231,7 @@ public final class FootstepLibrary {
         }
     }
 
-	static void initFromConfig(@Nonnull final ModConfig mod) {
+    static void initFromConfig(@Nonnull final ModConfig mod) {
         // Handle our primitives first
         for (final Map.Entry<String, String> kvp : mod.primitives.entrySet()) {
             final ResourceLocation loc = Library.resolveResource(MobEffects.MOD_ID, kvp.getKey());
@@ -261,13 +260,8 @@ public final class FootstepLibrary {
         substrateMap.forEach((key, value) -> value.trim());
     }
 
-    private static void registerBlocks(@Nonnull final String blockClass, @Nonnull final String... blocks) {
-        for (final String s : blocks)
-            register(s, blockClass);
-    }
-
     @SubscribeEvent
-	public static void onInspectionEvent(@Nonnull final BlockInspectionEvent evt) {
+    public static void onInspectionEvent(@Nonnull final BlockInspectionEvent evt) {
         evt.data.add(TEXT_FOOTSTEPS);
         collectData(evt.state, evt.data);
     }
@@ -292,12 +286,12 @@ public final class FootstepLibrary {
         return WATERLOGGED;
     }
 
-	@Nonnull
-	private static Variator getVariator(@Nonnull final String varName) {
-		return variators.getOrDefault(varName, defaultVariator);
-	}
+    @Nonnull
+    private static Variator getVariator(@Nonnull final String varName) {
+        return variators.getOrDefault(varName, defaultVariator);
+    }
 
-	@Nonnull
+    @Nonnull
     public static IAcoustic getBlockAcoustics(@Nonnull final BlockState state) {
         return getBlockAcoustics(state, Substrate.NORMAL);
     }

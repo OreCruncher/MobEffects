@@ -26,7 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.mobeffects.MobEffects;
-import org.orecruncher.mobeffects.library.IItemData;
+import org.orecruncher.mobeffects.library.ItemData;
 import org.orecruncher.mobeffects.library.ItemLibrary;
 import org.orecruncher.sndctrl.api.effects.AbstractEntityEffect;
 import org.orecruncher.sndctrl.api.effects.IEntityEffectManager;
@@ -68,8 +68,8 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
         public void update(@Nonnull final PlayerEntity player) {
             if (triggerNewEquipSound(player)) {
                 final ItemStack currentStack = player.getHeldItem(this.hand);
-                final IItemData data = ItemLibrary.getItemData(currentStack);
-                data.playEquipSound(currentStack);
+                final ItemData data = ItemLibrary.getItemData(currentStack);
+                data.playEquipSound();
                 this.lastHeld = currentStack.getItem();
             }
         }
