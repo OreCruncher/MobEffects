@@ -103,7 +103,8 @@ public class ItemData {
     protected void play(@Nullable final ResourceLocation acoustic) {
         if (acoustic == null)
             return;
-        final IAcousticFactory factory = Library.resolve(acoustic).getFactory();
+        final IAcoustic a = Library.resolve(acoustic);
+        final IAcousticFactory factory = a.getFactory(Constants.WALK);
         if (factory != null) {
             final IFadableSoundInstance instance = new BackgroundSoundInstance(factory.createSound(), Constants.TOOLBAR);
             instance.noFade();

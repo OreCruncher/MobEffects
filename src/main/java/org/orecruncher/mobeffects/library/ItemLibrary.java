@@ -18,7 +18,7 @@
 
 package org.orecruncher.mobeffects.library;
 
-import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ReferenceAVLTreeMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.item.Item;
@@ -57,7 +57,7 @@ public final class ItemLibrary {
     public static final ItemData POTION = new ItemData("POTION", Constants.POTION_EQUIP, Constants.POTION_EQUIP, Constants.POTION_EQUIP);
 
     private static final IModLog LOGGER = MobEffects.LOGGER.createChild(ItemLibrary.class);
-    private static final Object2ReferenceOpenHashMap<String, ItemData> CACHE = new Object2ReferenceOpenHashMap<>();
+    private static final Object2ReferenceAVLTreeMap<String, ItemData> CACHE = new Object2ReferenceAVLTreeMap<>(String.CASE_INSENSITIVE_ORDER);
     // Pattern for matching Java class names
     private static final String ID_PATTERN = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*";
 
@@ -67,7 +67,7 @@ public final class ItemLibrary {
     private static final Pattern ITEM_PATTERN = Pattern.compile("([\\w\\-]+:[\\w\\.\\-/]+)[:]?(\\d+|\\*)?(\\{.*\\})?");
     private static final int SET_CAPACITY = 64;
     private static final int MAP_CAPACITY = 256;
-    private static final Reference2ReferenceOpenHashMap<ItemData, Set<Class<?>>> classMap = new Reference2ReferenceOpenHashMap<>();
+    private static final Map<ItemData, Set<Class<?>>> classMap = new Reference2ReferenceOpenHashMap<>();
     private static final Map<Item, ItemData> items = new IdentityHashMap<>(MAP_CAPACITY);
 
     static {

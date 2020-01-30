@@ -51,7 +51,7 @@
     ],
     "BOOK": [
       "net.minecraft.item.BookItem",
-      "net.minecraft.item.WriteableBookItem",
+      "net.minecraft.item.WritableBookItem",
       "net.minecraft.item.WrittenBookItem",
       "net.minecraft.item.EnchantedBookItem"
     ],
