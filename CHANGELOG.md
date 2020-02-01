@@ -1,3 +1,19 @@
+### MobEffects-1.14.4-0.0.5.0
+**Requirements**
+* Forge 1.14.4-28.1.96+
+* Dynamic Surroundings: Sound Control 1.14.4-0.0.5.0+
+* 100% client side; no server side deployment needed
+
+**Fixes**
+* Ladders now sound like ladders
+* Hide player breath particles when GUI is hidden (F1)
+* Right clicking a block when holding an item no longer plays the swing sound on a block miss.  Primarily affects interacting with doors.
+* Removed debug keybind option
+* Toolbar sounds are now non-attenuated, and there is now a config option to scaling toolbar sound effect volume
+
+**Changes**
+* Miscellaneous changes to be compatible with Sound Control/Environs
+
 ### MobEffects-1.14.4-0.0.4.0
 **Requirements**
 * Forge 1.14.4-28.1.96+
