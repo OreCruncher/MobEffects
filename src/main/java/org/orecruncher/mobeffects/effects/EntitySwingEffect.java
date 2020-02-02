@@ -67,13 +67,14 @@ public class EntitySwingEffect extends AbstractEntityEffect {
             return;
 
         // Is the swing in motion
-        if (entity.swingingHand != null && entity.swingProgressInt > this.swingProgress) {
+        if (entity.swingProgressInt > this.swingProgress && entity.swingingHand != null) {
             if (!this.isSwinging) {
                 if (isClickOK(entity)) {
-                    final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
-                    final ItemData data = ItemLibrary.getItemData(currentItem);
-                    if (freeSwing(entity))
+                    if (freeSwing(entity)) {
+                        final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
+                        final ItemData data = ItemLibrary.getItemData(currentItem);
                         data.playSwingSound();
+                    }
                 }
             }
 
