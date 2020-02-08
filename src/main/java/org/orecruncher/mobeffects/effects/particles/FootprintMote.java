@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -65,7 +66,7 @@ public class FootprintMote extends AgeableMote {
     protected final Vec2f thirdPoint;
     protected final Vec2f fourthPoint;
 
-    public FootprintMote(@Nonnull final FootprintStyle style, @Nonnull final World world, final double x,
+    public FootprintMote(@Nonnull final FootprintStyle style, @Nonnull final IBlockReader world, final double x,
                          final double y, final double z, final float rotation, final float scale, final boolean isRight) {
         super(world, x, y, z);
 

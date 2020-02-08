@@ -6,6 +6,7 @@
     "biomesoplenty:willow_vine": "#vine",
     "biomesoplenty:mud": "mud",
     "biomesoplenty:cattail": "#plant",
-    "biomesoplenty:tall_cattail": "#reed"
+    "biomesoplenty:tall_cattail": "#reed",
+    "biomesoplenty:mangrove_root": "#reed"
   }
 }

@@ -21,13 +21,15 @@ package org.orecruncher.mobeffects.effects.particles;
 import net.minecraft.client.particle.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.lib.GameUtils;
+import org.orecruncher.lib.math.MathStuff;
+import org.orecruncher.lib.random.XorShiftRandom;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class FrostBreathParticle extends SpriteTexturedParticle {
@@ -35,6 +37,8 @@ public class FrostBreathParticle extends SpriteTexturedParticle {
 
     public FrostBreathParticle(@Nonnull final LivingEntity entity) {
         super(entity.getEntityWorld(), 0, 0, 0, 0.0D, 0.0D, 0.0D);
+
+        final Random rand = XorShiftRandom.current();
 
         // Reuse the cloud sheet
         this.field_217583_C = GameUtils.getMC().particles.sprites.get(ParticleTypes.CLOUD.getRegistryName());
@@ -52,23 +56,24 @@ public class FrostBreathParticle extends SpriteTexturedParticle {
         this.motionZ = trajectory.z * 0.01D;
 
         this.setAlphaF(0.2F);
-        float f1 = 1.0F - (float)(Math.random() * (double)0.3F);
+        float f1 = 1.0F - (float) (rand.nextDouble() * (double) 0.3F);
         this.particleRed = f1;
         this.particleGreen = f1;
         this.particleBlue = f1;
         this.particleScale *= 1.875F * (entity.isChild() ? 0.125F : 0.25F);
-        int i = (int)(8.0D / (Math.random() * 0.8D + 0.3D));
-        this.maxAge = (int)Math.max((float)i * 2.5F, 1.0F);
+        int i = (int) (8.0D / (rand.nextDouble() * 0.8D + 0.3D));
+        this.maxAge = (int) MathStuff.max((float) i * 2.5F, 1.0F);
         this.canCollide = false;
         this.selectSpriteWithAge(this.field_217583_C);
     }
 
+    @Nonnull
     public IParticleRenderType getRenderType() {
         return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     public float getScale(float p_217561_1_) {
-        return this.particleScale * MathHelper.clamp(((float)this.age + p_217561_1_) / (float)this.maxAge * 32.0F, 0.0F, 1.0F);
+        return this.particleScale * MathStuff.clamp1(((float) this.age + p_217561_1_) / (float) this.maxAge * 32.0F);
     }
 
     public void tick() {
