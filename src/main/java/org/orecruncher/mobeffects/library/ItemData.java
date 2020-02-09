@@ -22,12 +22,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.orecruncher.sndctrl.api.acoustics.IAcoustic;
 import org.orecruncher.sndctrl.api.acoustics.IAcousticFactory;
 import org.orecruncher.sndctrl.api.acoustics.Library;
 import org.orecruncher.sndctrl.api.sound.IFadableSoundInstance;
+import org.orecruncher.sndctrl.api.sound.ISoundInstance;
 import org.orecruncher.sndctrl.audio.AudioEngine;
 import org.orecruncher.sndctrl.audio.BackgroundSoundInstance;
 
@@ -85,30 +87,48 @@ public class ItemData {
     }
 
     public void playSwingSound() {
-        play(this.swing);
+        playSwingSound(null);
+    }
+
+    public void playSwingSound(@Nullable final BlockPos pos) {
+        play(this.swing, pos);
     }
 
     public void playUseSound() {
-        play(this.use);
+        playUseSound(null);
+    }
+
+    public void playUseSound(@Nullable final BlockPos pos) {
+        play(this.use, pos);
     }
 
     public void playEquipSound() {
-        play(this.equip);
+        playEquipSound(null);
+    }
+
+    public void playEquipSound(@Nullable final BlockPos pos) {
+        play(this.equip, pos);
     }
 
     public boolean isArmor() {
         return this instanceof ArmorItemData;
     }
 
-    protected void play(@Nullable final ResourceLocation acoustic) {
+    protected void play(@Nullable final ResourceLocation acoustic, @Nullable final BlockPos pos) {
         if (acoustic == null)
             return;
         final IAcoustic a = Library.resolve(acoustic);
         final IAcousticFactory factory = a.getFactory(Constants.WALK);
         if (factory != null) {
-            final IFadableSoundInstance instance = new BackgroundSoundInstance(factory.createSound(), Constants.TOOLBAR);
-            instance.noFade();
-            AudioEngine.play(instance);
+            final ISoundInstance sound;
+            if (pos == null) {
+                final IFadableSoundInstance instance = new BackgroundSoundInstance(factory.createSound(), Constants.TOOLBAR);
+                instance.noFade();
+                sound = instance;
+            } else {
+                sound = factory.createSoundAt(pos);
+            }
+            AudioEngine.play(sound);
         }
     }
 

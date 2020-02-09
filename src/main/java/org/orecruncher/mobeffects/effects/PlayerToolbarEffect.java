@@ -43,14 +43,16 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
 
     protected static class HandTracker {
 
+        protected final IEntityEffectManager manager;
         protected final Hand hand;
         protected Item lastHeld;
 
-        protected HandTracker(@Nonnull final PlayerEntity player) {
-            this(player, Hand.OFF_HAND);
+        protected HandTracker(@Nonnull final IEntityEffectManager manager, @Nonnull final PlayerEntity player) {
+            this(manager, player, Hand.OFF_HAND);
         }
 
-        protected HandTracker(@Nonnull final PlayerEntity player, @Nonnull final Hand hand) {
+        protected HandTracker(@Nonnull final IEntityEffectManager manager, @Nonnull final PlayerEntity player, @Nonnull final Hand hand) {
+            this.manager = manager;
             this.hand = hand;
             this.lastHeld = getItemForHand(player, hand);
         }
@@ -70,7 +72,10 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
                 final ItemStack currentStack = player.getHeldItem(this.hand);
                 if (!currentStack.isEmpty()) {
                     final ItemData data = ItemLibrary.getItemData(currentStack);
-                    data.playEquipSound();
+                    if (this.manager.isActivePlayer(player))
+                        data.playEquipSound();
+                    else
+                        data.playEquipSound(player.getPosition());
                 }
                 this.lastHeld = currentStack.getItem();
             }
@@ -81,8 +86,8 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
 
         protected int lastSlot;
 
-        public MainHandTracker(@Nonnull final PlayerEntity player) {
-            super(player, Hand.MAIN_HAND);
+        public MainHandTracker(@Nonnull final IEntityEffectManager manager, @Nonnull final PlayerEntity player) {
+            super(manager, player, Hand.MAIN_HAND);
             this.lastSlot = player.inventory.currentItem;
         }
 
@@ -108,8 +113,8 @@ public class PlayerToolbarEffect extends AbstractEntityEffect {
     public void intitialize(@Nonnull final IEntityEffectManager manager) {
         super.intitialize(manager);
         final PlayerEntity player = (PlayerEntity) getEntity();
-        this.mainHand = new MainHandTracker(player);
-        this.offHand = new HandTracker(player);
+        this.mainHand = new MainHandTracker(manager, player);
+        this.offHand = new HandTracker(manager, player);
     }
 
     @Override

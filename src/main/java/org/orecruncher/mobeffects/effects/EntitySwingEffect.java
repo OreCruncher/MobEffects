@@ -74,7 +74,10 @@ public class EntitySwingEffect extends AbstractEntityEffect {
                     if (freeSwing(entity)) {
                         final ItemStack currentItem = entity.getHeldItem(entity.swingingHand);
                         final ItemData data = ItemLibrary.getItemData(currentItem);
-                        data.playSwingSound();
+                        if (isActivePlayer(entity))
+                            data.playSwingSound();
+                        else
+                            data.playSwingSound(entity.getPosition());
                     }
                 }
             }

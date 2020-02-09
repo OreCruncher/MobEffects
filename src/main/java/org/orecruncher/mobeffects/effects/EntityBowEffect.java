@@ -50,7 +50,10 @@ public class EntityBowEffect extends AbstractEntityEffect {
             if (!ItemStack.areItemStacksEqual(currentStack, this.lastActiveStack)) {
                 final ItemData data = ItemLibrary.getItemData(currentStack);
                 if (data == ItemLibrary.BOW || data == ItemLibrary.CROSSBOW || data == ItemLibrary.SHIELD) {
-                    data.playUseSound();
+                    if (isActivePlayer(entity))
+                        data.playUseSound();
+                    else
+                        data.playUseSound(entity.getPosition());
                 }
 
                 this.lastActiveStack = currentStack;
