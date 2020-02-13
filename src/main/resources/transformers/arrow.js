@@ -9,10 +9,7 @@ var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode');
 var ARROW_TICK = ASM.mapMethod("func_70071_h_");
 var ARROW_CRITICAL = ASM.mapMethod("func_70241_g");
 
-function log(message)
-{
-    print("[MobEffects Transformer - AbstractArrowEntity]: " + message);
-}
+var FORMAT = "[arrow.js] {}";
 
 function initializeCoreMod()
 {
@@ -35,8 +32,12 @@ function initializeCoreMod()
                 newInstructions.add(call);
 
                 var targetMethod = findMethod(classNode, ARROW_TICK);
-                ASM.insertInsnList(targetMethod, ASM.MethodType.VIRTUAL, "net/minecraft/entity/projectile/AbstractArrowEntity", ARROW_CRITICAL, "()Z", newInstructions, ASM.InsertMode.REMOVE_ORIGINAL);
-                log("Hooked AbstractArrowEntity.tick()");
+                if (targetMethod !== null) {
+                    ASM.insertInsnList(targetMethod, ASM.MethodType.VIRTUAL, "net/minecraft/entity/projectile/AbstractArrowEntity", ARROW_CRITICAL, "()Z", newInstructions, ASM.InsertMode.REMOVE_ORIGINAL);
+                    ASM.log("INFO", FORMAT, ["Hooked AbstractArrowEntity.tick()"]);
+                } else {
+                    ASM/log("WARN", FORMAT, "Will not be able to disable arrow particle trail");
+                }
 
                 return classNode;
             }
@@ -51,6 +52,6 @@ function findMethod(classNode, methodName)
         if (method.name == methodName)
             return method;
     }
-    log("Method not found: " + methodName);
+    ASM.log("WARN", "Method not found: {}", [methodName]);
     return null;
 }

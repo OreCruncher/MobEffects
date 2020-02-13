@@ -3,6 +3,8 @@ var ASM = Java.type("net.minecraftforge.coremod.api.ASMAPI");
 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 var FieldNode = Java.type('org.objectweb.asm.tree.FieldNode');
 
+var FORMAT = "[blockstate.js] {}";
+
 function initializeCoreMod()
 {
     return {
@@ -14,11 +16,12 @@ function initializeCoreMod()
             "transformer": function(classNode) {
                 // Add a field to cache footprint ability state
                 classNode.fields.add(new FieldNode(Opcodes.ACC_PUBLIC, "mobeffects_hasfootprint", "Ljava/lang/Boolean;", null, null));
-                print("[MobEffects Transformer]: Patched BlockState - Added hasfootprint cache field");
+                ASM.log("INFO", FORMAT, ["Added hasfootprint cache field"]);
 
                 // Add a field to cache footprint ability state
                 classNode.fields.add(new FieldNode(Opcodes.ACC_PUBLIC, "mobeffects_acoustic", "Ljava/lang/Object;", null, null));
-                print("[MobEffects Transformer]: Patched BlockState - Added acoustic cache field");
+                ASM.log("INFO", FORMAT, ["Added acoustic cache field"]);
+
                 return classNode;
             }
         }
