@@ -94,7 +94,6 @@ public class GeneratorQP extends Generator {
 
 	@Override
 	protected float reevaluateDistance(@Nonnull final AcousticEvent event, final float distance) {
-		final float ret = distance;
 		if (event == Constants.WALK)
 			switch (USE_FUNCTION) {
 			case 0:
@@ -106,12 +105,12 @@ public class GeneratorQP extends Generator {
 			}
 
 		if (event == Constants.RUN && this.hoof == 0)
-			return ret * 0.8f;
+			return distance * 0.8f;
 
 		if (event == Constants.RUN)
-			return ret * 0.3f;
+			return distance * 0.3f;
 
-		return ret;
+		return distance;
 	}
 
 }

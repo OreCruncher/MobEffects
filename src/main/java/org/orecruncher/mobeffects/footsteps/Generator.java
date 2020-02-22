@@ -19,7 +19,6 @@
 package org.orecruncher.mobeffects.footsteps;
 
 import java.util.Random;
-import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,13 +56,6 @@ public class Generator {
 	protected static final Random RANDOM = XorShiftRandom.current();
 	protected static final int BRUSH_INTERVAL = 2;
 
-	protected static final Consumer<Footprint> GENERATE_PRINT = print -> {
-		final Vec3d loc = print.getStepLocation();
-		final World world = print.getEntity().getEntityWorld();
-		Collections.addFootprint(print.getStyle(), world, loc, print.getRotation(), print.getScale(),
-				print.isRightFoot());
-	};
-
 	protected final Variator VAR;
 
 	protected float dmwBase;
@@ -97,7 +89,6 @@ public class Generator {
 	protected int pedometer;
 
 	protected static final ObjectArray<IAcoustic> accents = new ObjectArray<>();
-	protected final ObjectArray<Footprint> footprints = new ObjectArray<>();
 
 	public Generator(@Nonnull final Variator var) {
 		this.VAR = var;
@@ -130,21 +121,8 @@ public class Generator {
 		simulateAirborne(entity);
 		simulateBrushes(entity);
 
-		if (this.footprints.size() > 0) {
-			this.footprints.forEach(GENERATE_PRINT);
-			this.footprints.clear();
-		}
-
 		if (this.stepThisFrame)
 			this.pedometer++;
-
-		// Player jump breath
-		/*
-		if (this.didJump && ModOptions.sound.enableJumpSound && this.VAR.PLAY_JUMP && !this.isSneaking) {
-			this.soundPlayer.playAcoustic(entity.getPositionVector(), RegistryManager.FOOTSTEPS.JUMP, Constants.JUMP,
-					null);
-		}
-		*/
 
 		if (Constants.FOOTSTEPS.getVolumeScale() > 0) {
 			entity.nextStepDistance = Float.MAX_VALUE;
@@ -414,12 +392,20 @@ public class Generator {
 			final Vec3d printPos = result.getStrikeLocation().footprintPosition();
 			if (printPos != null) {
 				FootprintStyle style = this.VAR.FOOTPRINT_STYLE;
+
 				if (entity instanceof PlayerEntity) {
 					style = Config.CLIENT.footsteps.get_playerFootprintStyle();
 				}
-				final Footprint print = Footprint.produce(style, entity, printPos, rotDegrees, this.VAR.FOOTPRINT_SCALE,
+
+				final Footprint print = Footprint.produce(
+						style, entity, printPos, rotDegrees,
+						this.VAR.FOOTPRINT_SCALE,
 						isRightFoot);
-				this.footprints.add(print);
+
+				final Vec3d stepLocation = print.getStepLocation();
+				final World world = print.getEntity().getEntityWorld();
+				Collections.addFootprint(print.getStyle(), world, stepLocation, print.getRotation(), print.getScale(),
+						print.isRightFoot());
 			}
 		}
 		return result;

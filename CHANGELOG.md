@@ -1,3 +1,17 @@
+### MobEffects-1.14.4-4.0.0.0
+**Requirements**
+* Forge 1.14.4-28.1.96+
+* Dynamic Surroundings: Sound Control 1.14.4-4.0.0.0+
+* 100% client side; no server side deployment needed
+
+**Fixes**
+* Don't play equip sound on empty toolbar slot
+* Bow and swing sound effects positioned correctly at mob
+
+**Changes**
+* Reduced swim sound volume a bit
+* F3 diagnostics will display detailed debug info only when mod debug tracing is enabled
+
 ### MobEffects-1.14.4-0.0.5.0
 **Requirements**
 * Forge 1.14.4-28.1.96+
