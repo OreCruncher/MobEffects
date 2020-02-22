@@ -1,7 +1,7 @@
-### MobEffects-1.14.4-4.0.0.0
+### MobEffects-1.14.4-0.1.0.0
 **Requirements**
 * Forge 1.14.4-28.1.96+
-* Dynamic Surroundings: Sound Control 1.14.4-4.0.0.0+
+* Dynamic Surroundings: Sound Control 1.14.4-0.1.0.0+
 * 100% client side; no server side deployment needed
 
 **Fixes**
