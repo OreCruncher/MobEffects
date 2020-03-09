@@ -184,6 +184,17 @@ public final class ItemLibrary {
 
     @Nonnull
     public static ItemData getItemData(@Nonnull final ItemStack stack) {
-        return stack.isEmpty() ? NONE : items.get(stack.getItem());
+        if (stack.isEmpty())
+            return NONE;
+
+        Item item = stack.getItem();
+        ItemData data = items.get(item);
+
+        if (data == null)
+        {
+            items.put(item, data = resolveClass(item));
+        }
+
+        return data;
     }
 }

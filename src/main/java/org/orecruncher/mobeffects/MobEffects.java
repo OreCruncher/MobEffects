@@ -19,6 +19,7 @@
 package org.orecruncher.mobeffects;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.orecruncher.lib.fml.ConfigUtils;
 import org.orecruncher.lib.fml.UpdateChecker;
 import org.orecruncher.lib.logging.ModLog;
@@ -57,16 +59,17 @@ public final class MobEffects {
     public static final Path CONFIG_PATH = ConfigUtils.getConfigPath(MOD_ID);
 
     public MobEffects() {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            // Various event bus registrations
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupComplete);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+            MinecraftForge.EVENT_BUS.register(this);
 
-        // Various event bus registrations
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupComplete);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        MinecraftForge.EVENT_BUS.register(this);
-
-        // Initialize our configuration
-        Config.setup();
+            // Initialize our configuration
+            Config.setup();
+        }
     }
 
     private void commonSetup(@Nonnull final FMLCommonSetupEvent event) {
