@@ -62,6 +62,10 @@ public class Generator {
 	protected float dwmYChange;
 	protected double yPosition;
 
+	protected double prevX = Double.MIN_VALUE;
+	protected double prevY = Double.MIN_VALUE;
+	protected double prevZ = Double.MIN_VALUE;
+
 	protected boolean didJump;
 	protected boolean isFlying;
 	protected float fallDistance;
@@ -105,7 +109,7 @@ public class Generator {
 			return;
 
 		// No footstep or print effects for spectators
-		if ((entity instanceof PlayerEntity) && ((PlayerEntity) entity).isSpectator())
+		if ((entity instanceof PlayerEntity) && entity.isSpectator())
 			return;
 
 		// Clear starting state
@@ -149,10 +153,28 @@ public class Generator {
 	}
 
 	protected void updateWalkedOnStep(@Nonnull final LivingEntity entity) {
-		final double dX = entity.posX - entity.prevPosX;
-		final double dY = entity.posY - entity.prevPosY;
-		final double dZ = entity.posZ - entity.prevPosZ;
-		this.distanceWalkedOnStepModified += Math.sqrt(dX * dX + dY * dY + dZ * dZ) * 0.6F;
+
+		float distance = 0F;
+
+		// First time initialization
+		if (Double.compare(this.prevX, Double.MIN_VALUE) == 0) {
+			this.prevX = entity.getPosX();
+			this.prevY = entity.getPosY();
+			this.prevZ = entity.getPosZ();
+		} else {
+			final double dX = entity.getPosX() - this.prevX;
+			final double dY = entity.getPosY() - this.prevY;
+			final double dZ = entity.getPosZ() - this.prevZ;
+
+			this.prevX = entity.getPosX();
+			this.prevY = entity.getPosY();
+			this.prevZ = entity.getPosZ();
+
+			final double sqrt = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+			distance = (float) sqrt * 0.6F;
+		}
+
+		this.distanceWalkedOnStepModified += distance;
 	}
 
 	protected void simulateFootsteps(@Nonnull final LivingEntity entity) {
@@ -195,10 +217,10 @@ public class Generator {
 
 			if (entity.isOnLadder() && !entity.onGround) {
 				distance = this.VAR.STRIDE_LADDER;
-			} else if (!this.isInWater && MathStuff.abs(this.yPosition - entity.posY) > 0.4d) {
+			} else if (!this.isInWater && MathStuff.abs(this.yPosition - entity.getPosY()) > 0.4d) {
 				// This ensures this does not get recorded as landing, but as a
 				// step
-				if (this.yPosition < entity.posY) { // Going upstairs
+				if (this.yPosition < entity.getPosY()) { // Going upstairs
 					distance = this.VAR.STRIDE_STAIR;
 					event = speedDisambiguator(entity, Constants.UP, Constants.UP_RUN);
 				} else if (!this.isSneaking) { // Going downstairs
@@ -229,7 +251,7 @@ public class Generator {
 		// while the player is between two steps in the air
 		// while descending stairs
 		if (entity.onGround) {
-			this.yPosition = entity.posY;
+			this.yPosition = entity.getPosY();
 		}
 	}
 
@@ -309,8 +331,8 @@ public class Generator {
 			this.brushesTime = current + BRUSH_INTERVAL;
 			if (proceedWithStep(entity) && (entity.getMotion().x != 0d || entity.getMotion().z != 0d)) {
 				final int yy = MathStuff
-						.floor(entity.posY - PROBE_DEPTH - entity.getYOffset() - (entity.onGround ? 0d : 0.25d));
-				final BlockPos pos = new BlockPos(entity.posX, yy, entity.posZ);
+						.floor(entity.getPosY() - PROBE_DEPTH - entity.getYOffset() - (entity.onGround ? 0d : 0.25d));
+				final BlockPos pos = new BlockPos(entity.getPosX(), yy, entity.getPosZ());
 				if (!this.messyPos.equals(pos)) {
 					this.messyPos = pos;
 					final Association assos = findAssociationMessyFoliage(entity, pos);
@@ -375,8 +397,8 @@ public class Generator {
 		final double rot = MathStuff.toRadians(rotDegrees);
 		final float feetDistanceToCenter = isRightFoot ? -this.VAR.DISTANCE_TO_CENTER : this.VAR.DISTANCE_TO_CENTER;
 
-		final double xx = entity.posX + MathStuff.cos(rot) * feetDistanceToCenter;
-		final double zz = entity.posZ + MathStuff.sin(rot) * feetDistanceToCenter;
+		final double xx = entity.getPosX() + MathStuff.cos(rot) * feetDistanceToCenter;
+		final double zz = entity.getPosZ() + MathStuff.sin(rot) * feetDistanceToCenter;
 		final double minY = entity.getBoundingBox().minY;
 		final FootStrikeLocation loc = new FootStrikeLocation(entity, xx, minY - PROBE_DEPTH - verticalOffsetAsMinus,
 				zz);

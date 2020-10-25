@@ -18,6 +18,7 @@
 
 package org.orecruncher.mobeffects.effects.particles;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -124,16 +125,15 @@ public class FootprintMote extends AgeableMote {
     }
 
     @Override
-    public void render(@Nonnull final BufferBuilder buffer, @Nonnull final ActiveRenderInfo info, float partialTicks, float rotX, float rotZ,
-                       float rotYZ, float rotXY, float rotXZ) {
+    public void renderParticle(@Nonnull final IVertexBuilder buffer, @Nonnull final ActiveRenderInfo info, float partialTicks) {
 
         float f = (this.age + partialTicks) / ((float) this.maxAge + 1);
         f *= f;
         this.alpha = MathStuff.clamp1(1.0F - f) * 0.4F;
 
-        final double x = renderX(partialTicks);
-        final double y = renderY(partialTicks);
-        final double z = renderZ(partialTicks);
+        final double x = renderX(info, partialTicks);
+        final double y = renderY(info, partialTicks);
+        final double z = renderZ(info, partialTicks);
 
         drawVertex(buffer, x + this.firstPoint.x, y, z + this.firstPoint.y, this.texU1, this.texV2);
         drawVertex(buffer, x + this.secondPoint.x, y, z + this.secondPoint.y, this.texU2, this.texV2);

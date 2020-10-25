@@ -62,7 +62,7 @@ public final class Config {
     }
 
     @SubscribeEvent
-    public static void onFileChange(final ModConfig.ConfigReloading configEvent) {
+    public static void onFileChange(final ModConfig.Reloading configEvent) {
         MobEffects.LOGGER.debug("Config file changed %s", configEvent.getConfig().getFileName());
         applyConfig();
     }
@@ -207,7 +207,8 @@ public final class Config {
             }
 
             public boolean get_enableFootprintParticles() {
-                return this._enableFootprintParticles;
+                return false;
+                //return this._enableFootprintParticles;
             }
 
             public boolean get_firstPersonFootstepCadence() {

@@ -50,6 +50,7 @@ repositories {
 }
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 minecraft {
     mappings channel: 'snapshot', version: project.ext.snapshot
@@ -151,8 +152,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     compile fg.deobf("org.orecruncher:SoundControl:${mcVersion}-${project.sndCtrl}")
-    compile fg.deobf("com.github.glitchfiend.biomesoplenty:BiomesOPlenty:${mcVersion}-${project.bopVersion}:universal")
-    compile fg.deobf("com.github.glitchfiend.biomesoplenty:SereneSeasons:${mcVersion}-${project.ssVersion}:universal")
+    //compile fg.deobf("com.github.glitchfiend.biomesoplenty:BiomesOPlenty:${mcVersion}-${project.bopVersion}:universal")
+    //compile fg.deobf("com.github.glitchfiend.biomesoplenty:SereneSeasons:${mcVersion}-${project.ssVersion}:universal")
 
     runtimeOnly fg.deobf("mezz.jei:jei-${mcVersion}:${project.jeiVersion}")
 }

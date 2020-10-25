@@ -29,7 +29,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
-import org.orecruncher.lib.EnvironmentBlockReader;
 import org.orecruncher.lib.GameUtils;
 import org.orecruncher.lib.TickCounter;
 import org.orecruncher.mobeffects.MobEffects;
@@ -109,7 +108,7 @@ public class EntitySwingEffect extends AbstractEntityEffect {
         final Vec3d eyes = entity.getEyePosition(1F);
         final Vec3d look = entity.getLook(1F);
         final Vec3d rangedLook = eyes.add(look.x * range, look.y * range, look.z * range);
-        return new EnvironmentBlockReader(entity.getEntityWorld()).rayTraceBlocks(new RayTraceContext(eyes, rangedLook, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.SOURCE_ONLY, entity));
+        return entity.getEntityWorld().rayTraceBlocks(new RayTraceContext(eyes, rangedLook, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.SOURCE_ONLY, entity));
     }
 
     private boolean isClickOK(@Nonnull final LivingEntity entity) {

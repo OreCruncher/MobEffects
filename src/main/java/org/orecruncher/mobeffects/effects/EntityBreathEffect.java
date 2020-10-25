@@ -97,8 +97,8 @@ public class EntityBreathEffect extends AbstractEntityEffect {
     }
 
     protected BlockPos getHeadPosition(@Nonnull final LivingEntity entity) {
-        final double d0 = entity.posY + entity.getEyeHeight();
-        return new BlockPos(entity.posX, d0, entity.posZ);
+        final double d0 = entity.getPosY() + entity.getEyeHeight();
+        return new BlockPos(entity.getPosX(), d0, entity.getPosZ());
     }
 
     protected boolean showWaterBubbles(@Nonnull final BlockState headBlock) {

@@ -90,8 +90,8 @@ public class AcousticResolver {
 			// over
 			final LivingEntity entity = this.loc.getEntity();
 			final BlockPos adj = new BlockPos(pos);
-			final double xdang = (entity.posX - adj.getX()) * 2 - 1;
-			final double zdang = (entity.posZ - adj.getZ()) * 2 - 1;
+			final double xdang = (entity.getPosX() - adj.getX()) * 2 - 1;
+			final double zdang = (entity.getPosZ() - adj.getZ()) * 2 - 1;
 			// -1 0 1
 			// ------- -1
 			// | o |
